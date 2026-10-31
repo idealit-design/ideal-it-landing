@@ -38,8 +38,9 @@ const DEMOS: Demo[] = [
     summary: 'Eventos turísticos, inscripciones ciudadanas y validación por códigos QR.',
     description: 'MVP local de turismo municipal.',
     category: 'Turismo & GovTech',
-    technologies: ['Angular', 'Bootstrap/Tailwind', 'FastAPI', 'SQLite'],
+    technologies: ['Angular standalone', 'Bootstrap', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    previewPath: '/mvp/formularios',
     sourcePaths: [
       'mvp-formularios/',
       'portfolio/Sistema ALANTIA Formularios/gestion-form-lp/panel/',
@@ -88,7 +89,7 @@ describe('DemosHubComponent', () => {
     expect(content).toContain('MVP Auditoría & Bóveda Documental (HealthCore)');
     expect(content).toContain('MVP Formularios & Turismo Municipal');
     expect(content).toContain('MVP OSMA Inspecciones');
-    expect(content).toContain('Bootstrap/Tailwind');
+    expect(content).toContain('Bootstrap');
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('app-demo-card').length).toBe(4);
     for (const technology of DEMOS[0].technologies) {
       expect(content).toContain(technology);
@@ -141,5 +142,17 @@ describe('DemosHubComponent', () => {
     element.querySelector<HTMLButtonElement>('[aria-label="Cerrar detalle"]')?.click();
     fixture.detectChanges();
     expect(element.querySelector('[role="dialog"]')).toBeNull();
+  });
+
+  it('links the Formularios detail to its isolated interactive preview', () => {
+    fixture.componentInstance.selectDemo(DEMOS[2]);
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const link = element.querySelector<HTMLAnchorElement>('a[href="/mvp/formularios"]');
+
+    expect(link?.textContent).toContain('Abrir preview interactiva');
+    expect(element.textContent).toContain('datos temporales del navegador');
+    expect(element.textContent).toContain('aisladas de esta landing');
   });
 });

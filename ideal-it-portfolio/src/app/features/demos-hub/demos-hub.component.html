@@ -265,14 +265,27 @@
           }
         </div>
         <p class="mt-6 rounded-lg border border-white/[0.07] bg-white/[0.02] p-3 text-xs leading-5 text-slate-400">
-          {{ demo.status === 'coming-soon'
-            ? 'Este módulo se encuentra en preparación.'
-            : 'MVP aislado de ejecución local. Aún no tiene una demo pública; su API y base de datos no forman parte del despliegue estático de esta landing.' }}
+          {{ demo.previewPath
+            ? 'Esta preview interactiva usa datos temporales del navegador. El MVP completo conserva su API FastAPI y su SQLite locales, aisladas de esta landing.'
+            : demo.status === 'coming-soon'
+              ? 'Este módulo se encuentra en preparación.'
+              : 'MVP aislado de ejecución local. Aún no tiene una demo pública; su API y base de datos no forman parte del despliegue estático de esta landing.' }}
         </p>
-        <div class="mt-6 flex items-center justify-end border-t border-white/[0.08] pt-5">
+        <div class="mt-6 flex items-center justify-between border-t border-white/[0.08] pt-5">
+          @if (demo.previewPath; as previewPath) {
+            <a
+              class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              [routerLink]="previewPath"
+              (click)="closeDetails()"
+            >
+              Abrir preview interactiva
+            </a>
+          } @else {
+            <span></span>
+          }
           <button
             type="button"
-            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            class="rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             (click)="closeDetails()"
           >
             Entendido

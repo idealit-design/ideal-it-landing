@@ -23,5 +23,12 @@ export const routes: Routes = [
         (component) => component.AuditoriaMvpComponent,
       ),
   },
+  {
+    path: 'mvp/formularios',
+    loadComponent: () =>
+      import('./features/formularios-preview/formularios-preview.component').then(
+        (component) => component.FormulariosPreviewComponent,
+      ),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

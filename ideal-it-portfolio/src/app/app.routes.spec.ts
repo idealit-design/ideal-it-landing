@@ -11,6 +11,7 @@ describe('application routes', () => {
   it('preserves the independent MVP routes and redirects unknown paths to home', () => {
     expect(routes.map((route) => route.path)).toContain('mvp/personal');
     expect(routes.map((route) => route.path)).toContain('mvp/auditoria');
+    expect(routes.map((route) => route.path)).toContain('mvp/formularios');
     expect(routes.find((route) => route.path === '**')).toEqual(
       jasmine.objectContaining({ redirectTo: '', pathMatch: 'full' }),
     );

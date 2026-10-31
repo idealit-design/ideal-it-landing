@@ -39,8 +39,9 @@ const DEMO_DATA: Demo[] = [
     description:
       'Plataforma local para publicar eventos gratuitos, gestionar inscripciones y registrar la asistencia mediante códigos QR. El subsistema conserva su propia API y base de datos.',
     category: 'Turismo & GovTech',
-    technologies: ['Angular', 'Bootstrap/Tailwind', 'FastAPI', 'SQLite'],
+    technologies: ['Angular standalone', 'Bootstrap', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    previewPath: '/mvp/formularios',
     sourcePaths: [
       'mvp-formularios/',
       'portfolio/Sistema ALANTIA Formularios/gestion-form-lp/panel/',

@@ -9,6 +9,7 @@ export interface Demo {
   technologies: string[];
   status: DemoStatus;
   sourcePaths: string[];
+  previewPath?: string;
 }
 
 export interface DemoApiSample {

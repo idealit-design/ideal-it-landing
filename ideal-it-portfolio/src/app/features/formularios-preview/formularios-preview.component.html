@@ -1,0 +1,257 @@
+<main class="min-h-screen bg-ink px-5 pb-16 sm:px-8 lg:px-12">
+  <div class="mx-auto max-w-7xl">
+    <header class="flex items-center justify-between border-b border-white/[0.07] py-5">
+      <a routerLink="/" class="text-sm font-bold tracking-[0.08em] text-white">IDEAL<span class="text-accent">-IT</span></a>
+      <a routerLink="/" class="text-sm text-slate-400 transition hover:text-accent">← Volver al portfolio</a>
+    </header>
+
+    <section class="py-10 sm:py-14">
+      <div class="flex flex-wrap items-start justify-between gap-5">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Preview interactiva · MVP Formularios 0.1.1</p>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Turismo y eventos municipales</h1>
+          <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
+            Explorá la experiencia de prestadores y ciudadanos con datos ficticios. Esta vista no se conecta a la API ni a la base SQLite del MVP local.
+          </p>
+        </div>
+        <span class="rounded-full border border-amber-300/20 bg-amber-300/[0.07] px-3 py-1.5 text-xs text-amber-200">Simulación en memoria · se reinicia al actualizar</span>
+      </div>
+    </section>
+
+    <nav class="mb-6 flex flex-wrap gap-2" aria-label="Secciones de la preview">
+      <button
+        type="button"
+        class="rounded-lg border px-4 py-2.5 text-sm font-semibold transition"
+        [ngClass]="section === 'portal' ? 'border-accent bg-accent text-ink' : 'border-white/10 text-slate-300'"
+        (click)="section = 'portal'"
+      >Portal ciudadano</button>
+      <button
+        type="button"
+        class="rounded-lg border px-4 py-2.5 text-sm font-semibold transition"
+        [ngClass]="section === 'gestion' ? 'border-accent bg-accent text-ink' : 'border-white/10 text-slate-300'"
+        (click)="section = 'gestion'"
+      >Gestión de eventos <span class="ml-1 rounded bg-black/10 px-1.5 py-0.5 text-xs">{{ pendingRegistrations.length }}</span></button>
+      <button
+        type="button"
+        class="rounded-lg border px-4 py-2.5 text-sm font-semibold transition"
+        [ngClass]="section === 'asistencia' ? 'border-accent bg-accent text-ink' : 'border-white/10 text-slate-300'"
+        (click)="section = 'asistencia'"
+      >Lector de asistencia</button>
+    </nav>
+
+    @if (section === 'portal') {
+      <section>
+        <div class="mb-6 rounded-2xl border border-accent/15 bg-[linear-gradient(115deg,rgba(110,231,210,0.08),rgba(16,24,39,0.86)_48%)] p-6 sm:p-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Agenda municipal abierta</p>
+          <h2 class="mt-3 text-2xl font-semibold text-white sm:text-3xl">Encontrá tu próximo plan</h2>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Los formularios habilitados aparecen aquí para que cualquier ciudadano pueda reservar su lugar.</p>
+        </div>
+
+        <div class="grid gap-4 lg:grid-cols-2">
+          @for (event of events; track event.id) {
+            <article class="rounded-2xl border border-white/[0.08] bg-panel p-5 sm:p-6">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <span class="rounded-md border border-white/10 px-2.5 py-1 text-[10px] uppercase tracking-wide text-slate-400">{{ categoryLabel(event.category) }}</span>
+                <span class="text-xs font-semibold text-accent">GRATUITO</span>
+              </div>
+              <h3 class="mt-4 text-lg font-semibold text-white">{{ event.title }}</h3>
+              <p class="mt-2 min-h-10 text-sm leading-6 text-slate-400">{{ event.description }}</p>
+              <div class="mt-4 space-y-1 text-xs text-slate-500">
+                <p>{{ event.organizer }} · {{ event.date | date:'medium' }}</p>
+                <p>{{ availableSeats(event) }} de {{ event.capacity }} cupos disponibles · {{ event.requiresApproval ? 'requiere aprobación' : 'confirmación inmediata' }}</p>
+              </div>
+              <button
+                type="button"
+                class="mt-5 min-h-11 w-full rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] disabled:cursor-not-allowed disabled:opacity-40"
+                [disabled]="availableSeats(event) === 0"
+                (click)="selectedEventId = selectedEventId === event.id ? 0 : event.id"
+              >{{ selectedEventId === event.id ? 'Cerrar inscripción' : 'Inscribirme' }}</button>
+
+              @if (selectedEventId === event.id) {
+                <form class="mt-4 grid gap-3 border-t border-white/[0.07] pt-4 sm:grid-cols-2" (ngSubmit)="register(event)">
+                  <label class="text-xs font-medium text-slate-300">Nombre y apellido
+                    <input required minlength="3" name="citizenName{{ event.id }}" [(ngModel)]="registrationForm.name" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" placeholder="Nombre para la demo" />
+                  </label>
+                  <label class="text-xs font-medium text-slate-300">DNI ficticio
+                    <input required minlength="6" maxlength="12" inputmode="numeric" name="citizenDni{{ event.id }}" [(ngModel)]="registrationForm.dni" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" placeholder="8 dígitos" />
+                  </label>
+                  <button class="min-h-10 rounded-lg border border-accent/30 px-4 text-sm font-semibold text-accent transition hover:bg-accent/[0.08] sm:col-span-2">Enviar solicitud</button>
+                </form>
+              }
+            </article>
+          }
+        </div>
+
+        @if (lastRegistration; as registration) {
+          <article class="mt-5 rounded-2xl border border-accent/20 bg-accent/[0.05] p-5" role="status">
+            <div class="flex flex-wrap items-center justify-between gap-5">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wide text-accent">{{ registration.status === 'APROBADO' ? 'Inscripción confirmada' : registration.status === 'RECHAZADO' ? 'Solicitud rechazada' : 'Solicitud enviada' }}</p>
+                <p class="mt-2 text-sm text-white">{{ registration.name }} · DNI {{ registration.dni }}</p>
+                <p class="mt-1 text-xs text-slate-400">{{ registration.status === 'PENDIENTE' ? 'El organizador debe aprobarla antes de emitir el código de acceso.' : registration.status === 'APROBADO' ? 'Presentá este código de muestra al llegar al evento.' : 'Contactá al organizador para más información.' }}</p>
+                @if (registration.qrCode) {
+                  <code class="mt-3 inline-block rounded bg-black/20 px-2 py-1 text-xs text-accent">{{ registration.qrCode }}</code>
+                }
+              </div>
+              @if (registration.qrCode && selectedQr?.id === registration.id) {
+                <div class="rounded-lg bg-white p-3" aria-label="Ilustración de código QR simulado">
+                  <div class="grid h-28 w-28 gap-px" [style.grid-template-columns]="'repeat(21, minmax(0, 1fr))'" aria-hidden="true">
+                    @for (row of qrMatrix; track $index) {
+                      @for (cell of row; track $index) {
+                        <span [style.background-color]="cell ? '#020617' : '#ffffff'"></span>
+                      }
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+            @if (registration.status === 'PENDIENTE') {
+              <button type="button" class="mt-4 text-xs font-semibold text-accent underline underline-offset-4" (click)="section = 'gestion'">Ir a gestión para resolver la solicitud</button>
+            }
+            @if (registration.status === 'APROBADO') {
+              <p class="mt-3 text-[11px] text-slate-500">El patrón visual es ilustrativo; el código no se puede escanear como QR real.</p>
+            }
+          </article>
+        }
+      </section>
+    }
+
+    @if (section === 'gestion') {
+      <section class="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+        <article class="rounded-2xl border border-white/[0.08] bg-panel p-5 sm:p-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-accent">Prestador / Secretaría</p>
+          <h2 class="mt-2 text-lg font-semibold text-white">Publicar evento gratuito</h2>
+          <form class="mt-5 space-y-3" (ngSubmit)="createEvent()">
+            <label class="block text-xs font-medium text-slate-300">Nombre del organizador
+              <input required minlength="2" name="organizer" [(ngModel)]="eventForm.organizer" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" placeholder="Museo Municipal" />
+            </label>
+            <label class="block text-xs font-medium text-slate-300">Categoría
+              <select name="category" [(ngModel)]="eventForm.category" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50">
+                @for (category of categories; track category) {
+                  <option [ngValue]="category">{{ categoryLabel(category) }}</option>
+                }
+              </select>
+            </label>
+            <label class="block text-xs font-medium text-slate-300">Título del evento
+              <input required minlength="3" name="eventTitle" [(ngModel)]="eventForm.title" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" placeholder="Visita guiada" />
+            </label>
+            <label class="block text-xs font-medium text-slate-300">Descripción
+              <textarea name="eventDescription" [(ngModel)]="eventForm.description" rows="2" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" placeholder="Contá qué van a disfrutar los ciudadanos"></textarea>
+            </label>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="text-xs font-medium text-slate-300">Fecha y hora
+                <input required type="datetime-local" name="eventDate" [(ngModel)]="eventForm.date" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+              </label>
+              <label class="text-xs font-medium text-slate-300">Cupo máximo
+                <input required min="1" type="number" name="eventCapacity" [(ngModel)]="eventForm.capacity" class="mt-1.5 w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+              </label>
+            </div>
+            <label class="flex items-center gap-2 text-xs text-slate-300">
+              <input type="checkbox" name="requiresApproval" [(ngModel)]="eventForm.requiresApproval" class="accent-accent" />
+              Requiere aprobación del organizador
+            </label>
+            <button class="min-h-11 w-full rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition hover:bg-[#8bf0df]">Publicar en la preview</button>
+          </form>
+        </article>
+
+        <div class="space-y-5">
+          <article class="rounded-2xl border border-white/[0.08] bg-panel p-5 sm:p-6">
+            <div class="flex items-center justify-between gap-3">
+              <div><h2 class="text-lg font-semibold text-white">Eventos publicados</h2><p class="mt-1 text-xs text-slate-500">La ocupación incluye solicitudes pendientes y aprobadas.</p></div>
+              <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-400">{{ events.length }} eventos</span>
+            </div>
+            <div class="mt-4 divide-y divide-white/[0.07]">
+              @for (event of events; track event.id) {
+                <div class="py-4 first:pt-0 last:pb-0">
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div><h3 class="text-sm font-semibold text-white">{{ event.title }}</h3><p class="mt-1 text-xs text-slate-500">{{ event.organizer }} · {{ categoryLabel(event.category) }}</p></div>
+                    <span class="rounded-md border border-white/10 px-2 py-1 text-[10px] text-slate-400">{{ event.requiresApproval ? 'Con aprobación' : 'Directa' }}</span>
+                  </div>
+                  <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span class="text-slate-400">Cupo {{ activeRegistrations(event) }}/{{ event.capacity }} · {{ availableSeats(event) }} disponibles</span>
+                    <button type="button" class="text-rose-300 hover:text-rose-200 disabled:cursor-not-allowed disabled:opacity-40" [disabled]="event.registrations.length > 0" (click)="removeEvent(event)">Quitar evento</button>
+                  </div>
+                  @for (registration of event.registrations; track registration.id) {
+                    <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-lg bg-ink/70 p-3">
+                      <div><p class="text-xs font-medium text-white">{{ registration.name }} · DNI {{ registration.dni }}</p><p class="mt-1 text-[10px] text-slate-500">{{ registration.status }}{{ registration.attendanceConfirmed ? ' · PRESENTE' : '' }}</p></div>
+                      @if (registration.status === 'PENDIENTE') {
+                        <div class="flex gap-2">
+                          <button type="button" class="rounded-md bg-accent/10 px-2.5 py-1.5 text-xs font-semibold text-accent hover:bg-accent/20" (click)="decideRegistration(event, registration, 'APROBADO')">Aprobar</button>
+                          <button type="button" class="rounded-md border border-rose-300/20 px-2.5 py-1.5 text-xs font-semibold text-rose-200 hover:bg-rose-300/10" (click)="decideRegistration(event, registration, 'RECHAZADO')">Rechazar</button>
+                        </div>
+                      } @else if (registration.qrCode) {
+                        <button type="button" class="text-xs font-semibold text-accent underline underline-offset-4" (click)="selectQr(registration)">Ver QR</button>
+                      }
+                    </div>
+                  } @empty {
+                    <p class="mt-3 text-xs text-slate-600">Todavía no hay inscripciones.</p>
+                  }
+                </div>
+              }
+            </div>
+          </article>
+
+          @if (selectedQr; as registration) {
+            <article class="rounded-2xl border border-accent/20 bg-accent/[0.04] p-5">
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div><p class="text-xs font-semibold uppercase tracking-wide text-accent">QR de muestra emitido</p><p class="mt-2 text-sm text-white">{{ registration.name }}</p><code class="mt-1 block text-xs text-slate-400">{{ registration.qrCode }}</code></div>
+                <div class="rounded-lg bg-white p-2" aria-label="Ilustración de código QR simulado">
+                  <div class="grid h-20 w-20 gap-px" [style.grid-template-columns]="'repeat(21, minmax(0, 1fr))'" aria-hidden="true">
+                    @for (row of qrMatrix; track $index) {
+                      @for (cell of row; track $index) {
+                        <span [style.background-color]="cell ? '#020617' : '#ffffff'"></span>
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 text-[10px] text-slate-500">Imagen ilustrativa; no es un QR de producción.</p>
+            </article>
+          }
+        </div>
+      </section>
+    }
+
+    @if (section === 'asistencia') {
+      <section class="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <article class="rounded-2xl border border-white/[0.08] bg-panel p-5 sm:p-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-accent">Acceso al evento</p>
+          <h2 class="mt-2 text-lg font-semibold text-white">Lector / validador de presencia</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-400">En esta preview el lector es manual: verificá un código QR simulado ya emitido. El MVP local cuenta con el flujo de cámara independiente.</p>
+          <form class="mt-5 space-y-3" (ngSubmit)="validateAttendance()">
+            <label for="scanner-code" class="block text-xs font-medium text-slate-300">Código del QR aprobado</label>
+            <input id="scanner-code" name="scannerCode" [(ngModel)]="scannerInput" class="w-full rounded-lg border border-white/10 bg-ink px-3.5 py-3 font-mono text-sm text-white outline-none focus:border-accent/50" placeholder="TUR-QR-DEMO-0002" />
+            <div class="flex flex-wrap gap-2">
+              <button type="submit" class="min-h-11 rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition hover:bg-[#8bf0df]">Validar asistencia</button>
+              <button type="button" class="min-h-11 rounded-lg border border-white/10 px-4 text-sm font-semibold text-slate-300 transition hover:border-accent/30 hover:text-accent" (click)="useSelectedQr()" [disabled]="!selectedQr">Usar QR mostrado</button>
+            </div>
+          </form>
+          @if (scanResult) {
+            <p class="mt-4 rounded-lg border border-accent/20 bg-accent/[0.07] p-3 text-sm text-accent" role="status">{{ scanResult }}</p>
+          }
+          @if (selectedQr?.attendanceConfirmed) {
+            <p class="mt-3 text-xs text-slate-500">Ese código ya registró asistencia. El sistema bloquea ingresos duplicados.</p>
+          }
+        </article>
+        <aside class="rounded-2xl border border-white/[0.08] bg-panel p-5 sm:p-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Control del día · simulado</p>
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            <div class="rounded-xl border border-white/[0.07] bg-ink/60 p-4"><p class="text-2xl font-semibold text-white">{{ events.length }}</p><p class="mt-1 text-xs text-slate-500">Eventos publicados</p></div>
+            <div class="rounded-xl border border-white/[0.07] bg-ink/60 p-4"><p class="text-2xl font-semibold text-accent">{{ attendanceCount }}</p><p class="mt-1 text-xs text-slate-500">Asistencias validadas</p></div>
+            <div class="rounded-xl border border-white/[0.07] bg-ink/60 p-4"><p class="text-2xl font-semibold text-amber-200">{{ pendingRegistrations.length }}</p><p class="mt-1 text-xs text-slate-500">Solicitudes pendientes</p></div>
+            <div class="rounded-xl border border-white/[0.07] bg-ink/60 p-4"><p class="text-2xl font-semibold text-white">{{ registrationCount }}</p><p class="mt-1 text-xs text-slate-500">Inscripciones demo</p></div>
+          </div>
+        </aside>
+      </section>
+    }
+
+    @if (feedback) {
+      <p class="mt-5 rounded-lg border p-3 text-sm" role="status" [ngClass]="feedbackIsError ? 'border-rose-300/20 bg-rose-300/[0.06] text-rose-200' : 'border-accent/20 bg-accent/[0.06] text-accent'">{{ feedback }}</p>
+    }
+
+    <footer class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-5 text-xs text-slate-500">
+      <span>Preview visual y funcional · no persiste datos ni accede a cámaras.</span>
+      <a routerLink="/" class="transition hover:text-accent">Volver a Demos Hub ↑</a>
+    </footer>
+  </div>
+</main>

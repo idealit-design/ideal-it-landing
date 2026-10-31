@@ -17,7 +17,8 @@ src/app/
 └── features/
     ├── demos-hub/
     ├── personal-mvp/             # UI y cliente API de Personal & Biométrico
-    └── auditoria-mvp/            # UI y cliente API de Auditoría documental
+    ├── auditoria-mvp/            # UI y cliente API de Auditoría documental
+    └── formularios-preview/     # Preview en memoria; no llama a la API del MVP
 
 backend/
 ├── personal/                     # App FastAPI, esquema y DB propios
@@ -28,7 +29,7 @@ backend/
 
 Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Solo reutilizan patrones de UI (Angular standalone y Tailwind). Los backends y sus esquemas SQLite están aislados. El catálogo del hub mapea los MVP actuales con sus antecedentes en `portfolio/` mediante referencias relativas visibles en el detalle, sin importar ni modificar código de esos proyectos.
 
-Las tarjetas muestran el estado **MVP local** y abren detalles, no una demo pública: esos subsistemas siguen requiriendo sus APIs locales y todavía no tienen URLs públicas configuradas. OSMA es una PWA React y se presenta como referencia del portfolio; no se migra a Angular ni se integra en este frontend.
+Las tarjetas muestran el estado **MVP local**. Formularios agrega una preview interactiva en `/mvp/formularios` para recorrer la publicación de eventos, inscripción, aprobación y validación simulada de asistencia. La preview usa datos ficticios en memoria del navegador: no se conecta a FastAPI, no persiste y no emite QR escaneables. El MVP completo conserva Angular + Bootstrap, FastAPI y su SQLite exclusiva en `..\mvp-formularios`. Personal y Auditoría requieren sus APIs locales y no tienen URLs públicas configuradas. OSMA es una PWA React y se presenta como referencia del portfolio; no se migra a Angular ni se integra en este frontend.
 
 ## Crear el frontend desde cero
 
@@ -66,13 +67,27 @@ Frontend:
 npm start
 ```
 
-Abre `http://localhost:4200`. Las rutas de cada módulo son `/mvp/personal` y `/mvp/auditoria`.
+Abre `http://localhost:4200`. Las rutas de los módulos/preview son `/mvp/personal`, `/mvp/auditoria` y `/mvp/formularios`.
 
 ## Despliegue de la landing en Vercel
 
 Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas SPA hacia `index.html`; las rutas Angular responden al navegar y al refrescar.
 
-Vercel publica esta aplicación Angular estática. Los MVP de Personal y Auditoría siguen siendo subsistemas locales independientes: sus APIs FastAPI y bases SQLite no se despliegan con la landing ni se exponen como servicios públicos.
+Vercel publica esta aplicación Angular estática. `vercel.json` reescribe las rutas de la SPA a `index.html`, incluido el acceso directo o refresco de `/mvp/formularios`. La preview de Formularios es código Angular de presentación con datos temporales, no una conexión al backend. El MVP standalone de Turismo/Eventos, Personal y Auditoría permanecen independientes: sus APIs FastAPI y bases SQLite no se despliegan con la landing ni se exponen como servicios públicos.
+
+### Ejecutar el MVP Formularios local completo (opcional)
+
+La preview alojada en la landing no necesita backend. Para probar el subsistema real con FastAPI, QR y SQLite en una terminal separada desde `ideal-it-portfolio`:
+
+```powershell
+cd ..\mvp-formularios\backend
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8003
+```
+
+La guía completa de ejecución de Angular + Bootstrap y pruebas está en [la documentación del MVP Formularios](../mvp-formularios/README.md). Este backend corre localmente y no es una API de Vercel.
 
 WhatsApp, LinkedIn y correo se muestran como canales pendientes de configurar; no hay enlaces ficticios activos.
 
