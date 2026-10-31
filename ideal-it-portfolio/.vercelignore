@@ -1,0 +1,12 @@
+.angular
+node_modules
+dist
+backend
+.vercel
+.env*
+.vscode
+coverage
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
