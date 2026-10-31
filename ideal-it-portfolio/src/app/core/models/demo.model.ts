@@ -8,6 +8,7 @@ export interface Demo {
   category: string;
   technologies: string[];
   status: DemoStatus;
+  sourcePaths: string[];
 }
 
 export interface DemoApiSample {

@@ -5,44 +5,60 @@ import { Demo, DemoApiSample } from '../models/demo.model';
 
 const DEMO_DATA: Demo[] = [
   {
-    id: 'healthcore-vault',
-    title: 'HealthCore Vault & Audit System',
-    summary: 'Gestión documental, Biometría IP y Auditoría',
+    id: 'personal-biometrico',
+    title: 'MVP Personal & Control Biométrico',
+    summary: 'Gestión de nómina, áreas y simulación de tramas IP (ZKBio/Suprema).',
     description:
-      'Un espacio seguro para centralizar documentación clínica, registrar accesos y consultar una bitácora de auditoría.',
-    category: 'Salud & seguridad',
-    technologies: ['Angular', 'Tailwind', 'Python API', 'SQLite'],
-    status: 'live',
-  },
-  {
-    id: 'alantia-forms',
-    title: 'Alantia Forms',
-    summary: 'Formularios digitales y flujos de aprobación',
-    description:
-      'Diseña formularios adaptables, organiza solicitudes y acompaña cada proceso con estados y responsables.',
-    category: 'Automatización',
-    technologies: ['Angular', 'Tailwind', 'API'],
+      'Subsistema local e independiente para gestionar personal, áreas, licencias y reportes de asistencia. El simulador biométrico genera actividad sintética: no se conecta a terminales reales.',
+    category: 'Gestión de personal',
+    technologies: ['Angular', 'Tailwind', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    sourcePaths: [
+      'mvp-personal/',
+      'portfolio/Sistema DOSEP Prestadores/pmvp/prestadores-mvp-2110/prestadores-mvp/',
+    ],
   },
   {
-    id: 'crypto-bot',
-    title: 'Crypto Bot',
-    summary: 'Panel de seguimiento para activos digitales',
+    id: 'auditoria-healthcore',
+    title: 'MVP Auditoría & Bóveda Documental (HealthCore)',
+    summary: 'Visor de documentos de salud, validaciones y nomencladores médicos.',
     description:
-      'Una experiencia de seguimiento de mercado con alertas y vistas de datos pensadas para una lectura rápida.',
-    category: 'Fintech',
-    technologies: ['Angular', 'Python API'],
-    status: 'coming-soon',
-  },
-  {
-    id: 'municipium',
-    title: 'Municipium',
-    summary: 'Servicios y gestiones para la comunidad',
-    description:
-      'Un punto de acceso digital para acercar trámites, novedades y servicios municipales a cada vecino.',
-    category: 'GovTech',
-    technologies: ['Angular', 'API'],
+      'Panel independiente de auditoría médica y documental con previsualizaciones de muestra, validaciones ficticias de matrícula/identidad y un catálogo demostrativo. No consulta registros oficiales ni contiene historias clínicas reales.',
+    category: 'Salud & auditoría',
+    technologies: ['Angular', 'Tailwind', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    sourcePaths: [
+      'mvp-auditoria/',
+      'portfolio/Sistema DOSEP Prestadores/pmvp/prestadores-mvp-2110/prestadores-mvp/',
+    ],
+  },
+  {
+    id: 'formularios-turismo',
+    title: 'MVP Formularios & Turismo Municipal',
+    summary: 'Eventos turísticos, inscripciones ciudadanas y validación por códigos QR.',
+    description:
+      'Plataforma local para publicar eventos gratuitos, gestionar inscripciones y registrar la asistencia mediante códigos QR. El subsistema conserva su propia API y base de datos.',
+    category: 'Turismo & GovTech',
+    technologies: ['Angular', 'Bootstrap/Tailwind', 'FastAPI', 'SQLite'],
+    status: 'mvp',
+    sourcePaths: [
+      'mvp-formularios/',
+      'portfolio/Sistema ALANTIA Formularios/gestion-form-lp/panel/',
+    ],
+  },
+  {
+    id: 'osma-inspecciones',
+    title: 'MVP OSMA Inspecciones',
+    summary: 'Inspecciones de campo mobile-first con PWA y operación offline.',
+    description:
+      'Subsistema independiente para digitalizar planillas de campo, consultar afiliados y sincronizar una cola local cuando regresa la conectividad. Su frontend React PWA y backend FastAPI se ejecutan por separado.',
+    category: 'Inspecciones & PWA',
+    technologies: ['React PWA', 'FastAPI', 'SQLAlchemy', 'SQLite'],
+    status: 'mvp',
+    sourcePaths: [
+      'mvp-osma-inspecciones/',
+      'portfolio/Sistema OSMA Inspecciones/OSMApre/',
+    ],
   },
 ];
 

@@ -26,7 +26,9 @@ backend/
     └── data/db/auditoria_mvp.db
 ```
 
-Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Solo reutilizan patrones de UI (Angular standalone y Tailwind). Los dos backends tienen dependencias, aplicaciones FastAPI, esquemas SQLite y variables de configuración separados.
+Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Solo reutilizan patrones de UI (Angular standalone y Tailwind). Los backends y sus esquemas SQLite están aislados. El catálogo del hub mapea los MVP actuales con sus antecedentes en `portfolio/` mediante referencias relativas visibles en el detalle, sin importar ni modificar código de esos proyectos.
+
+Las tarjetas muestran el estado **MVP local** y abren detalles, no una demo pública: esos subsistemas siguen requiriendo sus APIs locales y todavía no tienen URLs públicas configuradas. OSMA es una PWA React y se presenta como referencia del portfolio; no se migra a Angular ni se integra en este frontend.
 
 ## Crear el frontend desde cero
 
@@ -65,6 +67,14 @@ npm start
 ```
 
 Abre `http://localhost:4200`. Las rutas de cada módulo son `/mvp/personal` y `/mvp/auditoria`.
+
+## Despliegue de la landing en Vercel
+
+Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas SPA hacia `index.html`; las rutas Angular responden al navegar y al refrescar.
+
+Vercel publica esta aplicación Angular estática. Los MVP de Personal y Auditoría siguen siendo subsistemas locales independientes: sus APIs FastAPI y bases SQLite no se despliegan con la landing ni se exponen como servicios públicos.
+
+WhatsApp, LinkedIn y correo se muestran como canales pendientes de configurar; no hay enlaces ficticios activos.
 
 API Personal (terminal 1):
 

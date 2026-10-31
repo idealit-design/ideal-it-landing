@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  { path: 'home', pathMatch: 'full', redirectTo: '' },
   {
     path: '',
     loadComponent: () =>
@@ -22,5 +23,5 @@ export const routes: Routes = [
         (component) => component.AuditoriaMvpComponent,
       ),
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

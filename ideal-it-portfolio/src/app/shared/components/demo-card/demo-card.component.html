@@ -1,5 +1,5 @@
 <article
-  class="group relative flex min-h-[340px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-panel/80 p-6 shadow-[0_16px_50px_-30px_rgba(0,0,0,0.8)] transition duration-300 hover:-translate-y-1 hover:border-accent/35 hover:bg-[#131e30] sm:p-7"
+  class="group relative flex min-h-[390px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-panel/80 p-6 shadow-[0_16px_50px_-30px_rgba(0,0,0,0.8)] transition duration-300 hover:-translate-y-1 hover:border-accent/35 hover:bg-[#131e30] sm:p-7"
   [ngClass]="isLive ? 'ring-1 ring-accent/20' : ''"
 >
   <div
@@ -18,7 +18,9 @@
       class="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-medium tracking-wide"
       [ngClass]="isLive
         ? 'border-accent/20 bg-accent/[0.08] text-accent'
-        : 'border-white/10 bg-white/[0.04] text-slate-400'"
+        : isComingSoon
+          ? 'border-white/[0.06] bg-white/[0.02] text-slate-500'
+          : 'border-sky-300/15 bg-sky-300/[0.06] text-sky-200'"
     >
       @if (isLive) {
         <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-accent"></span>
@@ -50,13 +52,18 @@
     <button
       type="button"
       class="mt-6 inline-flex min-h-11 w-full items-center justify-between rounded-lg border px-4 text-sm font-semibold transition duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      [disabled]="isComingSoon"
       [ngClass]="isLive
         ? 'border-accent/30 bg-accent text-ink hover:bg-[#8bf0df]'
-        : 'border-white/10 bg-white/[0.03] text-slate-200 hover:border-accent/30 hover:bg-accent/[0.08]'"
-      (click)="selected.emit(demo)"
+        : isComingSoon
+          ? 'cursor-not-allowed border-white/[0.06] bg-white/[0.02] text-slate-500'
+          : 'border-white/10 bg-white/[0.03] text-slate-200 hover:border-accent/30 hover:bg-accent/[0.08]'"
+      (click)="selectDemo()"
     >
-      <span>{{ isLive ? 'Ingresar a la Demo Live' : 'Explorar Módulo' }}</span>
-      <span class="text-base transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+      <span>{{ isComingSoon ? 'Próximamente' : isLive ? 'Ingresar a la Demo Live' : 'Ver detalles del MVP' }}</span>
+      @if (!isComingSoon) {
+        <span class="text-base transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+      }
     </button>
   </div>
 </article>

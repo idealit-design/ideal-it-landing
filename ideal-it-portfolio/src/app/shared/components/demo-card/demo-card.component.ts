@@ -16,14 +16,24 @@ export class DemoCardComponent {
     return this.demo.status === 'live';
   }
 
+  get isComingSoon(): boolean {
+    return this.demo.status === 'coming-soon';
+  }
+
   get statusLabel(): string {
     switch (this.demo.status) {
       case 'live':
         return 'Demo activa';
       case 'mvp':
-        return 'MVP Demo';
+        return 'MVP local';
       case 'coming-soon':
         return 'Próximamente';
+    }
+  }
+
+  selectDemo(): void {
+    if (!this.isComingSoon) {
+      this.selected.emit(this.demo);
     }
   }
 }
