@@ -1,0 +1,31 @@
+{
+  "name": "mvp-logistica-fleet-backend",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Backend aislado para el MVP Logistica Last-Mile & Smart Fleet",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "better-sqlite3": "^12.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.15.30",
+    "prisma": "^7.10.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.8.3"
+  }
+}

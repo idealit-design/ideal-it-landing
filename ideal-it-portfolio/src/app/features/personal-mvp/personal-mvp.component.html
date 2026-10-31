@@ -1,0 +1,200 @@
+<main class="min-h-screen bg-ink px-5 pb-16 sm:px-8 lg:px-12">
+  <div class="mx-auto max-w-7xl">
+    <header class="flex items-center justify-between border-b border-white/[0.07] py-5">
+      <a routerLink="/" class="text-sm font-bold tracking-[0.08em] text-white">IDEAL<span class="text-accent">-IT</span></a>
+      <a routerLink="/" class="text-sm text-slate-400 transition hover:text-accent">← Volver al portfolio</a>
+    </header>
+
+    <section class="py-10 sm:py-14">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">MVP independiente · Personal</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Personal & Biométrico</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+        Gestión de personal, estructura organizativa, licencias y reportes biométricos simulados.
+        No se realiza ninguna conexión real con dispositivos.
+      </p>
+    </section>
+
+    @if (errorMessage) {
+      <p class="mb-5 rounded-xl border border-rose-400/20 bg-rose-400/[0.07] p-4 text-sm text-rose-200" role="alert">
+        {{ errorMessage }}
+      </p>
+    }
+    @if (successMessage) {
+      <p class="mb-5 rounded-xl border border-accent/20 bg-accent/[0.07] p-4 text-sm text-accent" role="status">
+        {{ successMessage }}
+      </p>
+    }
+
+    <section class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]" aria-label="Control biométrico y reportes">
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-white">Terminal biométrica</h2>
+          <span class="rounded-full border border-accent/20 bg-accent/[0.07] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-accent">
+            Simulador
+          </span>
+        </div>
+        <p class="mt-2 text-sm leading-6 text-slate-400">Usa una IP abstracta de prueba. No se envían paquetes ni se contactan equipos.</p>
+        <form class="mt-5 space-y-3" (ngSubmit)="connectDevice()">
+          <label for="device-ip" class="block text-xs font-medium text-slate-300">IP de referencia</label>
+          <input
+            id="device-ip"
+            name="deviceIp"
+            [(ngModel)]="deviceIp"
+            class="w-full rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none transition focus:border-accent/50"
+            placeholder="192.168.1.100"
+          />
+          <button type="submit" class="w-full rounded-lg bg-accent px-4 py-3 text-sm font-semibold text-ink transition hover:bg-[#8bf0df]">
+            Simular conexión
+          </button>
+        </form>
+        @if (connection; as state) {
+          <div class="mt-4 rounded-lg border border-white/[0.08] bg-ink/70 p-3 text-sm">
+            <p class="text-accent">{{ state.message }}</p>
+            <p class="mt-1 text-xs text-slate-500">Referencia: {{ state.device_ip }} · Modo {{ state.mode }}</p>
+          </div>
+        }
+      </article>
+
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Reportes de asistencia</h2>
+            <p class="mt-1 text-sm text-slate-400">Datos de muestra por DNI; el resultado está marcado como simulado.</p>
+          </div>
+          <span class="rounded-md border border-white/10 px-2.5 py-1 text-[10px] uppercase tracking-wide text-slate-400">
+            Sin datos reales
+          </span>
+        </div>
+        <form class="mt-5 grid gap-3 sm:grid-cols-[1fr_1fr_auto]" (ngSubmit)="generateReport()">
+          <label class="sr-only" for="report-period">Período</label>
+          <select
+            id="report-period"
+            name="reportPeriod"
+            [(ngModel)]="reportPeriod"
+            class="rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none focus:border-accent/50"
+          >
+            <option value="day">Diario</option>
+            <option value="week">Semanal</option>
+          </select>
+          <label class="sr-only" for="report-dni">DNI</label>
+          <input
+            id="report-dni"
+            name="reportDni"
+            [(ngModel)]="reportDni"
+            inputmode="numeric"
+            class="rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none focus:border-accent/50"
+            placeholder="DNI opcional"
+          />
+          <button type="submit" class="rounded-lg border border-accent/30 px-4 py-3 text-sm font-semibold text-accent transition hover:bg-accent/[0.08]">
+            Generar
+          </button>
+        </form>
+        @if (report; as result) {
+          <div class="mt-5 overflow-hidden rounded-lg border border-white/[0.08]">
+            <div class="flex items-center justify-between bg-ink/70 px-4 py-3 text-xs">
+              <span class="font-medium text-white">{{ result.period === 'day' ? 'Reporte diario' : 'Reporte semanal' }}</span>
+              <span class="text-accent">SIMULADO</span>
+            </div>
+            <div class="divide-y divide-white/[0.06]">
+              @for (record of result.records; track record.dni + record.date) {
+                <div class="grid grid-cols-2 gap-2 px-4 py-3 text-xs sm:grid-cols-4">
+                  <span class="text-slate-300">DNI {{ record.dni }}</span>
+                  <span class="text-slate-400">{{ record.date }}</span>
+                  <span class="text-slate-400">{{ record.check_in }} — {{ record.check_out }}</span>
+                  <span class="text-accent">{{ record.status }}</span>
+                </div>
+              } @empty {
+                <p class="px-4 py-4 text-sm text-slate-500">No hay registros simulados para ese DNI.</p>
+              }
+            </div>
+          </div>
+        }
+      </article>
+    </section>
+
+    <section class="mt-10 grid gap-5 xl:grid-cols-3">
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-white">Personal</h2>
+          <span class="text-xs text-slate-500">{{ staff.length }} personas</span>
+        </div>
+        <form class="mt-5 space-y-3" (ngSubmit)="createStaff()">
+          <input required name="staffDni" [(ngModel)]="staffForm.dni" inputmode="numeric" placeholder="DNI de prueba" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          <input required name="staffName" [(ngModel)]="staffForm.full_name" placeholder="Nombre para demo" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          <select name="staffArea" [(ngModel)]="staffForm.area_id" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50">
+            <option [ngValue]="null">Sin área</option>
+            @for (area of areas; track area.id) {
+              <option [ngValue]="area.id">{{ area.name }}</option>
+            }
+          </select>
+          <button type="submit" class="w-full rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-accent/30 hover:text-accent">Agregar persona</button>
+        </form>
+        <ul class="mt-5 space-y-2">
+          @for (person of staff; track person.dni) {
+            <li class="flex justify-between gap-3 border-t border-white/[0.06] pt-3 text-xs">
+              <span class="text-slate-300">{{ person.full_name }}</span>
+              <span class="text-slate-500">DNI {{ person.dni }}</span>
+            </li>
+          } @empty {
+            <li class="border-t border-white/[0.06] pt-3 text-xs text-slate-500">Sin personal cargado.</li>
+          }
+        </ul>
+      </article>
+
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-white">Áreas y departamentos</h2>
+          <span class="text-xs text-slate-500">{{ areas.length }} áreas</span>
+        </div>
+        <form class="mt-5 space-y-3" (ngSubmit)="createArea()">
+          <input required name="areaName" [(ngModel)]="areaForm.name" placeholder="Nombre del área" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          <div class="grid grid-cols-2 gap-3">
+            <input required name="areaFloor" [(ngModel)]="areaForm.floor" placeholder="Piso" class="min-w-0 rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+            <input required name="areaDepartment" [(ngModel)]="areaForm.department" placeholder="Departamento" class="min-w-0 rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          </div>
+          <button type="submit" class="w-full rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-accent/30 hover:text-accent">Crear área</button>
+        </form>
+        <ul class="mt-5 space-y-2">
+          @for (area of areas; track area.id) {
+            <li class="flex flex-wrap justify-between gap-2 border-t border-white/[0.06] pt-3 text-xs">
+              <span class="text-slate-300">{{ area.name }} · {{ area.department }}</span>
+              <span class="text-slate-500">Piso {{ area.floor }}</span>
+            </li>
+          } @empty {
+            <li class="border-t border-white/[0.06] pt-3 text-xs text-slate-500">Sin áreas configuradas.</li>
+          }
+        </ul>
+      </article>
+
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-white">Licencias</h2>
+          <span class="text-xs text-slate-500">{{ leaves.length }} registros</span>
+        </div>
+        <form class="mt-5 space-y-3" (ngSubmit)="createLeave()">
+          <input required name="leaveDni" [(ngModel)]="leaveForm.dni" inputmode="numeric" placeholder="DNI de prueba" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          <select name="leaveType" [(ngModel)]="leaveForm.leave_type" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50">
+            <option value="vacation">Vacaciones</option>
+            <option value="medical">Licencia médica (demo)</option>
+          </select>
+          <div class="grid grid-cols-2 gap-3">
+            <input required type="date" name="leaveStart" [(ngModel)]="leaveForm.start_date" aria-label="Inicio" class="min-w-0 rounded-lg border border-white/10 bg-ink px-2 py-2.5 text-xs text-white outline-none focus:border-accent/50" />
+            <input required type="date" name="leaveEnd" [(ngModel)]="leaveForm.end_date" aria-label="Fin" class="min-w-0 rounded-lg border border-white/10 bg-ink px-2 py-2.5 text-xs text-white outline-none focus:border-accent/50" />
+          </div>
+          <input name="leaveNotes" [(ngModel)]="leaveForm.notes" placeholder="Nota opcional; no ingreses datos clínicos" class="w-full rounded-lg border border-white/10 bg-ink px-3 py-2.5 text-sm text-white outline-none focus:border-accent/50" />
+          <button type="submit" class="w-full rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-accent/30 hover:text-accent">Registrar licencia</button>
+        </form>
+        <ul class="mt-5 space-y-2">
+          @for (leave of leaves; track leave.id) {
+            <li class="border-t border-white/[0.06] pt-3 text-xs">
+              <span class="text-slate-300">{{ leave.leave_type === 'medical' ? 'Médica' : 'Vacaciones' }}</span>
+              <span class="ml-2 text-slate-500">{{ leave.start_date }} — {{ leave.end_date }}</span>
+            </li>
+          } @empty {
+            <li class="border-t border-white/[0.06] pt-3 text-xs text-slate-500">Sin licencias registradas.</li>
+          }
+        </ul>
+      </article>
+    </section>
+  </div>
+</main>

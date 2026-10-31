@@ -1,0 +1,181 @@
+<main class="min-h-screen bg-ink px-5 pb-16 sm:px-8 lg:px-12">
+  <div class="mx-auto max-w-7xl">
+    <header class="flex items-center justify-between border-b border-white/[0.07] py-5">
+      <a routerLink="/" class="text-sm font-bold tracking-[0.08em] text-white">IDEAL<span class="text-accent">-IT</span></a>
+      <a routerLink="/" class="text-sm text-slate-400 transition hover:text-accent">← Volver al portfolio</a>
+    </header>
+
+    <section class="py-10 sm:py-14">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">MVP independiente · Auditoría</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Auditoría médica & documental</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+        Revisión de documentos ficticios, consultas de padrón simuladas y catálogo de nomenclador de demostración.
+        No se consulta RENAPER ni una matrícula real.
+      </p>
+    </section>
+
+    @if (errorMessage) {
+      <p class="mb-5 rounded-xl border border-rose-400/20 bg-rose-400/[0.07] p-4 text-sm text-rose-200" role="alert">{{ errorMessage }}</p>
+    }
+    @if (successMessage) {
+      <p class="mb-5 rounded-xl border border-accent/20 bg-accent/[0.07] p-4 text-sm text-accent" role="status">{{ successMessage }}</p>
+    }
+
+    <section class="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]" aria-label="Previsualizador de documentos">
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Documentos de prueba</h2>
+            <p class="mt-1 text-xs text-slate-500">Miniaturas seleccionables · contenido ficticio</p>
+          </div>
+          <span class="rounded-full border border-white/10 px-2.5 py-1 text-[10px] uppercase tracking-wide text-slate-400">{{ documents.length }} archivos</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+          @for (document of documents; track document.id) {
+            <button
+              type="button"
+              class="group rounded-xl border p-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              [ngClass]="selectedDocument?.id === document.id
+                ? 'border-accent/40 bg-accent/[0.05]'
+                : 'border-white/[0.08] bg-ink/60'"
+              [attr.aria-pressed]="selectedDocument?.id === document.id"
+              (click)="selectDocument(document)"
+            >
+              <div class="mx-auto flex aspect-[0.76] w-full max-w-[130px] flex-col rounded-md border border-slate-300/10 bg-[#e8eaf0] p-3 shadow-lg transition group-hover:-translate-y-0.5">
+                <span class="h-1.5 w-8 rounded bg-slate-400/80"></span>
+                <span class="mt-3 h-1 w-full rounded bg-slate-400/40"></span>
+                <span class="mt-1.5 h-1 w-[82%] rounded bg-slate-400/40"></span>
+                <span class="mt-1.5 h-1 w-[90%] rounded bg-slate-400/40"></span>
+                <span class="mt-1.5 h-1 w-[62%] rounded bg-slate-400/40"></span>
+                @if (document.document_type === 'orden') {
+                  <span class="mt-4 grid h-8 w-8 place-items-center rounded border-2 border-dashed border-sky-500/60 text-[8px] font-bold text-sky-700">ORDEN</span>
+                } @else {
+                  <span class="mt-4 h-6 w-12 rounded-full border border-emerald-500/50"></span>
+                }
+                <span class="mt-auto h-1 w-1/2 rounded bg-slate-400/50"></span>
+              </div>
+              <span class="mt-3 block truncate text-xs font-medium text-slate-200">{{ document.title }}</span>
+              <span class="mt-1 block text-[10px] text-slate-500">{{ document.page_count }} páginas · Demo</span>
+            </button>
+          } @empty {
+            <p class="col-span-full py-8 text-center text-sm text-slate-500">No hay documentos de muestra.</p>
+          }
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Previsualización</h2>
+            <p class="mt-1 text-xs text-slate-500">Vista local generada; no contiene un archivo clínico.</p>
+          </div>
+          <span class="rounded-md border border-accent/20 bg-accent/[0.06] px-2 py-1 text-[10px] uppercase tracking-wide text-accent">Mock</span>
+        </div>
+        @if (selectedDocument; as document) {
+          <div class="mt-6 grid min-h-[360px] place-items-center overflow-hidden rounded-xl border border-white/[0.06] bg-[#090f1a] p-6">
+            <div class="flex min-h-[330px] w-full max-w-[270px] flex-col bg-[#f0f1f4] p-7 text-slate-700 shadow-2xl transition duration-200">
+              <div class="flex items-center justify-between border-b border-slate-300 pb-3">
+                <span class="text-[9px] font-bold uppercase tracking-[0.14em] text-slate-600">IDEAL-IT · DOCUMENTO DEMO</span>
+                <span class="rounded border border-emerald-700/40 px-1.5 py-0.5 text-[8px] text-emerald-800">MUESTRA</span>
+              </div>
+              <h3 class="mt-6 text-base font-semibold">{{ document.title }}</h3>
+              <p class="mt-2 text-[10px] text-slate-500">Vista de ejemplo · {{ document.document_type }}</p>
+              <div class="mt-7 space-y-2">
+                <span class="block h-1.5 w-full rounded bg-slate-300"></span>
+                <span class="block h-1.5 w-[94%] rounded bg-slate-300"></span>
+                <span class="block h-1.5 w-[87%] rounded bg-slate-300"></span>
+                <span class="block h-1.5 w-[65%] rounded bg-slate-300"></span>
+              </div>
+              <div class="mt-7 rounded border border-dashed border-slate-400 p-4 text-center text-[10px] text-slate-500">
+                Datos clínicos omitidos en esta demo
+              </div>
+              <div class="mt-auto flex items-center justify-between border-t border-slate-300 pt-3 text-[9px] text-slate-400">
+                <span>Archivo ficticio</span>
+                <span>{{ document.page_count }} pág.</span>
+              </div>
+            </div>
+          </div>
+        }
+      </article>
+    </section>
+
+    <section class="mt-5 grid gap-5 xl:grid-cols-2" aria-label="Consultas simuladas y nomenclador">
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Verificaciones de identidad</h2>
+            <p class="mt-1 text-xs leading-5 text-slate-500">Respuestas sintéticas para probar el flujo; no se consulta ningún registro oficial.</p>
+          </div>
+          <span class="rounded-md border border-amber-400/20 bg-amber-400/[0.06] px-2 py-1 text-[10px] text-amber-200">MODO DEMO</span>
+        </div>
+        <form class="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]" (ngSubmit)="checkLicense()">
+          <label class="sr-only" for="license-number">Matrícula Nacional</label>
+          <input id="license-number" name="license" [(ngModel)]="license" required placeholder="Matrícula de prueba" class="rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none focus:border-accent/50" />
+          <button type="submit" class="rounded-lg border border-white/10 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-accent/30 hover:text-accent">Simular matrícula</button>
+        </form>
+        <form class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]" (ngSubmit)="checkIdentity()">
+          <label class="sr-only" for="identity-dni">DNI de prueba</label>
+          <input id="identity-dni" name="dni" [(ngModel)]="dni" required inputmode="numeric" placeholder="DNI ficticio" class="rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none focus:border-accent/50" />
+          <button type="submit" class="rounded-lg border border-white/10 px-4 py-3 text-sm font-medium text-slate-200 transition hover:border-accent/30 hover:text-accent">Simular identidad</button>
+        </form>
+        <ul class="mt-5 space-y-2">
+          @for (result of registryResults; track result.source + result.query) {
+            <li class="rounded-lg border border-white/[0.07] bg-ink/60 p-3 text-xs">
+              <div class="flex justify-between gap-3">
+                <span class="font-medium text-slate-200">{{ result.source === 'RENAPER' ? 'Identidad' : 'Matrícula' }}</span>
+                <span class="text-accent">{{ result.result }}</span>
+              </div>
+              <p class="mt-1 text-slate-500">{{ result.message }}</p>
+            </li>
+          }
+        </ul>
+      </article>
+
+      <article class="rounded-2xl border border-white/[0.08] bg-panel p-6">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Nomenclador de prueba</h2>
+            <p class="mt-1 text-xs leading-5 text-slate-500">Catálogo sintético; los códigos no representan nomenclatura oficial.</p>
+          </div>
+          <span class="rounded-md border border-white/10 px-2 py-1 text-[10px] text-slate-400">ESPECIALIDAD + CÓDIGO</span>
+        </div>
+        <div class="mt-5 grid gap-3 sm:grid-cols-2">
+          <label class="sr-only" for="nomenclator-specialty">Especialidad</label>
+          <select id="nomenclator-specialty" name="specialty" [(ngModel)]="specialty" (ngModelChange)="onNomenclatorFilterChange()" class="rounded-lg border border-white/10 bg-ink px-3 py-3 text-sm text-white outline-none focus:border-accent/50">
+            <option value="">Todas las especialidades</option>
+            <option value="Clínica médica">Clínica médica</option>
+            <option value="Cardiología">Cardiología</option>
+            <option value="Diagnóstico por imágenes">Diagnóstico por imágenes</option>
+          </select>
+          <label class="sr-only" for="nomenclator-search">Buscar por código o descripción</label>
+          <input id="nomenclator-search" name="nomenclatorSearch" [(ngModel)]="nomenclatorSearch" (ngModelChange)="onNomenclatorFilterChange()" placeholder="Buscar código o práctica" class="rounded-lg border border-white/10 bg-ink px-3 py-3 text-sm text-white outline-none focus:border-accent/50" />
+        </div>
+        <div class="mt-4 max-h-52 space-y-2 overflow-auto pr-1">
+          @for (item of nomenclatorItems; track item.code) {
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 rounded-lg border px-3.5 py-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              [ngClass]="selectedCode?.code === item.code
+                ? 'border-accent/35 bg-accent/[0.05]'
+                : 'border-white/[0.07] bg-ink/50'"
+              (click)="selectCode(item)"
+            >
+              <span>
+                <span class="block text-xs font-semibold text-white">{{ item.code }} · {{ item.description }}</span>
+                <span class="mt-1 block text-[10px] text-slate-500">{{ item.specialty }}</span>
+              </span>
+              <span class="shrink-0 text-[10px] text-accent">{{ selectedCode?.code === item.code ? 'Seleccionado' : 'Elegir' }}</span>
+            </button>
+          } @empty {
+            <p class="py-5 text-center text-xs text-slate-500">No hay prácticas demo para estos filtros.</p>
+          }
+        </div>
+        <label class="sr-only" for="audit-notes">Notas de auditoría demo</label>
+        <textarea id="audit-notes" name="auditNotes" [(ngModel)]="auditNotes" rows="2" placeholder="Nota de auditoría demo (sin datos identificables)" class="mt-4 w-full resize-y rounded-lg border border-white/10 bg-ink px-3.5 py-3 text-sm text-white outline-none focus:border-accent/50"></textarea>
+        <button type="button" class="mt-3 w-full rounded-lg bg-accent px-4 py-3 text-sm font-semibold text-ink transition hover:bg-[#8bf0df]" (click)="createAuditCase()">
+          Crear caso de auditoría demo
+        </button>
+      </article>
+    </section>
+  </div>
+</main>

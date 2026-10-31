@@ -1,0 +1,141 @@
+<main class="min-h-screen overflow-hidden bg-ink">
+  <div
+    class="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(110,231,210,0.10),transparent_55%)]"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 pb-16 sm:px-8 lg:px-12">
+    <header class="flex items-center justify-between border-b border-white/[0.07] py-5">
+      <a
+        class="flex items-center gap-3 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        href="#inicio"
+        aria-label="Ideal-IT, inicio"
+      >
+        <span class="grid h-9 w-9 place-items-center rounded-lg bg-accent text-sm font-black text-ink">
+          I
+        </span>
+        <span class="text-sm font-bold tracking-[0.08em] text-white">IDEAL<span class="text-accent">-IT</span></span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a
+          class="hidden rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-xs text-slate-300 transition hover:border-accent/30 hover:text-accent sm:inline-flex"
+          routerLink="/mvp/personal"
+        >
+          MVP Personal
+        </a>
+        <a
+          class="hidden rounded-full border border-accent/20 bg-accent/[0.07] px-3.5 py-2 text-xs text-accent transition hover:bg-accent/[0.12] sm:inline-flex"
+          routerLink="/mvp/auditoria"
+        >
+          MVP Auditoría
+        </a>
+        <span class="hidden items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-xs text-slate-400 md:inline-flex">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          Portfolio interactivo
+        </span>
+      </div>
+    </header>
+
+    <section id="inicio" class="pb-10 pt-16 sm:pb-12 sm:pt-24 lg:pt-28">
+      <div class="max-w-3xl">
+        <p class="mb-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+          <span class="h-px w-7 bg-accent/70"></span>
+          Laboratorio de soluciones
+        </p>
+        <h1 class="text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+          Tecnología que se
+          <span class="text-accent"> puede explorar.</span>
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
+          Conocé nuestros módulos en acción: productos digitales creados para resolver desafíos reales con experiencias simples y seguras.
+        </p>
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/[0.07] pt-5 text-xs text-slate-500">
+        <span><strong class="mr-2 text-white">01</strong> Demo disponible</span>
+        <span><strong class="mr-2 text-white">03</strong> Módulos en evolución</span>
+        <span class="ml-auto hidden tracking-[0.14em] sm:block">IDEAR · CONSTRUIR · EVOLUCIONAR</span>
+      </div>
+    </section>
+
+    <section aria-labelledby="demos-heading" class="pt-4">
+      <div class="mb-6 flex items-end justify-between gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">Proyectos destacados</p>
+          <h2 id="demos-heading" class="mt-2 text-2xl font-semibold tracking-tight text-white">
+            Explora las demos
+          </h2>
+        </div>
+        <span class="hidden text-sm text-slate-500 sm:block">Seleccioná un módulo para ver más</span>
+      </div>
+
+      @if (demos$ | async; as demos) {
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          @for (demo of demos; track demo.id) {
+            <app-demo-card [demo]="demo" (selected)="selectDemo($event)" />
+          }
+        </div>
+      }
+    </section>
+
+    <footer class="mt-16 flex flex-col gap-3 border-t border-white/[0.07] pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+      <span>© 2026 Ideal-IT. Soluciones digitales a medida.</span>
+      <span>Diseñado para convertir ideas en productos.</span>
+    </footer>
+  </div>
+
+  @if (selectedDemo; as demo) {
+    <div
+      class="fixed inset-0 z-10 grid place-items-center bg-[#03060c]/80 p-5 backdrop-blur-sm"
+      role="presentation"
+      (click)="closeDetails()"
+      (keydown.escape)="closeDetails()"
+      tabindex="-1"
+    >
+      <section
+        class="w-full max-w-lg rounded-2xl border border-white/10 bg-[#101827] p-6 shadow-2xl sm:p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-dialog-title"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{{ demo.category }}</p>
+            <h2 id="demo-dialog-title" class="mt-3 text-2xl font-semibold leading-snug text-white">
+              {{ demo.title }}
+            </h2>
+          </div>
+          <button
+            type="button"
+            class="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+            aria-label="Cerrar detalle"
+            (click)="closeDetails()"
+          >
+            ×
+          </button>
+        </div>
+        <p class="mt-5 text-sm leading-7 text-slate-400">{{ demo.description }}</p>
+        <div class="mt-6 flex flex-wrap gap-2">
+          @for (technology of demo.technologies; track technology) {
+            <span class="rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-xs text-slate-300">
+              {{ technology }}
+            </span>
+          }
+        </div>
+        <div class="mt-8 flex items-center justify-between border-t border-white/[0.08] pt-5">
+          <span class="text-xs font-medium text-slate-500">
+            {{ demo.status === 'live' ? 'Demo disponible para explorar' : 'Módulo en preparación' }}
+          </span>
+          <button
+            type="button"
+            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            (click)="closeDetails()"
+          >
+            Entendido
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+</main>

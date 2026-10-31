@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum EstadoVehiculo {
+  DISPONIBLE
+  EN_RUTA
+  TALLER
+}
+
+enum EstadoEnvio {
+  PENDIENTE
+  EN_CAMINO
+  ENTREGADO
+}
+
+enum EstadoTransferencia {
+  EXITOSO
+  FALLIDO
+}
+
+model Vehiculo {
+  id          String   @id @default(cuid())
+  patente     String   @unique
+  modelo      String
+  estado      EstadoVehiculo @default(DISPONIBLE)
+  kilometraje Int      @default(0)
+  envios      Envio[]
+  creadoEn    DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+}
+
+model Conductor {
+  id        String   @id @default(cuid())
+  dni       String   @unique
+  nombre    String
+  apellido  String
+  licencia  String
+  telefono  String
+  envios    Envio[]
+  creadoEn  DateTime @default(now())
+}
+
+model Envio {
+  id                String       @id @default(cuid())
+  tracking_code     String       @unique
+  direccion_destino String
+  estado_envio      EstadoEnvio  @default(PENDIENTE)
+  vehiculoId        String?
+  conductorId       String?
+  fecha_creacion    DateTime     @default(now())
+  vehiculo          Vehiculo?    @relation(fields: [vehiculoId], references: [id], onDelete: SetNull)
+  conductor         Conductor?   @relation(fields: [conductorId], references: [id], onDelete: SetNull)
+
+  @@index([estado_envio, fecha_creacion])
+  @@index([vehiculoId, estado_envio])
+  @@index([conductorId, estado_envio])
+}
+
+model LogSshSync {
+  id                    String               @id @default(cuid())
+  fecha_sincronizacion  DateTime             @default(now())
+  servidor_destino      String
+  estado_transferencia  EstadoTransferencia
+  bytes_enviados        Int
+}
