@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { Demo } from '../../core/models/demo.model';
+import { routes } from '../../app.routes';
 import { DemosHubComponent } from './demos-hub.component';
 
 describe('DemosHubComponent', () => {
@@ -47,6 +48,56 @@ describe('DemosHubComponent', () => {
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('app-demo-card').length).toBe(18);
   });
 
+  it('filters projects by service type, state, features, and normalized title or technology search', () => {
+    const component = fixture.componentInstance;
+
+    component.selectedServiceType = 'utility';
+    expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual(['pos-comercio']);
+
+    component.selectedServiceType = '';
+    component.selectedState = 'preview';
+    expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual([
+      'personal-biometrico',
+      'auditoria-healthcore',
+      'formularios-turismo',
+    ]);
+
+    component.selectedState = 'all';
+    component.filters.hasDemo = true;
+    component.filters.isPreview = true;
+    component.filters.hasBackend = true;
+    expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual([
+      'personal-biometrico',
+      'auditoria-healthcore',
+      'formularios-turismo',
+    ]);
+
+    component.filters = { hasDemo: false, isPreview: false, hasBackend: false };
+    component.searchTerm = 'postgreSQL';
+    expect(component.filterDemos(demos).map((demo) => demo.id)).toContain('agrotech-iot');
+  });
+
+  it('filters cards through the visible search and selects, then clears all filters', () => {
+    const element = fixture.nativeElement as HTMLElement;
+    const search = element.querySelector<HTMLInputElement>('input[name="demo-search"]')!;
+    search.value = 'React Native';
+    search.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-demo-card').length).toBe(1);
+    expect(element.textContent).toContain('App educativa infantil');
+
+    const serviceType = element.querySelector<HTMLSelectElement>('select[name="service-type"]')!;
+    serviceType.value = 'utility';
+    serviceType.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-demo-card').length).toBe(0);
+    expect(element.textContent).toContain('No encontramos proyectos');
+
+    element.querySelector<HTMLButtonElement>('button')?.click();
+    fixture.detectChanges();
+    expect(element.querySelectorAll('app-demo-card').length).toBe(18);
+  });
+
   it('distinguishes eight local MVPs, four proposals and standalone landings', () => {
     const buttons = Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button'),
@@ -59,6 +110,19 @@ describe('DemosHubComponent', () => {
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('MVP local');
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Arquitectura propuesta');
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Landing autónoma');
+  });
+
+  it('links all eighteen home cards to their corresponding category landing', () => {
+    const links = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>(
+        'app-demo-card a[href^="/categorias/"]',
+      ),
+    );
+
+    expect(links.length).toBe(18);
+    expect(links.filter((link) => link.href.endsWith('/categorias/desarrollos')).length).toBe(5);
+    expect(links.filter((link) => link.href.endsWith('/categorias/aplicaciones')).length).toBe(7);
+    expect(links.filter((link) => link.href.endsWith('/categorias/paginas-comerciales')).length).toBe(6);
   });
 
   it('identifies the municipal landing as local without linking it as a deployed preview', () => {
@@ -93,6 +157,29 @@ describe('DemosHubComponent', () => {
       element.querySelector<HTMLButtonElement>('[aria-label="Cerrar detalle"]')?.click();
       fixture.detectChanges();
     });
+  });
+
+  it('gives every card a valid route, safe landing link, or controlled detail action', () => {
+    const element = fixture.nativeElement as HTMLElement;
+
+    for (const demo of demos) {
+      if (demo.previewPath) {
+        expect(routes.some((route) => `/${route.path}` === demo.previewPath)).toBeTrue();
+      }
+
+      fixture.componentInstance.selectDemo(demo);
+      fixture.detectChanges();
+      const dialog = element.querySelector<HTMLElement>('[role="dialog"]');
+
+      expect(dialog).not.toBeNull();
+      if (demo.previewUrl) {
+        const link = dialog?.querySelector<HTMLAnchorElement>(`a[href="${demo.previewUrl}"]`);
+        expect(link).not.toBeNull();
+        expect(link?.target).toBe('_blank');
+        expect(link?.rel).toContain('noopener');
+        expect(link?.rel).toContain('noreferrer');
+      }
+    }
   });
 
   it('opens and closes the selected demo details', () => {
@@ -148,6 +235,9 @@ describe('DemosHubComponent', () => {
     const link = element.querySelector<HTMLAnchorElement>('a[href="/landings/el-rincon-gourmet/"]');
 
     expect(link?.textContent).toContain('Abrir landing comercial');
+    expect(link?.target).toBe('_blank');
+    expect(link?.rel).toContain('noopener');
+    expect(link?.rel).toContain('noreferrer');
     expect(element.textContent).toContain('interacciones demostrativas en memoria');
   });
 });

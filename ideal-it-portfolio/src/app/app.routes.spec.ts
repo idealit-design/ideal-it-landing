@@ -16,4 +16,16 @@ describe('application routes', () => {
       jasmine.objectContaining({ redirectTo: '', pathMatch: 'full' }),
     );
   });
+
+  it('exposes a dedicated category landing for each portfolio grouping', () => {
+    expect(routes.find((route) => route.path === 'categorias/desarrollos')?.data).toEqual({
+      categoryId: 'desarrollos',
+    });
+    expect(routes.find((route) => route.path === 'categorias/aplicaciones')?.data).toEqual({
+      categoryId: 'aplicaciones',
+    });
+    expect(routes.find((route) => route.path === 'categorias/paginas-comerciales')?.data).toEqual({
+      categoryId: 'paginas-comerciales',
+    });
+  });
 });

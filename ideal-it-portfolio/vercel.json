@@ -1,10 +1,19 @@
 {
   "version": 2,
+  "installCommand": "npm ci && npm ci --prefix ../landings/el-rincon-gourmet && npm ci --prefix ../landings/pluma-y-tinta && npm ci --prefix ../landings/manos-maestras && npm ci --prefix ../landings/ecohuerta-urbana && npm ci --prefix ../landings/fixit-express",
   "buildCommand": "npm run build",
   "outputDirectory": "dist/ideal-it-portfolio/browser",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/home",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/mvp/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/categorias/:path*",
       "destination": "/index.html"
     }
   ]

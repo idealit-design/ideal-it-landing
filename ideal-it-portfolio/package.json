@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run build:landings && ng build",
+    "build:landings": "npm run build:hub --prefix ../landings/el-rincon-gourmet && npm run build:hub --prefix ../landings/pluma-y-tinta && npm run build:hub --prefix ../landings/manos-maestras && npm run build:hub --prefix ../landings/ecohuerta-urbana && npm run build:hub --prefix ../landings/fixit-express",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

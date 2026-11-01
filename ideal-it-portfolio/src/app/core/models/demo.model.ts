@@ -1,4 +1,5 @@
 export type DemoStatus = 'live' | 'mvp' | 'planned' | 'coming-soon' | 'landing';
+export type DemoServiceType = 'development' | 'application' | 'commercial-page' | 'utility';
 
 export interface Demo {
   id: string;
@@ -8,6 +9,10 @@ export interface Demo {
   category: string;
   technologies: string[];
   status: DemoStatus;
+  serviceType: DemoServiceType;
+  hasDemo: boolean;
+  isPreview: boolean;
+  hasBackend: boolean;
   sourcePaths: string[];
   previewPath?: string;
   previewUrl?: string;

@@ -149,12 +149,127 @@
         </p>
       </div>
 
+      <nav class="mb-7 flex flex-wrap gap-2" aria-label="Explorar categorías del portfolio">
+        @for (category of categories; track category.id) {
+          <a
+            class="inline-flex min-h-10 items-center rounded-lg border border-white/10 bg-white/[0.03] px-4 text-xs font-semibold text-slate-300 transition hover:border-accent/40 hover:text-accent"
+            [routerLink]="category.path"
+          >
+            {{ category.title }}
+          </a>
+        }
+      </nav>
+
       @if (demos$ | async; as demos) {
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          @for (demo of demos; track demo.id) {
-            <app-demo-card [demo]="demo" (selected)="selectDemo($event)" />
-          }
+        <div class="mb-6 rounded-2xl border border-white/[0.08] bg-panel/70 p-4 sm:p-5">
+          <div class="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr_auto] lg:items-end">
+            <label class="block text-xs font-medium text-slate-300">
+              Buscar por título o tecnología
+              <input
+                type="search"
+                name="demo-search"
+                aria-label="Buscar proyectos por título o tecnología"
+                placeholder="Ej. Angular, PostgreSQL..."
+                [(ngModel)]="searchTerm"
+                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white placeholder:text-slate-600 focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
+              />
+            </label>
+            <label class="block text-xs font-medium text-slate-300">
+              Tipo de servicio
+              <select
+                name="service-type"
+                aria-label="Filtrar por tipo de servicio"
+                [(ngModel)]="selectedServiceType"
+                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
+              >
+                <option value="">Todos los servicios</option>
+                @for (serviceType of serviceTypes; track serviceType.value) {
+                  <option [value]="serviceType.value">{{ serviceType.label }}</option>
+                }
+              </select>
+            </label>
+            <label class="block text-xs font-medium text-slate-300">
+              Estado
+              <select
+                name="demo-state"
+                aria-label="Filtrar por estado"
+                [(ngModel)]="selectedState"
+                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
+              >
+                @for (state of states; track state.value) {
+                  <option [value]="state.value">{{ state.label }}</option>
+                }
+              </select>
+            </label>
+            <button
+              type="button"
+              class="min-h-11 rounded-lg border border-white/10 px-4 text-xs font-semibold text-slate-300 transition hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              (click)="clearFilters()"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+
+          <fieldset class="mt-4 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/[0.07] pt-4">
+            <legend class="sr-only">Características especiales</legend>
+            <label class="inline-flex items-center gap-2 text-xs text-slate-400">
+              <input
+                type="checkbox"
+                name="has-demo"
+                [(ngModel)]="filters.hasDemo"
+                class="accent-accent"
+              />
+              Tiene Demo
+            </label>
+            <label class="inline-flex items-center gap-2 text-xs text-slate-400">
+              <input
+                type="checkbox"
+                name="is-preview"
+                [(ngModel)]="filters.isPreview"
+                class="accent-accent"
+              />
+              Es Preview
+            </label>
+            <label class="inline-flex items-center gap-2 text-xs text-slate-400">
+              <input
+                type="checkbox"
+                name="has-backend"
+                [(ngModel)]="filters.hasBackend"
+                class="accent-accent"
+              />
+              Con Backend
+            </label>
+          </fieldset>
         </div>
+
+        @if (filterDemos(demos); as visibleDemos) {
+          <p class="mb-4 text-xs text-slate-500" aria-live="polite">
+            {{ visibleDemos.length }} de {{ demos.length }} proyectos
+          </p>
+          @if (visibleDemos.length > 0) {
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              @for (demo of visibleDemos; track demo.id) {
+                <app-demo-card
+                  [demo]="demo"
+                  [categoryHref]="categoryPath(demo.id)"
+                  (selected)="selectDemo($event)"
+                />
+              }
+            </div>
+          } @else {
+            <div class="rounded-xl border border-white/[0.08] bg-panel/50 px-5 py-10 text-center">
+              <p class="text-sm font-semibold text-white">No encontramos proyectos con esos filtros.</p>
+              <p class="mt-2 text-xs text-slate-400">Probá con otro término o limpiá la selección.</p>
+              <button
+                type="button"
+                class="mt-4 rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-accent transition hover:border-accent/40"
+                (click)="clearFilters()"
+              >
+                Limpiar filtros
+              </button>
+            </div>
+          }
+        }
       }
     </section>
 
@@ -282,6 +397,8 @@
             <a
               class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               [href]="previewUrl"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Abrir landing comercial
             </a>

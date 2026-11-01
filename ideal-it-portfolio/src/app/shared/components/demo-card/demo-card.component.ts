@@ -1,15 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Demo } from '../../../core/models/demo.model';
 
 @Component({
   selector: 'app-demo-card',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, RouterLink],
   templateUrl: './demo-card.component.html',
 })
 export class DemoCardComponent {
   @Input({ required: true }) demo!: Demo;
+  @Input() categoryHref?: string;
   @Output() selected = new EventEmitter<Demo>();
 
   get isLive(): boolean {

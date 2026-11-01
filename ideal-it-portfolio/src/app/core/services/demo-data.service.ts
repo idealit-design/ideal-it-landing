@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Demo, DemoApiSample } from '../models/demo.model';
+import { DemoCategory } from '../models/demo-category.model';
 
 const DEMO_DATA: Demo[] = [
   {
@@ -13,6 +14,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Gestión de personal',
     technologies: ['Angular', 'Tailwind', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    serviceType: 'development',
+    hasDemo: true,
+    isPreview: true,
+    hasBackend: true,
     previewPath: '/mvp/personal',
     sourcePaths: ['mvp-personal/'],
   },
@@ -25,6 +30,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Salud & auditoría',
     technologies: ['Angular', 'Tailwind', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    serviceType: 'development',
+    hasDemo: true,
+    isPreview: true,
+    hasBackend: true,
     previewPath: '/mvp/auditoria',
     sourcePaths: ['mvp-auditoria/'],
   },
@@ -37,6 +46,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Turismo & GovTech',
     technologies: ['Angular standalone', 'Bootstrap', 'FastAPI', 'SQLite'],
     status: 'mvp',
+    serviceType: 'application',
+    hasDemo: true,
+    isPreview: true,
+    hasBackend: true,
     previewPath: '/mvp/formularios',
     sourcePaths: ['mvp-formularios/'],
   },
@@ -49,6 +62,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Inspecciones & PWA',
     technologies: ['React PWA', 'FastAPI', 'SQLAlchemy', 'SQLite'],
     status: 'mvp',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: true,
     sourcePaths: ['mvp-osma-inspecciones/'],
   },
   {
@@ -60,6 +77,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Integraciones & automatización',
     technologies: ['Python', 'FastAPI', 'HTML', 'Tailwind CSS'],
     status: 'mvp',
+    serviceType: 'development',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: true,
     sourcePaths: ['mvp-valentin-cripto/'],
   },
   {
@@ -71,6 +92,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Logística & operaciones',
     technologies: ['Node.js', 'TypeScript', 'Express', 'Prisma', 'SQLite'],
     status: 'mvp',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: true,
     sourcePaths: ['mvp-logistica-fleet/'],
   },
   {
@@ -82,6 +107,10 @@ const DEMO_DATA: Demo[] = [
     category: 'AgTech & IoT',
     technologies: ['Vue 3', 'Vite', 'Go', 'Gin', 'PostgreSQL'],
     status: 'mvp',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: true,
     sourcePaths: ['mvp-agrotech-iot/'],
   },
   {
@@ -93,6 +122,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Acceso & operaciones',
     technologies: ['PHP 8', 'PDO', 'SQLite', 'HTML5', 'Tailwind CSS'],
     status: 'mvp',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: true,
     sourcePaths: ['mvp-visitor-pass/'],
   },
   {
@@ -104,6 +137,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Educación & mobile',
     technologies: ['Flutter', 'Expo', 'React Native', 'Contenido audiovisual'],
     status: 'planned',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: false,
     sourcePaths: [],
   },
   {
@@ -115,6 +152,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Industria & trazabilidad',
     technologies: ['Angular', 'AWS API Gateway', 'AWS Cognito', 'API de inventario'],
     status: 'planned',
+    serviceType: 'development',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: false,
     sourcePaths: [],
   },
   {
@@ -126,6 +167,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Comercio & administración',
     technologies: ['React', 'Vite', 'FastAPI', 'SQLModel', 'PostgreSQL'],
     status: 'planned',
+    serviceType: 'utility',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: false,
     sourcePaths: [],
   },
   {
@@ -137,6 +182,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Web & GovTech',
     technologies: ['React', 'Vite', 'Tailwind CSS'],
     status: 'landing',
+    serviceType: 'application',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: false,
     sourcePaths: ['web-landing-municipal/'],
   },
   {
@@ -148,6 +197,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Web & servicios',
     technologies: ['React', 'Vite', 'Tailwind CSS'],
     status: 'planned',
+    serviceType: 'commercial-page',
+    hasDemo: false,
+    isPreview: false,
+    hasBackend: false,
     sourcePaths: [],
   },
   {
@@ -159,6 +212,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Gastronomía & hospitalidad',
     technologies: ['React', 'Vite', 'Tailwind CSS 4', 'Lucide'],
     status: 'landing',
+    serviceType: 'commercial-page',
+    hasDemo: true,
+    isPreview: false,
+    hasBackend: false,
     previewUrl: '/landings/el-rincon-gourmet/',
     sourcePaths: ['landings/el-rincon-gourmet/'],
   },
@@ -171,6 +228,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Editorial & cultura',
     technologies: ['React', 'Vite', 'Tailwind CSS 4', 'Lucide'],
     status: 'landing',
+    serviceType: 'commercial-page',
+    hasDemo: true,
+    isPreview: false,
+    hasBackend: false,
     previewUrl: '/landings/pluma-y-tinta/',
     sourcePaths: ['landings/pluma-y-tinta/'],
   },
@@ -183,6 +244,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Artesanía & diseño',
     technologies: ['React', 'Vite', 'Tailwind CSS 4', 'Lucide'],
     status: 'landing',
+    serviceType: 'commercial-page',
+    hasDemo: true,
+    isPreview: false,
+    hasBackend: false,
     previewUrl: '/landings/manos-maestras/',
     sourcePaths: ['landings/manos-maestras/'],
   },
@@ -195,6 +260,10 @@ const DEMO_DATA: Demo[] = [
     category: 'AgTech & consumo responsable',
     technologies: ['React', 'Vite', 'Tailwind CSS 4', 'Lucide'],
     status: 'landing',
+    serviceType: 'commercial-page',
+    hasDemo: true,
+    isPreview: false,
+    hasBackend: false,
     previewUrl: '/landings/ecohuerta-urbana/',
     sourcePaths: ['landings/ecohuerta-urbana/'],
   },
@@ -207,6 +276,10 @@ const DEMO_DATA: Demo[] = [
     category: 'Tecnología & soporte',
     technologies: ['React', 'Vite', 'Tailwind CSS 4', 'Lucide'],
     status: 'landing',
+    serviceType: 'commercial-page',
+    hasDemo: true,
+    isPreview: false,
+    hasBackend: false,
     previewUrl: '/landings/fixit-express/',
     sourcePaths: ['landings/fixit-express/'],
   },
@@ -220,6 +293,11 @@ export class DemoDataService {
 
   getDemos(): Observable<Demo[]> {
     return of(DEMO_DATA);
+  }
+
+  getDemosForCategory(category: DemoCategory): Observable<Demo[]> {
+    const categoryDemoIds = new Set(category.demoIds);
+    return this.getDemos().pipe(map((demos) => demos.filter((demo) => categoryDemoIds.has(demo.id))));
   }
 
   getSampleResponse(): Observable<DemoApiSample> {

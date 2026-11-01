@@ -10,6 +10,30 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'categorias/desarrollos',
+    data: { categoryId: 'desarrollos' },
+    loadComponent: () =>
+      import('./features/category-landing/category-landing.component').then(
+        (component) => component.CategoryLandingComponent,
+      ),
+  },
+  {
+    path: 'categorias/aplicaciones',
+    data: { categoryId: 'aplicaciones' },
+    loadComponent: () =>
+      import('./features/category-landing/category-landing.component').then(
+        (component) => component.CategoryLandingComponent,
+      ),
+  },
+  {
+    path: 'categorias/paginas-comerciales',
+    data: { categoryId: 'paginas-comerciales' },
+    loadComponent: () =>
+      import('./features/category-landing/category-landing.component').then(
+        (component) => component.CategoryLandingComponent,
+      ),
+  },
+  {
     path: 'mvp/personal',
     loadComponent: () =>
       import('./features/personal-mvp/personal-mvp.component').then(
