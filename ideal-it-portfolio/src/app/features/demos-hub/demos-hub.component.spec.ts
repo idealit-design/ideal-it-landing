@@ -97,18 +97,29 @@ describe('DemosHubComponent', () => {
     expect(element.querySelectorAll('app-demo-card').length).toBe(18);
   });
 
-  it('uses client-facing actions and status labels without internal implementation metadata', () => {
+  it('uses client-facing actions without exposing internal implementation metadata', () => {
+    const element = fixture.nativeElement as HTMLElement;
     const buttons = Array.from(
-      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button'),
+      element.querySelectorAll<HTMLButtonElement>('app-demo-card button'),
     );
     const requestButtons = buttons.filter((button) => button.textContent?.includes('Solicitar demo'));
     const previewButtons = buttons.filter((button) => button.textContent?.includes('Explorar demo'));
 
     expect(requestButtons.length).toBe(10);
     expect(previewButtons.length).toBe(8);
-    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('MVP local');
-    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Arquitectura propuesta');
-    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Landing autónoma');
+    expect(element.textContent).not.toContain('Landing online');
+    expect(element.textContent).not.toContain('Demo interactiva');
+    expect(element.textContent).not.toContain('MVP local');
+    expect(element.textContent).not.toContain('Arquitectura propuesta');
+    expect(element.textContent).not.toContain('Landing autónoma');
+
+    const cards = Array.from(element.querySelectorAll<HTMLElement>('app-demo-card'));
+    cards.forEach((card) => {
+      expect(card.querySelector('.grid.h-12.w-12')).toBeNull();
+      expect(card.querySelectorAll('[aria-label="Tecnologías"] > span').length).toBeLessThanOrEqual(2);
+      const actionButton = card.querySelector('button');
+      expect(actionButton?.parentElement?.querySelector('a')).not.toBeNull();
+    });
   });
 
   it('links all eighteen home cards to their corresponding category landing', () => {
@@ -233,6 +244,6 @@ describe('DemosHubComponent', () => {
     expect(link?.target).toBe('_blank');
     expect(link?.rel).toContain('noopener');
     expect(link?.rel).toContain('noreferrer');
-    expect(element.textContent).toContain('Landing online');
+    expect(element.textContent).not.toContain('Landing online');
   });
 });

@@ -31,26 +31,6 @@ export class DemoCardComponent {
     }
   }
 
-  get statusLabel(): string {
-    if (this.demo.previewUrl) {
-      return 'Landing online';
-    }
-    if (this.demo.previewPath) {
-      return 'Demo interactiva';
-    }
-
-    switch (this.demo.status) {
-      case 'live':
-      case 'mvp':
-        return 'Demo a solicitud';
-      case 'planned':
-        return 'Concepto validable';
-      case 'coming-soon':
-      case 'landing':
-        return 'Disponible a solicitud';
-    }
-  }
-
   get actionLabel(): string {
     return this.hasPublicPreview ? 'Explorar demo' : 'Solicitar demo';
   }
