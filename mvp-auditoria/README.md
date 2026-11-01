@@ -1,4 +1,4 @@
-# MVP Auditoría 0.1.1
+# MVP Auditoría 0.1.2
 
 Subsistema local e independiente para registrar prestadores, consultar validaciones simuladas, almacenar documentos y resolver casos de auditoría. Los datos se guardan en una SQLite propia y los archivos se almacenan en disco local.
 
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8002
 ```
 
-La API crea el esquema en `backend\data\db\auditoria_mvp.db` y los documentos en `backend\data\storage`. Se pueden cambiar las ubicaciones con `AUDITORIA_MVP_DATABASE_PATH` y `AUDITORIA_MVP_STORAGE_PATH`. La documentación interactiva está en `http://127.0.0.1:8002/docs`.
+La API crea el esquema en `backend\data\db\auditoria_mvp.db` y los documentos en `backend\data\storage`. `AUDITORIA_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas; `AUDITORIA_MVP_STORAGE_PATH` permite elegir otra carpeta local. La documentación interactiva está en `http://127.0.0.1:8002/docs`.
 
 ### Interfaz (terminal 2)
 

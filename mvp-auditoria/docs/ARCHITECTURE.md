@@ -1,4 +1,8 @@
-# Arquitectura técnica — MVP Auditoría v0.1.1
+# Arquitectura técnica — MVP Auditoría v0.1.2
+
+## Changelog v0.1.2
+
+- Se restringe la ruta configurable de SQLite al módulo o al directorio temporal de pruebas para evitar compartir bases entre subsistemas.
 
 ## Vista de componentes
 
@@ -78,7 +82,7 @@ El alta de prestador acepta `dni`, `nombre`, `apellido`, `cuit` y `especialidad`
 
 ## Aislamiento
 
-- Cada módulo se ejecuta en puertos separados, mantiene su aplicación FastAPI, frontend, entorno Python y SQLite. Auditoría usa `backend/data/db/auditoria_mvp.db`; no lee ni comparte `personal_mvp.db`.
+- Cada módulo se ejecuta en puertos separados, mantiene su aplicación FastAPI, frontend, entorno Python y SQLite. Auditoría usa `backend/data/db/auditoria_mvp.db`; `AUDITORIA_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas y no comparte `personal_mvp.db`.
 - La SQLite aplica claves foráneas. El valor de ruta de documento se genera por el servidor, y el endpoint de contenido limita la lectura a la carpeta de almacenamiento del módulo.
 - Los únicos orígenes CORS habilitados son localhost/127.0.0.1 del frontend Auditoría (`4201`).
 - No hay integración con bases corporativas, proveedores de nube, RENAPER real, matrículas reales ni endpoints remotos. La UI usa exclusivamente la API local.

@@ -16,7 +16,7 @@ import { ValidadorIdentidadComponent } from './features/validador-identidad/vali
   template: `
     <main>
       <header class="row" style="margin-bottom: 24px">
-        <div><p class="muted">Ideal-IT · Local Standalone</p><h1>MVP Auditoría <span style="color:#67e8f9">0.1.1</span></h1><p class="muted">Auditoría de prestadores, documentos y prácticas en entorno local.</p></div>
+        <div><p class="muted">Ideal-IT · Local Standalone</p><h1>MVP Auditoría <span style="color:#67e8f9">0.1.2</span></h1><p class="muted">Auditoría de prestadores, documentos y prácticas en entorno local.</p></div>
         <strong>SQLite aislada · Puerto API 8002</strong>
       </header>
       <div class="grid">
