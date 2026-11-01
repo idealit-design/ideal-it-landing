@@ -1,6 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 export interface AuditDocument {
   id: number;
@@ -28,30 +27,48 @@ export interface NomenclatorItem {
 
 @Injectable({ providedIn: 'root' })
 export class AuditoriaMvpService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://127.0.0.1:8002/api/auditoria';
+  private readonly documents: AuditDocument[] = [
+    { id: 1, title: 'Orden de práctica · DEMO', document_type: 'orden', page_count: 2, status: 'Muestra', demo_only: true },
+    { id: 2, title: 'Informe técnico · DEMO', document_type: 'informe', page_count: 3, status: 'Muestra', demo_only: true },
+    { id: 3, title: 'Constancia profesional · DEMO', document_type: 'constancia', page_count: 1, status: 'Muestra', demo_only: true },
+  ];
+  private readonly nomenclator: NomenclatorItem[] = [
+    { code: 'DEMO-001', description: 'Consulta profesional de ejemplo', specialty: 'Clínica médica', demo_only: true },
+    { code: 'DEMO-002', description: 'Estudio ambulatorio de ejemplo', specialty: 'Diagnóstico por imágenes', demo_only: true },
+    { code: 'DEMO-003', description: 'Control preventivo de ejemplo', specialty: 'Clínica médica', demo_only: true },
+  ];
+  private nextCaseId = 1;
 
   getDocuments(): Observable<AuditDocument[]> {
-    return this.http.get<AuditDocument[]>(`${this.apiUrl}/documents`);
+    return of(this.documents.map((document) => ({ ...document })));
   }
 
   getRegistryByLicense(license: string): Observable<RegistryResult> {
-    return this.http.get<RegistryResult>(
-      `${this.apiUrl}/registry/matricula/${encodeURIComponent(license)}`,
-    );
+    return of({
+      source: 'MATRICULA_NACIONAL',
+      query: license,
+      simulated: true,
+      result: 'DEMO',
+      message: 'Resultado ficticio; no se consultó la Matrícula Nacional.',
+    });
   }
 
   getIdentityByDni(dni: string): Observable<RegistryResult> {
-    return this.http.get<RegistryResult>(
-      `${this.apiUrl}/registry/renaper/${encodeURIComponent(dni)}`,
-    );
+    return of({
+      source: 'RENAPER',
+      query: dni,
+      simulated: true,
+      result: 'DEMO',
+      message: 'Resultado ficticio; no se consultó RENAPER.',
+    });
   }
 
   searchNomenclator(specialty: string, search: string): Observable<NomenclatorItem[]> {
-    let params = new HttpParams();
-    if (specialty) params = params.set('specialty', specialty);
-    if (search.trim()) params = params.set('q', search.trim());
-    return this.http.get<NomenclatorItem[]>(`${this.apiUrl}/nomenclator`, { params });
+    const query = search.trim().toLocaleLowerCase();
+    return of(this.nomenclator
+      .filter((item) => !specialty || item.specialty === specialty)
+      .filter((item) => !query || `${item.code} ${item.description} ${item.specialty}`.toLocaleLowerCase().includes(query))
+      .map((item) => ({ ...item })));
   }
 
   createAuditCase(payload: {
@@ -59,9 +76,11 @@ export class AuditoriaMvpService {
     nomenclator_code: string;
     notes: string;
   }): Observable<{ id: number; status: string; created_at: string }> {
-    return this.http.post<{ id: number; status: string; created_at: string }>(
-      `${this.apiUrl}/cases`,
-      payload,
-    );
+    void payload;
+    return of({
+      id: this.nextCaseId++,
+      status: 'DEMO',
+      created_at: new Date().toISOString(),
+    });
   }
 }

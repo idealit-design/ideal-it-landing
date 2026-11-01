@@ -20,15 +20,43 @@ export class DemoCardComponent {
     return this.demo.status === 'coming-soon';
   }
 
+  get isPlanned(): boolean {
+    return this.demo.status === 'planned';
+  }
+
+  get isLanding(): boolean {
+    return this.demo.status === 'landing';
+  }
+
   get statusLabel(): string {
     switch (this.demo.status) {
       case 'live':
         return 'Demo activa';
       case 'mvp':
         return 'MVP local';
+      case 'planned':
+        return 'Arquitectura propuesta';
       case 'coming-soon':
         return 'Próximamente';
+      case 'landing':
+        return 'Landing autónoma';
     }
+  }
+
+  get actionLabel(): string {
+    if (this.isComingSoon) {
+      return 'Próximamente';
+    }
+    if (this.isLive) {
+      return 'Ingresar a la Demo Live';
+    }
+    if (this.isLanding) {
+      return this.demo.previewUrl ? 'Ver landing comercial' : 'Ver detalles de la landing';
+    }
+    if (this.isPlanned) {
+      return 'Ver propuesta';
+    }
+    return 'Ver detalles del MVP';
   }
 
   selectDemo(): void {

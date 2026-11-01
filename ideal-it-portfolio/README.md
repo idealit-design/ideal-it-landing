@@ -16,20 +16,21 @@ src/app/
 ├── shared/components/            # Presentación reutilizable, sin lógica de negocio
 └── features/
     ├── demos-hub/
-    ├── personal-mvp/             # UI y cliente API de Personal & Biométrico
-    ├── auditoria-mvp/            # UI y cliente API de Auditoría documental
-    └── formularios-preview/     # Preview en memoria; no llama a la API del MVP
+    ├── personal-mvp/             # Preview sintética en memoria; no llama a la API
+    ├── auditoria-mvp/             # Bóveda ilustrativa; no llama a la API
+    └── formularios-preview/      # Preview en memoria; no llama a la API
 
-backend/
-├── personal/                     # App FastAPI, esquema y DB propios
-│   └── data/db/personal_mvp.db
-└── auditoria/                    # App FastAPI, esquema y DB propios
-    └── data/db/auditoria_mvp.db
+../mvp-personal/                  # Angular local + FastAPI + DB personal_mvp.db
+../mvp-auditoria/                 # Angular local + FastAPI + DB auditoria_mvp.db
 ```
 
-Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Solo reutilizan patrones de UI (Angular standalone y Tailwind). Los backends y sus esquemas SQLite están aislados. El catálogo del hub mapea los MVP actuales con sus antecedentes en `portfolio/` mediante referencias relativas visibles en el detalle, sin importar ni modificar código de esos proyectos.
+El estándar para crear y adaptar MVPs Angular, incluyendo la política de aislamiento, el workflow y las previews del Demos Hub, está en [docs/MANUAL_TRABAJO_ANGULAR_MVPS.md](docs/MANUAL_TRABAJO_ANGULAR_MVPS.md).
 
-Las tarjetas muestran el estado **MVP local**. Formularios agrega una preview interactiva en `/mvp/formularios` para recorrer la publicación de eventos, inscripción, aprobación y validación simulada de asistencia. La preview usa datos ficticios en memoria del navegador: no se conecta a FastAPI, no persiste y no emite QR escaneables. El MVP completo conserva Angular + Bootstrap, FastAPI y su SQLite exclusiva en `..\mvp-formularios`. Personal y Auditoría requieren sus APIs locales y no tienen URLs públicas configuradas. OSMA es una PWA React y se presenta como referencia del portfolio; no se migra a Angular ni se integra en este frontend.
+Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Cada uno conserva su backend y almacenamiento aislados. El catálogo público muestra únicamente referencias a los directorios `mvp-*`; no expone las rutas locales ni los archivos de los respaldos históricos.
+
+El Demos Hub contiene ocho tarjetas de MVP local y cinco fichas de casos de referencia; una identifica una landing frontend local independiente. Las propuestas se identifican como arquitectura por validar y ninguna ficha implica un producto desplegado. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
+
+Puertos locales actuales: Personal frontend/API `4203`/`8001`; Auditoría `4201`/`8002`; Formularios `4202`/`8003`; OSMA PWA/API `5175`/`8005`. El resto de los MVP se ejecuta de forma independiente según sus README. La guía y planificación centralizadas están en [md/README.md](../md/README.md), y la copia íntegra del manual en [md/manual.md](../md/manual.md).
 
 ## Crear el frontend desde cero
 
@@ -91,52 +92,38 @@ La guía completa de ejecución de Angular + Bootstrap y pruebas está en [la do
 
 WhatsApp, LinkedIn y correo se muestran como canales pendientes de configurar; no hay enlaces ficticios activos.
 
-API Personal (terminal 1):
+API Personal (terminal 1, desde la raíz del monorepo):
 
 ```powershell
-cd backend\personal
+cd mvp-personal\backend
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8001
 ```
 
-API Auditoría (terminal 2):
+API Auditoría (terminal 2, desde la raíz del monorepo):
 
 ```powershell
-cd backend\auditoria
+cd mvp-auditoria\backend
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8002
 ```
 
-Se pueden cambiar las ubicaciones de las bases de datos sin modificar código:
+Sus interfaces Angular standalone se ejecutan en terminales separadas con `npm install` y `npm start`, desde `mvp-personal\frontend` (puerto `4203`) y `mvp-auditoria\frontend` (puerto `4201`). Las bases tienen variables y archivos separados:
 
 ```powershell
-$env:PERSONAL_DATABASE_PATH = "data\db\personal_mvp.db"
-$env:AUDITORIA_DATABASE_PATH = "data\db\auditoria_mvp.db"
+$env:PERSONAL_MVP_DATABASE_PATH = "data\db\personal_mvp.db"
+$env:AUDITORIA_MVP_DATABASE_PATH = "data\db\auditoria_mvp.db"
 ```
 
 La API de personal simula los dispositivos biométricos y reportes; nunca contacta una IP. Auditoría usa documentos, respuestas de padrón y códigos del nomenclador sintéticos: sus endpoints no consultan RENAPER ni una matrícula oficial y no contienen documentación clínica real. No cargar datos personales, documentos médicos ni notas clínicas reales en estos MVPs.
 
 ## Endpoints locales
 
-Personal (`http://127.0.0.1:8001`):
-
-- `GET /api/personal/staff`, `POST /api/personal/staff`
-- `GET /api/personal/areas`, `POST /api/personal/areas`
-- `GET /api/personal/leaves`, `POST /api/personal/leaves`
-- `POST /api/personal/biometrics/connect` (simulado)
-- `GET /api/personal/biometrics/reports?period=day|week&dni=...`
-
-Auditoría (`http://127.0.0.1:8002`):
-
-- `GET /api/auditoria/documents`
-- `GET /api/auditoria/registry/matricula/{license_number}` (simulado)
-- `GET /api/auditoria/registry/renaper/{dni}` (simulado)
-- `GET /api/auditoria/nomenclator?specialty=...&q=...`
-- `POST /api/auditoria/cases`
+Los contratos REST completos y diagramas ERD están en [la arquitectura de Personal](../mvp-personal/docs/ARCHITECTURE.md) y [la arquitectura de Auditoría](../mvp-auditoria/docs/ARCHITECTURE.md). Las previews del Demos Hub no consumen estos endpoints.
 
 ## Pruebas y compilación
 

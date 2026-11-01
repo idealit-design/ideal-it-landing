@@ -1,6 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
 
 export interface PersonalArea {
   id: number;
@@ -47,46 +46,99 @@ export interface BiometricStatus {
   message: string;
 }
 
+const DEMO_AREAS: PersonalArea[] = [
+  { id: 1, name: 'Operaciones (demo)', floor: '1', department: 'Administración' },
+  { id: 2, name: 'Atención (demo)', floor: '2', department: 'Servicios' },
+];
+
 @Injectable({ providedIn: 'root' })
 export class PersonalMvpService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://127.0.0.1:8001/api/personal';
+  private staff: StaffMember[] = [
+    { dni: '99999998', full_name: 'Persona Demo Uno', area_id: 1 },
+    { dni: '99999997', full_name: 'Persona Demo Dos', area_id: 2 },
+  ];
+  private areas: PersonalArea[] = [...DEMO_AREAS];
+  private leaves: LeaveRecord[] = [
+    {
+      id: 1,
+      dni: '99999998',
+      leave_type: 'vacation',
+      start_date: '2026-11-02',
+      end_date: '2026-11-06',
+      notes: 'Registro ficticio de demostración',
+    },
+  ];
+  private nextAreaId = 3;
+  private nextLeaveId = 2;
 
   getStaff(): Observable<StaffMember[]> {
-    return this.http.get<StaffMember[]>(`${this.apiUrl}/staff`);
+    return of(this.staff.map((person) => ({ ...person })));
   }
 
   createStaff(staff: Omit<StaffMember, 'area_id'> & { area_id: number | null }): Observable<StaffMember> {
-    return this.http.post<StaffMember>(`${this.apiUrl}/staff`, staff);
+    if (this.staff.some((person) => person.dni === staff.dni)) {
+      return throwError(() => new Error('El DNI ya existe en esta demo.'));
+    }
+    const created = { ...staff };
+    this.staff = [created, ...this.staff];
+    return of({ ...created });
   }
 
   getAreas(): Observable<PersonalArea[]> {
-    return this.http.get<PersonalArea[]>(`${this.apiUrl}/areas`);
+    return of(this.areas.map((area) => ({ ...area })));
   }
 
   createArea(area: Omit<PersonalArea, 'id'>): Observable<PersonalArea> {
-    return this.http.post<PersonalArea>(`${this.apiUrl}/areas`, area);
+    const created = { ...area, id: this.nextAreaId++ };
+    this.areas = [...this.areas, created];
+    return of({ ...created });
   }
 
   getLeaves(): Observable<LeaveRecord[]> {
-    return this.http.get<LeaveRecord[]>(`${this.apiUrl}/leaves`);
+    return of(this.leaves.map((leave) => ({ ...leave })));
   }
 
   createLeave(leave: Omit<LeaveRecord, 'id'>): Observable<LeaveRecord> {
-    return this.http.post<LeaveRecord>(`${this.apiUrl}/leaves`, leave);
+    const created = { ...leave, id: this.nextLeaveId++ };
+    this.leaves = [created, ...this.leaves];
+    return of({ ...created });
   }
 
   connectBiometric(deviceIp: string): Observable<BiometricStatus> {
-    return this.http.post<BiometricStatus>(`${this.apiUrl}/biometrics/connect`, {
+    return of({
+      connected: true,
       device_ip: deviceIp,
+      mode: 'simulated',
+      message: 'Conexión de demostración simulada; no se contactó ningún dispositivo.',
     });
   }
 
   getAttendanceReport(period: 'day' | 'week', dni: string): Observable<AttendanceReport> {
-    let params = new HttpParams().set('period', period);
-    if (dni.trim()) {
-      params = params.set('dni', dni.trim());
-    }
-    return this.http.get<AttendanceReport>(`${this.apiUrl}/biometrics/reports`, { params });
+    const records: AttendanceRecord[] = [
+      {
+        dni: '99999998',
+        date: new Date().toISOString().slice(0, 10),
+        check_in: '08:02',
+        check_out: '—',
+        status: 'simulated',
+      },
+      {
+        dni: '99999997',
+        date: new Date().toISOString().slice(0, 10),
+        check_in: '—',
+        check_out: '—',
+        status: 'simulated',
+      },
+    ];
+    const filteredRecords = dni.trim()
+      ? records.filter((record) => record.dni === dni.trim())
+      : records;
+    return of({
+      period,
+      generated_at: new Date().toISOString(),
+      dni_filter: dni.trim() || null,
+      simulated: true,
+      records: filteredRecords,
+    });
   }
 }

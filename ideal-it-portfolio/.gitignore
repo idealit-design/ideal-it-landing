@@ -2,6 +2,7 @@
 
 # Compiled output
 /dist
+/public/landings/
 /tmp
 /out-tsc
 /bazel-out

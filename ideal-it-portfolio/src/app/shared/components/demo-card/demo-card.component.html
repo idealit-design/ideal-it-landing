@@ -20,7 +20,9 @@
         ? 'border-accent/20 bg-accent/[0.08] text-accent'
         : isComingSoon
           ? 'border-white/[0.06] bg-white/[0.02] text-slate-500'
-          : 'border-sky-300/15 bg-sky-300/[0.06] text-sky-200'"
+          : isPlanned
+            ? 'border-amber-300/15 bg-amber-300/[0.06] text-amber-200'
+            : 'border-sky-300/15 bg-sky-300/[0.06] text-sky-200'"
     >
       @if (isLive) {
         <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-accent"></span>
@@ -60,7 +62,7 @@
           : 'border-white/10 bg-white/[0.03] text-slate-200 hover:border-accent/30 hover:bg-accent/[0.08]'"
       (click)="selectDemo()"
     >
-      <span>{{ isComingSoon ? 'Próximamente' : isLive ? 'Ingresar a la Demo Live' : 'Ver detalles del MVP' }}</span>
+      <span>{{ actionLabel }}</span>
       @if (!isComingSoon) {
         <span class="text-base transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
       }

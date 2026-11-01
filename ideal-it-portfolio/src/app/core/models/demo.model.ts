@@ -1,4 +1,4 @@
-export type DemoStatus = 'live' | 'mvp' | 'coming-soon';
+export type DemoStatus = 'live' | 'mvp' | 'planned' | 'coming-soon' | 'landing';
 
 export interface Demo {
   id: string;
@@ -10,6 +10,7 @@ export interface Demo {
   status: DemoStatus;
   sourcePaths: string[];
   previewPath?: string;
+  previewUrl?: string;
 }
 
 export interface DemoApiSample {
