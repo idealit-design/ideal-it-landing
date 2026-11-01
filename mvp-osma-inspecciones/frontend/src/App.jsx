@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   getInspections,
@@ -13,7 +13,9 @@ import {
   readCachedAffiliates,
   readCachedInspectors,
   readPendingInspections,
-  removeSyncedInspections,
+  listOfflineInspections,
+  markInspectionsFailed,
+  markInspectionsSent,
 } from "./offlineStore.js";
 
 const navigation = [
@@ -54,10 +56,10 @@ function formatDate(value) {
 
 function App() {
   const [activeView, setActiveView] = useState("nueva");
-  const [inspectors, setInspectors] = useState(() => readCachedInspectors());
-  const [affiliates, setAffiliates] = useState(() => readCachedAffiliates());
+  const [inspectors, setInspectors] = useState([]);
+  const [affiliates, setAffiliates] = useState([]);
   const [inspections, setInspections] = useState([]);
-  const [pending, setPending] = useState(() => readPendingInspections());
+  const [offlineRecords, setOfflineRecords] = useState([]);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [selectedAffiliate, setSelectedAffiliate] = useState(null);
   const [affiliateQuery, setAffiliateQuery] = useState("");
@@ -66,6 +68,30 @@ function App() {
   const [error, setError] = useState("");
   const [isSyncing, setIsSyncing] = useState(false);
   const [formKey, setFormKey] = useState(0);
+  const synchronizationLock = useRef(false);
+  const pending = useMemo(
+    () => offlineRecords.filter((record) => ["pending", "error"].includes(record.sync_status)),
+    [offlineRecords],
+  );
+  const syncCounts = useMemo(
+    () => ({
+      pending: offlineRecords.filter((record) => record.sync_status === "pending").length,
+      sent: offlineRecords.filter((record) => record.sync_status === "sent").length,
+      errors: offlineRecords.filter((record) => record.sync_status === "error").length,
+    }),
+    [offlineRecords],
+  );
+
+  const refreshOfflineState = useCallback(async () => {
+    const [cachedInspectors, cachedAffiliates, records] = await Promise.all([
+      readCachedInspectors(),
+      readCachedAffiliates(),
+      listOfflineInspections(),
+    ]);
+    setInspectors(cachedInspectors);
+    setAffiliates(cachedAffiliates);
+    setOfflineRecords(records);
+  }, []);
 
   const refreshFromApi = useCallback(async () => {
     const results = await Promise.allSettled([
@@ -78,7 +104,11 @@ function App() {
 
     if (inspectorResult.status === "fulfilled") {
       setInspectors(inspectorResult.value);
-      cacheInspectors(inspectorResult.value);
+      try {
+        await cacheInspectors(inspectorResult.value);
+      } catch (cacheError) {
+        failures.push(`No se pudo cifrar la caché de inspectores: ${cacheError.message}`);
+      }
     }
     else failures.push(inspectorResult.reason.message);
 
@@ -87,61 +117,131 @@ function App() {
 
     if (affiliateResult.status === "fulfilled") {
       setAffiliates(affiliateResult.value);
-      cacheAffiliates(affiliateResult.value);
+      try {
+        await cacheAffiliates(affiliateResult.value);
+      } catch (cacheError) {
+        failures.push(`No se pudo cifrar la caché de afiliados: ${cacheError.message}`);
+      }
     } else {
       failures.push(affiliateResult.reason.message);
     }
 
-    if (failures.length) setError(`API no disponible; se conservan los datos locales. ${failures.join(" ")}`);
+    if (failures.length) setError(`No se pudieron actualizar todos los datos; se conservan los registros locales. ${failures.join(" ")}`);
     else setError("");
   }, []);
 
-  const synchronize = useCallback(async () => {
-    const queued = readPendingInspections();
-    if (!queued.length) {
-      setMessage("No hay planillas pendientes de sincronización.");
-      return;
-    }
-    if (!navigator.onLine) {
-      setError("Sin conexión: las planillas siguen guardadas en este dispositivo.");
-      return;
-    }
-
+  const synchronize = useCallback(async ({ force = true } = {}) => {
+    if (synchronizationLock.current) return;
+    synchronizationLock.current = true;
     setIsSyncing(true);
     setError("");
+    let activeBatch = [];
+    let acknowledged = 0;
+    let created = 0;
+    let duplicates = 0;
     try {
-      const result = await syncInspections(queued);
-      const remaining = removeSyncedInspections(
-        result.inspecciones.map((inspection) => inspection.client_id),
-      );
-      setPending(remaining);
-      setMessage(
-        `${result.creadas} planilla(s) sincronizada(s); ${result.duplicadas} ya estaban registradas.`,
-      );
+      if (!navigator.onLine) {
+        setError("Sin conexión: las planillas siguen cifradas y guardadas en este dispositivo.");
+        return;
+      }
+      const queued = await readPendingInspections({ force });
+      if (!queued.length) {
+        setMessage("No hay planillas listas para sincronizar.");
+        return;
+      }
+
+      for (let index = 0; index < queued.length; index += 100) {
+        if (!navigator.onLine) {
+          setError("Se perdió la conexión. Las planillas restantes siguen en la cola local.");
+          break;
+        }
+        activeBatch = queued.slice(index, index + 100);
+        const result = await syncInspections(activeBatch);
+        const expectedIds = new Set(activeBatch.map((record) => record.client_id));
+        const acknowledgements = result.inspecciones ?? [];
+        const acknowledgedIds = acknowledgements.map((record) => record.client_id);
+        const receivedIds = new Set(acknowledgedIds);
+        if (
+          acknowledgedIds.length !== expectedIds.size ||
+          receivedIds.size !== expectedIds.size ||
+          [...expectedIds].some((clientId) => !receivedIds.has(clientId))
+        ) {
+          throw new Error("La API no confirmó todas las planillas del lote; se conservaron para reintentar.");
+        }
+        await markInspectionsSent(acknowledgedIds);
+        acknowledged += acknowledgements.length;
+        created += result.creadas;
+        duplicates += result.duplicadas;
+        activeBatch = [];
+      }
+      await refreshOfflineState();
+      if (acknowledged) {
+        setMessage(
+          `${created} planilla(s) sincronizada(s); ${duplicates} ya estaban registradas.`,
+        );
+      }
       await refreshFromApi();
     } catch (syncError) {
-      setError(`${syncError.message} La cola local se conservó para reintentar.`);
+      let storageError = "";
+      if (activeBatch.length) {
+        try {
+          await markInspectionsFailed(activeBatch.map((record) => record.client_id), syncError.message);
+          await refreshOfflineState();
+        } catch (failureError) {
+          storageError = ` No se pudo actualizar el estado local: ${failureError.message}`;
+        }
+      }
+      setError(`${syncError.message} La cola local se conservó para reintentar.${storageError}`);
     } finally {
+      synchronizationLock.current = false;
       setIsSyncing(false);
     }
-  }, [refreshFromApi]);
+  }, [refreshFromApi, refreshOfflineState]);
 
   useEffect(() => {
+    void refreshOfflineState().catch((storageError) => {
+      setError(`No se pudo abrir el almacenamiento cifrado local: ${storageError.message}`);
+    });
+    void synchronize({ force: false });
     void refreshFromApi();
     const updateConnection = () => {
       setIsOnline(navigator.onLine);
       if (navigator.onLine) {
         void refreshFromApi();
-        void synchronize();
+        void synchronize({ force: false });
       }
+    };
+    const requestSync = () => {
+      if (document.visibilityState === "visible") void synchronize({ force: false });
+    };
+    const handleServiceWorkerMessage = (event) => {
+      if (event.data?.type === "OSMA_SYNC_REQUEST") void synchronize({ force: false });
     };
     window.addEventListener("online", updateConnection);
     window.addEventListener("offline", updateConnection);
+    window.addEventListener("focus", requestSync);
+    document.addEventListener("visibilitychange", requestSync);
+    navigator.serviceWorker?.addEventListener("message", handleServiceWorkerMessage);
     return () => {
       window.removeEventListener("online", updateConnection);
       window.removeEventListener("offline", updateConnection);
+      window.removeEventListener("focus", requestSync);
+      document.removeEventListener("visibilitychange", requestSync);
+      navigator.serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
     };
-  }, [refreshFromApi, synchronize]);
+  }, [refreshFromApi, refreshOfflineState, synchronize]);
+
+  useEffect(() => {
+    const retryAt = offlineRecords
+      .filter((record) => record.sync_status === "error")
+      .reduce((earliest, record) => Math.min(earliest, record.next_attempt_at), Infinity);
+    if (!isOnline || !Number.isFinite(retryAt)) return undefined;
+    const timer = window.setTimeout(
+      () => void synchronize({ force: false }),
+      Math.max(0, retryAt - Date.now()),
+    );
+    return () => window.clearTimeout(timer);
+  }, [isOnline, offlineRecords, synchronize]);
 
   useEffect(() => {
     if (!affiliateQuery.trim()) return undefined;
@@ -152,7 +252,9 @@ function App() {
           const byDni = new Map(current.map((affiliate) => [affiliate.dni, affiliate]));
           results.forEach((affiliate) => byDni.set(affiliate.dni, affiliate));
           const updated = Array.from(byDni.values());
-          cacheAffiliates(updated);
+          void cacheAffiliates(updated).catch((cacheError) => {
+            setError(`No se pudo cifrar la caché de afiliados: ${cacheError.message}`);
+          });
           return updated;
         });
       } catch (searchError) {
@@ -208,13 +310,21 @@ function App() {
     };
 
     try {
-      const newQueue = enqueueInspection(inspection);
-      setPending(newQueue);
+      const newQueue = await enqueueInspection(inspection);
+      setOfflineRecords(newQueue);
       setSelectedAffiliate(null);
       setAffiliateQuery("");
       setFormKey((key) => key + 1);
-      setMessage("Planilla guardada en este dispositivo.");
-      if (navigator.onLine) await synchronize();
+      setMessage("Planilla cifrada y guardada en este dispositivo.");
+      if (navigator.serviceWorker) {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          if ("sync" in registration) await registration.sync.register("osma-inspecciones-sync");
+        } catch (registrationError) {
+          console.error("No se pudo registrar la sincronización en segundo plano.", registrationError);
+        }
+      }
+      if (navigator.onLine) await synchronize({ force: false });
     } catch (saveError) {
       setError(`No se pudo guardar la planilla localmente: ${saveError.message}`);
     }
@@ -496,7 +606,7 @@ function App() {
             <div className="sync-status-card">
               <div className={`sync-illustration ${isOnline ? "online" : ""}`}>⇅</div>
               <div>
-                <strong>{pending.length} planilla(s) pendiente(s)</strong>
+                <strong>{syncCounts.pending + syncCounts.errors} planilla(s) por enviar</strong>
                 <p>{isOnline ? "Conexión disponible para enviar cargas locales." : "Sin conexión. Tus datos permanecen guardados en este dispositivo."}</p>
               </div>
               <button
@@ -508,20 +618,52 @@ function App() {
                 {isSyncing ? "Sincronizando…" : "Sincronizar ahora"}
               </button>
             </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3" aria-label="Resumen de sincronización">
+              <article className="rounded-xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+                <p className="text-sm font-medium text-amber-800">Pendientes</p>
+                <p className="mt-2 text-3xl font-semibold text-amber-950">{syncCounts.pending}</p>
+              </article>
+              <article className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
+                <p className="text-sm font-medium text-emerald-800">Enviadas</p>
+                <p className="mt-2 text-3xl font-semibold text-emerald-950">{syncCounts.sent}</p>
+              </article>
+              <article className="rounded-xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+                <p className="text-sm font-medium text-rose-800">Con errores</p>
+                <p className="mt-2 text-3xl font-semibold text-rose-950">{syncCounts.errors}</p>
+              </article>
+            </div>
+            <h3 className="mt-7 text-base font-semibold text-slate-800">Actividad local</h3>
             <div className="queued-list">
-              {pending.map((inspection) => (
+              {offlineRecords.map((inspection) => {
+                const status = {
+                  pending: { label: "PENDIENTE", className: "pending" },
+                  sent: { label: "ENVIADA", className: "active" },
+                  error: { label: "ERROR", className: "suspended" },
+                }[inspection.sync_status];
+                return (
                 <article className="inspection-card" key={inspection.client_id}>
-                  <div className="pending-indicator">•••</div>
+                  <div className="pending-indicator" aria-hidden="true">
+                    {inspection.sync_status === "sent" ? "✓" : inspection.sync_status === "error" ? "!" : "•••"}
+                  </div>
                   <div className="inspection-main">
                     <strong>Acta {inspection.datos_json.numero_acta}</strong>
                     <span>DNI {inspection.afiliado_dni} · {inspection.datos_json.direccion}</span>
-                    <small>{formatDate(inspection.fecha_inspeccion)}</small>
+                    <small>
+                      {formatDate(inspection.fecha_inspeccion)} · {inspection.attempts} intento(s)
+                    </small>
+                    {inspection.sync_status === "error" && (
+                      <small role="status">{inspection.last_error}</small>
+                    )}
                   </div>
-                  <span className="status-tag pending">PENDIENTE</span>
+                  <span className={`status-tag ${status.className}`}>{status.label}</span>
                 </article>
-              ))}
-              {pending.length === 0 && <div className="empty-state">La cola local está vacía.</div>}
+                );
+              })}
+              {offlineRecords.length === 0 && <div className="empty-state">La cola local está vacía.</div>}
             </div>
+            <p className="privacy-note">
+              Los formularios y las cachés de afiliados se cifran con AES-GCM antes de guardarse en IndexedDB.
+            </p>
           </section>
         )}
 

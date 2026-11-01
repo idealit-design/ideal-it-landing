@@ -1,46 +1,76 @@
-const CACHE_NAME = "osma-inspecciones-v0.1.1";
+const CACHE_NAME = "osma-inspecciones-v0.2.0";
 const APP_SHELL = ["/", "/manifest.webmanifest", "/osma-icon.svg"];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
-  self.skipWaiting();
+  event.waitUntil(
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key.startsWith("osma-inspecciones-") && key !== CACHE_NAME)
-            .map((key) => caches.delete(key)),
-        ),
-      ),
+  const removeOldCaches = caches.keys().then((keys) =>
+    Promise.all(
+      keys
+        .filter((key) => key.startsWith("osma-inspecciones-") && key !== CACHE_NAME)
+        .map((key) => caches.delete(key)),
+    ),
   );
-  self.clients.claim();
+  event.waitUntil(Promise.all([removeOldCaches, self.clients.claim()]));
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) {
+  const requestUrl = new URL(event.request.url);
+  if (
+    event.request.method !== "GET" ||
+    requestUrl.origin !== self.location.origin ||
+    requestUrl.pathname.startsWith("/api/")
+  ) {
     return;
   }
 
   if (event.request.mode === "navigate") {
-    event.respondWith(fetch(event.request).catch(() => caches.match("/")));
+    const networkResponse = fetch(event.request);
+    event.respondWith(
+      networkResponse
+        .catch(async () => {
+          const cachedShell = await caches.match("/");
+          return cachedShell ?? Response.error();
+        }),
+    );
+    event.waitUntil(
+      networkResponse
+        .then((response) => {
+          if (!response.ok) return undefined;
+          return caches.open(CACHE_NAME).then((cache) => cache.put("/", response.clone()));
+        })
+        .catch(() => undefined),
+    );
     return;
   }
 
+  const cachedResponse = caches.match(event.request);
+  const networkResponse = fetch(event.request);
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok) {
-          const responseCopy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseCopy));
-        }
-        return response;
-      });
+    cachedResponse.then((cached) => cached ?? networkResponse),
+  );
+  event.waitUntil(
+    networkResponse
+      .then((response) => {
+        if (!response.ok || response.type === "opaque") return undefined;
+        return caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
+      })
+      .catch(() => undefined),
+  );
+});
+
+self.addEventListener("sync", (event) => {
+  if (event.tag !== "osma-inspecciones-sync") return;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      clients.forEach((client) => client.postMessage({ type: "OSMA_SYNC_REQUEST" }));
     }),
   );
 });
