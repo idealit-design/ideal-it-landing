@@ -1,4 +1,4 @@
-# MVP Personal 0.1.1
+# MVP Personal 0.2.0
 
 Subsistema local e independiente para administración de personal, asistencia, licencias y simulación de fichajes biométricos. Incluye una API FastAPI con SQLite propia y una aplicación Angular standalone con Tailwind CSS.
 
@@ -19,7 +19,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8001
 ```
 
-La API crea el esquema al iniciar en `backend\data\db\personal_mvp.db`. La ubicación se puede cambiar con `PERSONAL_MVP_DATABASE_PATH`. La documentación interactiva queda en `http://127.0.0.1:8001/docs`.
+La API crea el esquema al iniciar en `backend\data\db\personal_mvp.db`. `PERSONAL_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas, nunca una base de otro subsistema. La documentación interactiva queda en `http://127.0.0.1:8001/docs`.
 
 ### Interfaz (terminal 2)
 
@@ -29,7 +29,9 @@ npm install
 npm start
 ```
 
-Abre `http://localhost:4200`. La interfaz consume la API local en el puerto `8001`.
+Abre `http://localhost:4203`. La interfaz consume exclusivamente la API local en el puerto `8001`; la landing Ideal-IT permanece en `4200`.
+
+La aplicación organiza sus capacidades con rutas standalone: `/dashboard` (resumen operativo), `/fichajes`, `/personal`, `/asistencia`, `/licencias` y `/reportes`. Al iniciar, el dashboard muestra estados reales devueltos por la API; si la API no está disponible, presenta el error y no sustituye los datos con valores ficticios.
 
 ### Pruebas del backend
 

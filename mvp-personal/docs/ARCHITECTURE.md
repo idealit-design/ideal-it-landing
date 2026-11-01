@@ -1,4 +1,9 @@
-# Arquitectura técnica — MVP Personal v0.1.1
+# Arquitectura técnica — MVP Personal v0.2.0
+
+## Changelog v0.2.0
+
+- Se agrega dashboard operativo y navegación lazy por funcionalidades en el frontend independiente.
+- Se restringe la ruta configurable de SQLite al módulo o al directorio temporal de pruebas para mantener el aislamiento de datos.
 
 ## Changelog v0.1.1
 
@@ -7,12 +12,13 @@
 - Se incorporan ABM de personal/áreas/licencias, consulta de historial por DNI, simulación configurable de relojes y reportes diarios/semanales.
 - El cálculo de reportes utiliza exclusivamente días laborables de lunes a viernes; las licencias aprobadas justifican la inasistencia en sus fechas cubiertas.
 - Se agrega una interfaz Angular standalone + Tailwind para simular fichajes, operar personal y licencias, consultar historiales y visualizar reportes.
+- Se incorpora navegación lazy por capacidades y un dashboard de control diario en el frontend local `4203`, separado de la landing `4200` y sin conflicto con el frontend de Formularios (`4202`).
 - Se desacopla funcionalmente de `Sistema DOSEP Prestadores`: no se importa su aplicación, su esquema, sus credenciales, su SQLite ni sus integraciones PJE/auditoría.
 
 ## Vista de componentes
 
 ```text
-Angular standalone + Tailwind (localhost:4200)
+Angular standalone + Tailwind (localhost:4203)
     └── clientes HTTP (Personal / Biométrico / Licencias / Reportes)
           └── FastAPI (localhost:8001)
                 ├── routers: personal, asistencia, licencias, biometric_sim, reportes
@@ -98,7 +104,7 @@ El simulador valida que la IP sea privada, loopback o link-local, pero nunca abr
 
 ## Aislamiento
 
-- FastAPI inicializa un motor SQLAlchemy SQLite apuntando por defecto a `backend/data/db/personal_mvp.db`; `PERSONAL_MVP_DATABASE_PATH` solo permite cambiar la ubicación de esa misma base aislada.
+- FastAPI inicializa un motor SQLAlchemy SQLite apuntando por defecto a `backend/data/db/personal_mvp.db`; `PERSONAL_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas y rechaza rutas de otros subsistemas.
 - El motor activa claves foráneas SQLite en cada conexión. Las tablas se crean desde los modelos locales de SQLAlchemy.
 - Este subsistema no comparte sesiones, modelos, tablas, archivos de base ni variables de conexión con `Sistema DOSEP Prestadores`.
 - No tiene dependencias de SQL Server PJE, pyodbc, auditoría, prestadores ni otros servicios externos. La única comunicación del frontend es HTTP con esta API local.
@@ -119,6 +125,18 @@ mvp-personal/
 │   └── tests/
 └── frontend/
     └── src/app/
+        ├── app.routes.ts           # Rutas lazy por capacidad
         ├── core/services/        # Clientes HTTP por módulo
-        └── features/             # Simulador, personal, asistencia, reportes y licencias
+        └── features/             # Dashboard, simulador, personal, asistencia, reportes y licencias
 ```
+
+### Rutas de la interfaz
+
+| Ruta | Capacidad |
+|---|---|
+| `/dashboard` | Estado diario, tarjetas de control, tabla compacta y acceso lateral a licencias. |
+| `/fichajes` | Simulación de marcas biométricas. |
+| `/personal` | Administración de personal y áreas. |
+| `/asistencia` | Historial de marcas por DNI. |
+| `/licencias` | Registro y consulta de licencias/vacaciones. |
+| `/reportes` | Reportes diarios y semanales de días hábiles. |
