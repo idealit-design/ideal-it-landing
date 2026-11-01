@@ -26,7 +26,7 @@ type ActiveSection = 'portal' | 'gestion' | 'scanner';
           </div>
         </div>
         <span class="badge text-bg-success-subtle text-success-emphasis border px-3 py-2">
-          Formularios v0.1.1 · SQLite aislada
+          Formularios v0.1.2 · SQLite aislada
         </span>
       </header>
 

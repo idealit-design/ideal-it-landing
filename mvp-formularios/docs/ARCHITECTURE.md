@@ -1,4 +1,8 @@
-# Arquitectura técnica — MVP Formularios v0.1.1
+# Arquitectura técnica — MVP Formularios v0.1.2
+
+## Changelog v0.1.2
+
+- Se restringe la ruta configurable de SQLite al módulo o al directorio temporal de pruebas para evitar compartir bases entre subsistemas.
 
 ## Changelog v0.1.1
 
@@ -83,7 +87,7 @@ La validación de asistencia responde `404` para un QR inexistente/no aprobado, 
 
 ## Aislamiento
 
-- SQLite usa por defecto `backend/data/db/formularios_mvp.db`; `FORMULARIOS_MVP_DATABASE_PATH` solo permite ubicar la base de este módulo.
+- SQLite usa por defecto `backend/data/db/formularios_mvp.db`; `FORMULARIOS_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas y rechaza bases de otros subsistemas.
 - El motor activa `PRAGMA foreign_keys=ON` en cada conexión. Las tablas se crean desde modelos SQLAlchemy locales.
 - La API habilita CORS únicamente para el frontend del MVP en localhost/127.0.0.1 puerto `4202`.
 - Angular conecta a la API de este módulo en `127.0.0.1:8003`; no reutiliza servicios, claves ni bases de Personal, Auditoría o Sistema ALANTIA.

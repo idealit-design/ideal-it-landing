@@ -1,4 +1,4 @@
-# MVP Formularios 0.1.1
+# MVP Formularios 0.1.2
 
 Subsistema local e independiente para eventos turísticos y municipales gratuitos. Incluye gestión de organizadores y eventos, inscripción ciudadana, aprobación de solicitudes, emisión de QR y control de asistencia con cámara o ingreso manual.
 
@@ -20,7 +20,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8003
 ```
 
-La API crea las tablas y la base aislada `backend\data\db\formularios_mvp.db` al iniciar. Se puede cambiar la ubicación con `FORMULARIOS_MVP_DATABASE_PATH`. La documentación interactiva de FastAPI está en `http://127.0.0.1:8003/docs`.
+La API crea las tablas y la base aislada `backend\data\db\formularios_mvp.db` al iniciar. `FORMULARIOS_MVP_DATABASE_PATH` solo acepta rutas dentro del módulo o del directorio temporal de pruebas y no puede apuntar a la base de otro subsistema. La documentación interactiva de FastAPI está en `http://127.0.0.1:8003/docs`.
 
 ### Interfaz Angular + Bootstrap (terminal 2)
 
