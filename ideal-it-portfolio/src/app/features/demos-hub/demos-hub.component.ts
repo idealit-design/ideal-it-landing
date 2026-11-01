@@ -7,11 +7,12 @@ import { Demo, DemoServiceType } from '../../core/models/demo.model';
 import { DEMO_CATEGORIES, getDemoCategoryPath } from '../../core/models/demo-category.model';
 import { DemoDataService } from '../../core/services/demo-data.service';
 import { DemoCardComponent } from '../../shared/components/demo-card/demo-card.component';
+import { DemoDetailsModalComponent } from '../../shared/components/demo-details-modal/demo-details-modal.component';
 
 @Component({
   selector: 'app-demos-hub',
   standalone: true,
-  imports: [AsyncPipe, DemoCardComponent, FormsModule, RouterLink],
+  imports: [AsyncPipe, DemoCardComponent, DemoDetailsModalComponent, FormsModule, RouterLink],
   templateUrl: './demos-hub.component.html',
 })
 export class DemosHubComponent {
@@ -26,16 +27,15 @@ export class DemosHubComponent {
     { value: 'utility', label: 'Utilitarios' },
   ];
   readonly states = [
-    { value: 'all', label: 'Todos los estados' },
-    { value: 'mvp', label: 'MVP Local' },
-    { value: 'preview', label: 'Preview Interactiva' },
-    { value: 'landing', label: 'Landing Estática' },
-    { value: 'planned', label: 'Propuesta por validar' },
+    { value: 'all', label: 'Todas las experiencias' },
+    { value: 'interactive', label: 'Demos interactivas' },
+    { value: 'commercial', label: 'Landings comerciales' },
+    { value: 'request', label: 'Disponibles a solicitud' },
   ] as const;
   selectedServiceType: DemoServiceType | '' = '';
   selectedState: (typeof this.states)[number]['value'] = 'all';
   searchTerm = '';
-  filters = { hasDemo: false, isPreview: false, hasBackend: false };
+  filters = { hasDemo: false, hasBackend: false };
   selectedDemo: Demo | null = null;
 
   filterDemos(demos: Demo[]): Demo[] {
@@ -45,13 +45,11 @@ export class DemosHubComponent {
       const matchesService = !this.selectedServiceType || demo.serviceType === this.selectedServiceType;
       const matchesState =
         this.selectedState === 'all' ||
-        (this.selectedState === 'mvp' && demo.status === 'mvp') ||
-        (this.selectedState === 'preview' && demo.isPreview) ||
-        (this.selectedState === 'landing' && demo.status === 'landing') ||
-        (this.selectedState === 'planned' && demo.status === 'planned');
+        (this.selectedState === 'interactive' && Boolean(demo.previewPath)) ||
+        (this.selectedState === 'commercial' && Boolean(demo.previewUrl)) ||
+        (this.selectedState === 'request' && !demo.previewPath && !demo.previewUrl);
       const matchesFeatures =
-        (!this.filters.hasDemo || demo.hasDemo) &&
-        (!this.filters.isPreview || demo.isPreview) &&
+        (!this.filters.hasDemo || demo.hasDemo || Boolean(demo.previewPath || demo.previewUrl)) &&
         (!this.filters.hasBackend || demo.hasBackend);
       const searchableText = this.normalizeText(
         [demo.title, demo.summary, demo.category, ...demo.technologies].join(' '),
@@ -65,7 +63,7 @@ export class DemosHubComponent {
     this.selectedServiceType = '';
     this.selectedState = 'all';
     this.searchTerm = '';
-    this.filters = { hasDemo: false, isPreview: false, hasBackend: false };
+    this.filters = { hasDemo: false, hasBackend: false };
   }
 
   categoryPath(demoId: string): string | undefined {

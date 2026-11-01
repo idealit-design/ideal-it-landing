@@ -16,14 +16,14 @@ export interface DemoCategory {
 export const DEMO_CATEGORIES: DemoCategory[] = [
   {
     id: 'desarrollos',
-    path: '/categorias/desarrollos',
-    title: 'Desarrollos y MVPs Core',
+    path: '/desarrollos',
+    title: 'Desarrollos de Software',
     eyebrow: 'Ingeniería de producto · Sistemas integrados',
     description:
-      'Sistemas complejos diseñados para resolver procesos centrales del negocio: auditoría, automatización, gestión y backend integrado. Explorá MVPs y propuestas con alcance y estado documentados.',
-    seoTitle: 'Desarrollos y MVPs Core | Ideal-IT',
+      'Productos digitales diseñados para resolver procesos centrales del negocio: auditoría, automatización y gestión. Explorá soluciones funcionales y conceptos listos para evolucionar.',
+    seoTitle: 'Desarrollos de Software | Ideal-IT',
     seoDescription:
-      'Explorá desarrollos de software core de Ideal-IT: sistemas integrados, auditoría, automatización, gestión y propuestas de backend.',
+      'Explorá los desarrollos de software de Ideal-IT: sistemas integrados para auditoría, automatización, gestión y operación.',
     demoIds: [
       'personal-biometrico',
       'auditoria-healthcore',
@@ -34,7 +34,7 @@ export const DEMO_CATEGORIES: DemoCategory[] = [
   },
   {
     id: 'aplicaciones',
-    path: '/categorias/aplicaciones',
+    path: '/aplicaciones',
     title: 'Aplicaciones y Portales',
     eyebrow: 'Herramientas funcionales · Experiencias digitales',
     description:
@@ -54,7 +54,7 @@ export const DEMO_CATEGORIES: DemoCategory[] = [
   },
   {
     id: 'paginas-comerciales',
-    path: '/categorias/paginas-comerciales',
+    path: '/paginas-comerciales',
     title: 'Páginas Comerciales',
     eyebrow: 'Landings de nicho · Comunicación de marca',
     description:

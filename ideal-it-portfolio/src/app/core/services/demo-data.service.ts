@@ -7,7 +7,7 @@ import { DemoCategory } from '../models/demo-category.model';
 const DEMO_DATA: Demo[] = [
   {
     id: 'personal-biometrico',
-    title: 'MVP Personal & Control Biométrico',
+    title: 'Gestión de Personal & Control Biométrico',
     summary: 'Gestión de nómina, áreas y simulación de tramas IP (ZKBio/Suprema).',
     description:
       'Subsistema local e independiente para gestionar personal, áreas, licencias y reportes de asistencia. El simulador biométrico genera actividad sintética: no se conecta a terminales reales.',
@@ -23,7 +23,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'auditoria-healthcore',
-    title: 'MVP Auditoría & Bóveda Documental (HealthCore)',
+    title: 'Auditoría & Bóveda Documental (HealthCore)',
     summary: 'Visor de documentos de salud, validaciones y nomencladores médicos.',
     description:
       'Panel independiente de auditoría médica y documental con previsualizaciones de muestra, validaciones ficticias de matrícula/identidad y un catálogo demostrativo. No consulta registros oficiales ni contiene historias clínicas reales.',
@@ -39,7 +39,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'formularios-turismo',
-    title: 'MVP Formularios & Turismo Municipal',
+    title: 'Formularios & Turismo Municipal',
     summary: 'Eventos turísticos, inscripciones ciudadanas y validación por códigos QR.',
     description:
       'Plataforma local para publicar eventos gratuitos, gestionar inscripciones y registrar la asistencia mediante códigos QR. El subsistema conserva su propia API y base de datos.',
@@ -55,7 +55,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'osma-inspecciones',
-    title: 'MVP Inspecciones de Campo',
+    title: 'Inspecciones de Campo',
     summary: 'Inspecciones de campo mobile-first con PWA y operación offline.',
     description:
       'Subsistema independiente para digitalizar planillas de campo, consultar afiliados ficticios y sincronizar una cola local cuando regresa la conectividad. Su frontend React PWA y backend FastAPI se ejecutan por separado.',
@@ -70,7 +70,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'valentin-cripto',
-    title: 'MVP Automatización de Señales',
+    title: 'Automatización de Señales',
     summary: 'Webhooks de TradingView, ledger simulado y telemetría de estrategia.',
     description:
       'Servicio FastAPI con autenticación de webhooks y órdenes simuladas en memoria. No se conecta a Binance, no ejecuta operaciones reales y requiere controles de acceso antes de publicar su telemetría.',
@@ -85,7 +85,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'logistica-fleet',
-    title: 'MVP Logística & Smart Fleet',
+    title: 'Logística & Smart Fleet',
     summary: 'Flota, conductores, asignación de envíos y tracking de última milla.',
     description:
       'Aplicación local Node.js/TypeScript con Express, Prisma y SQLite aislada. El respaldo SSH/SFTP es una simulación local: no abre conexiones ni transfiere archivos.',
@@ -100,7 +100,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'agrotech-iot',
-    title: 'MVP AgroTech & Telemetría',
+    title: 'AgroTech & Telemetría',
     summary: 'Lotes, sensores IoT, vuelos de drones y reportes analíticos.',
     description:
       'Aplicación independiente Vue 3 y Go/Gin con PostgreSQL propia. La ingesta representa telemetría recibida por API; no incluye conexión directa a sensores o drones.',
@@ -115,7 +115,7 @@ const DEMO_DATA: Demo[] = [
   },
   {
     id: 'visitor-pass',
-    title: 'MVP Control de Visitantes',
+    title: 'Control de Visitantes',
     summary: 'Registro de visitas, pases temporales y seguimiento de egresos.',
     description:
       'Aplicación local PHP/PDO con SQLite aislada. No implementa autenticación ni se integra con molinetes o controles de acceso físico.',

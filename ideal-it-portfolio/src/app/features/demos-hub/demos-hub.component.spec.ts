@@ -23,23 +23,23 @@ describe('DemosHubComponent', () => {
   it('renders all MVP and historical portfolio cards with technology tags', () => {
     const content = (fixture.nativeElement as HTMLElement).textContent ?? '';
 
-    expect(content).toContain('Soluciones de software');
+    expect(content).toContain('Diseñamos tecnología.');
     expect(content).toContain('Nuestros trabajos');
-    expect(content).toContain('MVP Personal & Control Biométrico');
-    expect(content).toContain('MVP Auditoría & Bóveda Documental (HealthCore)');
-    expect(content).toContain('MVP Formularios & Turismo Municipal');
-    expect(content).toContain('MVP Inspecciones de Campo');
-    expect(content).toContain('MVP Automatización de Señales');
-    expect(content).toContain('MVP Logística & Smart Fleet');
-    expect(content).toContain('MVP AgroTech & Telemetría');
-    expect(content).toContain('MVP Control de Visitantes');
+    expect(content).toContain('Gestión de Personal & Control Biométrico');
+    expect(content).toContain('Auditoría & Bóveda Documental (HealthCore)');
+    expect(content).toContain('Formularios & Turismo Municipal');
+    expect(content).toContain('Inspecciones de Campo');
+    expect(content).toContain('Automatización de Señales');
+    expect(content).toContain('Logística & Smart Fleet');
+    expect(content).toContain('AgroTech & Telemetría');
+    expect(content).toContain('Control de Visitantes');
     expect(content).toContain('App educativa infantil');
     expect(content).toContain('Trazabilidad frigorífica');
     expect(content).toContain('POS & cierre de caja');
     expect(content).toContain('Portal municipal de demostración');
     expect(content).toContain('Sitio de servicios digitales');
     expect(content).toContain('Bootstrap');
-    expect(content).toContain('PostgreSQL');
+    expect(content).toContain('Angular');
     expect(content).toContain('El Rincón Gourmet');
     expect(content).toContain('Pluma y Tinta');
     expect(content).toContain('Manos Maestras');
@@ -48,14 +48,14 @@ describe('DemosHubComponent', () => {
     expect((fixture.nativeElement as HTMLElement).querySelectorAll('app-demo-card').length).toBe(18);
   });
 
-  it('filters projects by service type, state, features, and normalized title or technology search', () => {
+  it('filters projects by service type, availability, features, and normalized title or technology search', () => {
     const component = fixture.componentInstance;
 
     component.selectedServiceType = 'utility';
     expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual(['pos-comercio']);
 
     component.selectedServiceType = '';
-    component.selectedState = 'preview';
+    component.selectedState = 'interactive';
     expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual([
       'personal-biometrico',
       'auditoria-healthcore',
@@ -64,7 +64,6 @@ describe('DemosHubComponent', () => {
 
     component.selectedState = 'all';
     component.filters.hasDemo = true;
-    component.filters.isPreview = true;
     component.filters.hasBackend = true;
     expect(component.filterDemos(demos).map((demo) => demo.id)).toEqual([
       'personal-biometrico',
@@ -72,7 +71,7 @@ describe('DemosHubComponent', () => {
       'formularios-turismo',
     ]);
 
-    component.filters = { hasDemo: false, isPreview: false, hasBackend: false };
+    component.filters = { hasDemo: false, hasBackend: false };
     component.searchTerm = 'postgreSQL';
     expect(component.filterDemos(demos).map((demo) => demo.id)).toContain('agrotech-iot');
   });
@@ -98,31 +97,31 @@ describe('DemosHubComponent', () => {
     expect(element.querySelectorAll('app-demo-card').length).toBe(18);
   });
 
-  it('distinguishes eight local MVPs, four proposals and standalone landings', () => {
+  it('uses client-facing actions and status labels without internal implementation metadata', () => {
     const buttons = Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('button'),
     );
-    const mvpButtons = buttons.filter((button) => button.textContent?.includes('Ver detalles del MVP'));
-    const proposalButtons = buttons.filter((button) => button.textContent?.includes('Ver propuesta'));
+    const requestButtons = buttons.filter((button) => button.textContent?.includes('Solicitar demo'));
+    const previewButtons = buttons.filter((button) => button.textContent?.includes('Explorar demo'));
 
-    expect(mvpButtons.length).toBe(8);
-    expect(proposalButtons.length).toBe(4);
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('MVP local');
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Arquitectura propuesta');
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Landing autónoma');
+    expect(requestButtons.length).toBe(10);
+    expect(previewButtons.length).toBe(8);
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('MVP local');
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Arquitectura propuesta');
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Landing autónoma');
   });
 
   it('links all eighteen home cards to their corresponding category landing', () => {
     const links = Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>(
-        'app-demo-card a[href^="/categorias/"]',
+        'app-demo-card a[href^="/desarrollos"], app-demo-card a[href^="/aplicaciones"], app-demo-card a[href^="/paginas-comerciales"]',
       ),
     );
 
     expect(links.length).toBe(18);
-    expect(links.filter((link) => link.href.endsWith('/categorias/desarrollos')).length).toBe(5);
-    expect(links.filter((link) => link.href.endsWith('/categorias/aplicaciones')).length).toBe(7);
-    expect(links.filter((link) => link.href.endsWith('/categorias/paginas-comerciales')).length).toBe(6);
+    expect(links.filter((link) => link.href.endsWith('/desarrollos')).length).toBe(5);
+    expect(links.filter((link) => link.href.endsWith('/aplicaciones')).length).toBe(7);
+    expect(links.filter((link) => link.href.endsWith('/paginas-comerciales')).length).toBe(6);
   });
 
   it('identifies the municipal landing as local without linking it as a deployed preview', () => {
@@ -135,24 +134,22 @@ describe('DemosHubComponent', () => {
     const card = Array.from(element.querySelectorAll('app-demo-card')).find((candidate) =>
       candidate.textContent?.includes('Portal municipal de demostración'),
     );
-    expect(card?.textContent).toContain('Ver detalles de la landing');
+    expect(card?.textContent).toContain('Solicitar demo');
   });
 
-  it('shows the corresponding relative subsystem reference in each card detail', () => {
+  it('shows three clean conceptual mockups for each project without a public preview', () => {
     const element = fixture.nativeElement as HTMLElement;
-    const cards = Array.from(element.querySelectorAll('app-demo-card'));
+    const demosWithoutPreview = demos.filter((demo) => !demo.previewPath && !demo.previewUrl);
 
-    expect(cards.length).toBe(demos.length);
-    cards.forEach((card, index) => {
-      card.querySelector<HTMLButtonElement>('button')?.click();
+    expect(demosWithoutPreview.length).toBe(10);
+    demosWithoutPreview.forEach((demo) => {
+      fixture.componentInstance.selectDemo(demo);
       fixture.detectChanges();
 
-      const dialogContent = element.querySelector('[role="dialog"]')?.textContent ?? '';
-      for (const sourcePath of demos[index].sourcePaths) {
-        expect(dialogContent).toContain(sourcePath);
-      }
-      expect(dialogContent).not.toContain('portfolio/');
-      expect(dialogContent).not.toContain('DOSEP');
+      const dialog = element.querySelector('[role="dialog"]');
+      expect(dialog?.querySelectorAll('[aria-label^="Vista conceptual:"]').length).toBe(3);
+      expect(dialog?.textContent).toContain('Solicitar demo');
+      expect(dialog?.textContent).not.toContain('mvp-personal/');
 
       element.querySelector<HTMLButtonElement>('[aria-label="Cerrar detalle"]')?.click();
       fixture.detectChanges();
@@ -178,6 +175,8 @@ describe('DemosHubComponent', () => {
         expect(link?.target).toBe('_blank');
         expect(link?.rel).toContain('noopener');
         expect(link?.rel).toContain('noreferrer');
+      } else if (!demo.previewPath) {
+        expect(dialog?.textContent).toContain('Solicitar demo');
       }
     }
   });
@@ -185,14 +184,12 @@ describe('DemosHubComponent', () => {
   it('opens and closes the selected demo details', () => {
     const element = fixture.nativeElement as HTMLElement;
     const enterButton = Array.from(element.querySelectorAll('button')).find((button) =>
-      button.textContent?.includes('Ver detalles del MVP'),
+      button.textContent?.includes('Explorar demo'),
     );
 
     enterButton?.click();
     fixture.detectChanges();
-    expect(element.querySelector('[role="dialog"]')?.textContent).toContain(
-      'datos temporales del navegador',
-    );
+    expect(element.querySelector('[role="dialog"]')?.textContent).toContain('Gestión de Personal & Control Biométrico');
 
     element.querySelector<HTMLButtonElement>('[aria-label="Cerrar detalle"]')?.click();
     fixture.detectChanges();
@@ -208,9 +205,8 @@ describe('DemosHubComponent', () => {
     const element = fixture.nativeElement as HTMLElement;
     const link = element.querySelector<HTMLAnchorElement>('a[href="/mvp/formularios"]');
 
-    expect(link?.textContent).toContain('Abrir preview interactiva');
-    expect(element.textContent).toContain('datos temporales del navegador');
-    expect(element.textContent).toContain('aisladas de esta landing');
+    expect(link?.textContent).toContain('Abrir demo interactiva');
+    expect(element.textContent).not.toContain('mvp-formularios/');
   });
 
   it('opens a proposal and labels its implementation status honestly', () => {
@@ -220,8 +216,7 @@ describe('DemosHubComponent', () => {
     fixture.detectChanges();
 
     const dialog = (fixture.nativeElement as HTMLElement).querySelector('[role="dialog"]');
-    expect(dialog?.textContent).toContain('arquitectura propuesta');
-    expect(dialog?.textContent).toContain('deben validarse');
+    expect(dialog?.textContent).toContain('validar código');
   });
 
   it('links commercial landing cards to their independent static previews', () => {
@@ -238,6 +233,6 @@ describe('DemosHubComponent', () => {
     expect(link?.target).toBe('_blank');
     expect(link?.rel).toContain('noopener');
     expect(link?.rel).toContain('noreferrer');
-    expect(element.textContent).toContain('interacciones demostrativas en memoria');
+    expect(element.textContent).toContain('Landing online');
   });
 });

@@ -1,1 +1,58 @@
+<header class="sticky top-0 z-20 border-b border-white/[0.08] bg-ink/90 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 sm:px-8 lg:px-12">
+    <a
+      class="flex items-center gap-3 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+      routerLink="/"
+      aria-label="Ideal-IT, inicio"
+      (click)="closeMenu()"
+    >
+      <span class="grid h-9 w-9 place-items-center rounded-lg bg-accent text-sm font-black text-ink">I</span>
+      <span class="text-sm font-bold tracking-[0.08em] text-white">IDEAL<span class="text-accent">-IT</span></span>
+    </a>
+
+    <button
+      type="button"
+      class="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-slate-200 transition hover:border-accent/40 hover:text-accent md:hidden"
+      [attr.aria-label]="menuOpen ? 'Cerrar navegación' : 'Abrir navegación'"
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="primary-navigation"
+      (click)="menuOpen = !menuOpen"
+    >
+      <span class="text-xl" aria-hidden="true">{{ menuOpen ? '×' : '☰' }}</span>
+    </button>
+
+    <nav
+      id="primary-navigation"
+      aria-label="Navegación principal"
+      class="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-white/[0.08] bg-ink px-5 py-3 shadow-xl md:static md:flex md:flex-row md:items-center md:gap-1 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
+      [class.hidden]="!menuOpen"
+    >
+      <a
+        class="rounded-lg px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-white md:py-2"
+        routerLink="/desarrollos"
+        routerLinkActive="text-accent"
+        (click)="closeMenu()"
+      >Desarrollos</a>
+      <a
+        class="rounded-lg px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-white md:py-2"
+        routerLink="/aplicaciones"
+        routerLinkActive="text-accent"
+        (click)="closeMenu()"
+      >Aplicaciones</a>
+      <a
+        class="rounded-lg px-3 py-2.5 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-white md:py-2"
+        routerLink="/paginas-comerciales"
+        routerLinkActive="text-accent"
+        (click)="closeMenu()"
+      >Páginas comerciales</a>
+      <a
+        class="mt-1 inline-flex min-h-10 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.06] px-4 text-sm font-semibold text-accent transition hover:bg-accent/[0.12] md:ml-2 md:mt-0"
+        routerLink="/"
+        fragment="contacto"
+        (click)="closeMenu()"
+      >Contacto</a>
+    </nav>
+  </div>
+</header>
+
 <router-outlet />

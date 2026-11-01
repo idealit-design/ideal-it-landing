@@ -14,56 +14,48 @@ export class DemoCardComponent {
   @Input() categoryHref?: string;
   @Output() selected = new EventEmitter<Demo>();
 
-  get isLive(): boolean {
-    return this.demo.status === 'live';
+  get hasPublicPreview(): boolean {
+    return Boolean(this.demo.previewPath || this.demo.previewUrl);
   }
 
-  get isComingSoon(): boolean {
-    return this.demo.status === 'coming-soon';
-  }
-
-  get isPlanned(): boolean {
-    return this.demo.status === 'planned';
-  }
-
-  get isLanding(): boolean {
-    return this.demo.status === 'landing';
+  get accentClasses(): string {
+    switch (this.demo.serviceType) {
+      case 'development':
+        return 'border-l-violet-300/70 group-hover:border-violet-200';
+      case 'application':
+        return 'border-l-sky-300/70 group-hover:border-sky-200';
+      case 'commercial-page':
+        return 'border-l-emerald-300/70 group-hover:border-emerald-200';
+      case 'utility':
+        return 'border-l-amber-300/70 group-hover:border-amber-200';
+    }
   }
 
   get statusLabel(): string {
+    if (this.demo.previewUrl) {
+      return 'Landing online';
+    }
+    if (this.demo.previewPath) {
+      return 'Demo interactiva';
+    }
+
     switch (this.demo.status) {
       case 'live':
-        return 'Demo activa';
       case 'mvp':
-        return 'MVP local';
+        return 'Demo a solicitud';
       case 'planned':
-        return 'Arquitectura propuesta';
+        return 'Concepto validable';
       case 'coming-soon':
-        return 'Próximamente';
       case 'landing':
-        return 'Landing autónoma';
+        return 'Disponible a solicitud';
     }
   }
 
   get actionLabel(): string {
-    if (this.isComingSoon) {
-      return 'Próximamente';
-    }
-    if (this.isLive) {
-      return 'Ingresar a la Demo Live';
-    }
-    if (this.isLanding) {
-      return this.demo.previewUrl ? 'Ver landing comercial' : 'Ver detalles de la landing';
-    }
-    if (this.isPlanned) {
-      return 'Ver propuesta';
-    }
-    return 'Ver detalles del MVP';
+    return this.hasPublicPreview ? 'Explorar demo' : 'Solicitar demo';
   }
 
   selectDemo(): void {
-    if (!this.isComingSoon) {
-      this.selected.emit(this.demo);
-    }
+    this.selected.emit(this.demo);
   }
 }

@@ -10,11 +10,12 @@ import {
 } from '../../core/models/demo-category.model';
 import { DemoDataService } from '../../core/services/demo-data.service';
 import { DemoCardComponent } from '../../shared/components/demo-card/demo-card.component';
+import { DemoDetailsModalComponent } from '../../shared/components/demo-details-modal/demo-details-modal.component';
 
 @Component({
   selector: 'app-category-landing',
   standalone: true,
-  imports: [AsyncPipe, DemoCardComponent, RouterLink],
+  imports: [AsyncPipe, DemoCardComponent, DemoDetailsModalComponent, RouterLink],
   templateUrl: './category-landing.component.html',
 })
 export class CategoryLandingComponent {

@@ -9,6 +9,18 @@
       "destination": "/index.html"
     },
     {
+      "source": "/desarrollos",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/aplicaciones",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/paginas-comerciales",
+      "destination": "/index.html"
+    },
+    {
       "source": "/mvp/:path*",
       "destination": "/index.html"
     },

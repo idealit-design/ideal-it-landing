@@ -1,0 +1,144 @@
+<div
+  class="fixed inset-0 z-30 grid place-items-center bg-[#03060c]/80 p-4 backdrop-blur-sm sm:p-6"
+  role="presentation"
+  (click)="close()"
+  (keydown.escape)="close()"
+  tabindex="-1"
+>
+  <section
+    class="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-white/10 bg-[#101827] p-5 shadow-2xl sm:p-8"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="demo-dialog-title"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em]" [ngClass]="accentClasses">
+          {{ demo.category }}
+        </p>
+        <h2 id="demo-dialog-title" class="mt-3 text-2xl font-semibold leading-snug text-white sm:text-3xl">
+          {{ demo.title }}
+        </h2>
+      </div>
+      <button
+        type="button"
+        class="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+        aria-label="Cerrar detalle"
+        (click)="close()"
+      >
+        ×
+      </button>
+    </div>
+
+    <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-400">{{ demo.description }}</p>
+
+    @if (!hasPublicPreview) {
+      <section class="mt-7" aria-labelledby="conceptual-preview-heading">
+        <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">Vista conceptual</p>
+            <h3 id="conceptual-preview-heading" class="mt-1 text-sm font-semibold text-white">Así podría verse el producto</h3>
+          </div>
+          <span class="text-[11px] text-slate-500">Mockups ilustrativos · no funcionales</span>
+        </div>
+
+        <div class="grid gap-3 md:grid-cols-3">
+          <article class="rounded-xl border border-white/[0.08] bg-[#0b1220] p-3" aria-label="Vista conceptual: panel de resumen">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="text-[10px] font-semibold text-slate-300">Resumen</span>
+              <span class="h-1.5 w-8 rounded-full bg-accent/50"></span>
+            </div>
+            <div class="flex items-end gap-2">
+              <div class="h-12 flex-1 rounded-t bg-accent/20"></div>
+              <div class="h-8 flex-1 rounded-t bg-sky-300/20"></div>
+              <div class="h-16 flex-1 rounded-t bg-accent/40"></div>
+              <div class="h-10 flex-1 rounded-t bg-violet-300/20"></div>
+            </div>
+            <div class="mt-3 h-px bg-white/[0.08]"></div>
+            <div class="mt-2 flex justify-between text-[9px] text-slate-500"><span>Actividad</span><span>Últimos 30 días</span></div>
+          </article>
+
+          <article class="rounded-xl border border-white/[0.08] bg-[#0b1220] p-3" aria-label="Vista conceptual: gestión operativa">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="text-[10px] font-semibold text-slate-300">Operación</span>
+              <span class="rounded bg-emerald-300/10 px-1.5 py-0.5 text-[8px] text-emerald-200">Activo</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2 rounded-md bg-white/[0.03] p-2"><span class="h-5 w-5 rounded bg-sky-300/15"></span><span class="h-1.5 flex-1 rounded bg-white/10"></span><span class="h-1.5 w-7 rounded bg-accent/30"></span></div>
+              <div class="flex items-center gap-2 rounded-md bg-white/[0.03] p-2"><span class="h-5 w-5 rounded bg-violet-300/15"></span><span class="h-1.5 flex-1 rounded bg-white/10"></span><span class="h-1.5 w-7 rounded bg-amber-300/30"></span></div>
+              <div class="flex items-center gap-2 rounded-md bg-white/[0.03] p-2"><span class="h-5 w-5 rounded bg-accent/15"></span><span class="h-1.5 flex-1 rounded bg-white/10"></span><span class="h-1.5 w-7 rounded bg-accent/30"></span></div>
+            </div>
+          </article>
+
+          <article class="rounded-xl border border-white/[0.08] bg-[#0b1220] p-3" aria-label="Vista conceptual: reportes y métricas">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="text-[10px] font-semibold text-slate-300">Indicadores</span>
+              <span class="text-[9px] text-slate-500">Este mes</span>
+            </div>
+            <div class="rounded-md border border-white/[0.06] p-2.5">
+              <div class="flex items-baseline gap-2"><span class="text-lg font-semibold text-white">84%</span><span class="text-[9px] text-emerald-200">+12%</span></div>
+              <div class="mt-2 flex h-8 items-end gap-1">
+                <span class="h-3 flex-1 rounded-t bg-accent/20"></span><span class="h-5 flex-1 rounded-t bg-accent/30"></span><span class="h-4 flex-1 rounded-t bg-accent/25"></span><span class="h-7 flex-1 rounded-t bg-accent/50"></span><span class="h-6 flex-1 rounded-t bg-accent/40"></span><span class="h-8 flex-1 rounded-t bg-accent/60"></span>
+              </div>
+            </div>
+            <div class="mt-2 h-1.5 w-2/3 rounded bg-white/[0.08]"></div>
+          </article>
+        </div>
+      </section>
+    }
+
+    <div class="mt-6 flex flex-wrap gap-2" aria-label="Tecnologías principales">
+      @for (technology of demo.technologies.slice(0, 3); track technology) {
+        <span class="rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-xs text-slate-300">
+          {{ technology }}
+        </span>
+      }
+    </div>
+
+    @if (requestReady) {
+      <p class="mt-5 rounded-lg border border-accent/20 bg-accent/[0.05] p-4 text-sm leading-6 text-slate-300" role="status">
+        <span class="font-semibold text-white">{{ demo.title }}</span> quedó seleccionado para solicitar una demo.
+        El canal de envío todavía no está configurado; no se envió ninguna solicitud.
+      </p>
+    }
+
+    <div class="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
+      <div class="flex flex-wrap gap-2">
+        @if (demo.previewUrl; as previewUrl) {
+          <a
+            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            [href]="previewUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Abrir landing comercial
+          </a>
+        } @else if (demo.previewPath) {
+          <a
+            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            [routerLink]="demo.previewPath"
+            (click)="close()"
+          >
+            Abrir demo interactiva
+          </a>
+        } @else if (demo.status !== 'coming-soon') {
+          <button
+            type="button"
+            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            (click)="requestReady = true"
+          >
+            Solicitar demo
+          </button>
+        }
+      </div>
+      <button
+        type="button"
+        class="rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        (click)="close()"
+      >
+        Cerrar
+      </button>
+    </div>
+  </section>
+</div>

@@ -16,10 +16,14 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ideal-it-portfolio' title`, () => {
+  it('exposes direct category links in the shared navigation', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ideal-it-portfolio');
-  });
+    fixture.detectChanges();
 
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('a[href="/desarrollos"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/aplicaciones"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/paginas-comerciales"]')).not.toBeNull();
+    expect(element.querySelector('button[aria-controls="primary-navigation"]')).not.toBeNull();
+  });
 });

@@ -10,7 +10,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'categorias/desarrollos',
+    path: 'desarrollos',
     data: { categoryId: 'desarrollos' },
     loadComponent: () =>
       import('./features/category-landing/category-landing.component').then(
@@ -18,7 +18,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'categorias/aplicaciones',
+    path: 'aplicaciones',
     data: { categoryId: 'aplicaciones' },
     loadComponent: () =>
       import('./features/category-landing/category-landing.component').then(
@@ -26,13 +26,16 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'categorias/paginas-comerciales',
+    path: 'paginas-comerciales',
     data: { categoryId: 'paginas-comerciales' },
     loadComponent: () =>
       import('./features/category-landing/category-landing.component').then(
         (component) => component.CategoryLandingComponent,
       ),
   },
+  { path: 'categorias/desarrollos', pathMatch: 'full', redirectTo: 'desarrollos' },
+  { path: 'categorias/aplicaciones', pathMatch: 'full', redirectTo: 'aplicaciones' },
+  { path: 'categorias/paginas-comerciales', pathMatch: 'full', redirectTo: 'paginas-comerciales' },
   {
     path: 'mvp/personal',
     loadComponent: () =>

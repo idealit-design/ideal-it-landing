@@ -28,7 +28,7 @@ El estándar para crear y adaptar MVPs Angular, incluyendo la política de aisla
 
 Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Cada uno conserva su backend y almacenamiento aislados. El catálogo público muestra únicamente referencias a los directorios `mvp-*`; no expone las rutas locales ni los archivos de los respaldos históricos.
 
-El Demos Hub contiene ocho tarjetas de MVP local y cinco fichas de casos de referencia; una identifica una landing frontend local independiente. Las propuestas se identifican como arquitectura por validar y ninguna ficha implica un producto desplegado. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
+El Demos Hub reúne 18 proyectos en tres categorías, con tres previews interactivas y cinco landings comerciales navegables. Las fichas sin preview pública muestran vistas conceptuales y permiten seleccionar el sistema para solicitar una demo; el envío permanece pendiente hasta configurar un canal de contacto. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
 
 Puertos locales actuales: Personal frontend/API `4203`/`8001`; Auditoría `4201`/`8002`; Formularios `4202`/`8003`; OSMA PWA/API `5175`/`8005`. El resto de los MVP se ejecuta de forma independiente según sus README. La guía y planificación centralizadas están en [md/README.md](../md/README.md), y la copia íntegra del manual en [md/manual.md](../md/manual.md).
 
@@ -68,11 +68,11 @@ Frontend:
 npm start
 ```
 
-Abre `http://localhost:4200`. Las rutas de los módulos/preview son `/mvp/personal`, `/mvp/auditoria` y `/mvp/formularios`.
+Abre `http://localhost:4200`. Las categorías se visitan en `/desarrollos`, `/aplicaciones` y `/paginas-comerciales` (las rutas anteriores `/categorias/...` redirigen a estas). Las rutas de los módulos/preview son `/mvp/personal`, `/mvp/auditoria` y `/mvp/formularios`.
 
 ## Despliegue de la landing en Vercel
 
-Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas SPA hacia `index.html`; las rutas Angular responden al navegar y al refrescar.
+Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas de categorías y MVP a `index.html`; las rutas Angular responden al navegar y al refrescar.
 
 Vercel publica esta aplicación Angular estática. `vercel.json` reescribe las rutas de la SPA a `index.html`, incluido el acceso directo o refresco de `/mvp/formularios`. La preview de Formularios es código Angular de presentación con datos temporales, no una conexión al backend. El MVP standalone de Turismo/Eventos, Personal y Auditoría permanecen independientes: sus APIs FastAPI y bases SQLite no se despliegan con la landing ni se exponen como servicios públicos.
 

@@ -17,15 +17,24 @@ describe('application routes', () => {
     );
   });
 
-  it('exposes a dedicated category landing for each portfolio grouping', () => {
-    expect(routes.find((route) => route.path === 'categorias/desarrollos')?.data).toEqual({
+  it('exposes short category routes and redirects previous category URLs', () => {
+    expect(routes.find((route) => route.path === 'desarrollos')?.data).toEqual({
       categoryId: 'desarrollos',
     });
-    expect(routes.find((route) => route.path === 'categorias/aplicaciones')?.data).toEqual({
+    expect(routes.find((route) => route.path === 'aplicaciones')?.data).toEqual({
       categoryId: 'aplicaciones',
     });
-    expect(routes.find((route) => route.path === 'categorias/paginas-comerciales')?.data).toEqual({
+    expect(routes.find((route) => route.path === 'paginas-comerciales')?.data).toEqual({
       categoryId: 'paginas-comerciales',
     });
+    expect(routes.find((route) => route.path === 'categorias/desarrollos')).toEqual(
+      jasmine.objectContaining({ redirectTo: 'desarrollos', pathMatch: 'full' }),
+    );
+    expect(routes.find((route) => route.path === 'categorias/aplicaciones')).toEqual(
+      jasmine.objectContaining({ redirectTo: 'aplicaciones', pathMatch: 'full' }),
+    );
+    expect(routes.find((route) => route.path === 'categorias/paginas-comerciales')).toEqual(
+      jasmine.objectContaining({ redirectTo: 'paginas-comerciales', pathMatch: 'full' }),
+    );
   });
 });
