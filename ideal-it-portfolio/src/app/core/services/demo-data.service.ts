@@ -56,7 +56,7 @@ const DEMO_DATA: Demo[] = [
   {
     id: 'osma-inspecciones',
     title: 'Inspecciones de Campo',
-    summary: 'Inspecciones de campo mobile-first con PWA y operación offline.',
+    summary: 'PWA de inspecciones offline con cola local cifrada y sincronización al recuperar conexión.',
     description:
       'Subsistema independiente para digitalizar planillas de campo, consultar afiliados ficticios y sincronizar una cola local cuando regresa la conectividad. Su frontend React PWA y backend FastAPI se ejecutan por separado.',
     category: 'Inspecciones & PWA',
