@@ -30,6 +30,8 @@ Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Cada un
 
 El Demos Hub reúne 18 proyectos en tres categorías, con tres previews interactivas y cinco landings comerciales navegables. Las fichas sin preview pública muestran vistas conceptuales y permiten seleccionar el sistema para solicitar una demo; el envío permanece pendiente hasta configurar un canal de contacto. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
 
+Las tarjetas priorizan categoría, título y descripción, muestran hasta tres tecnologías representativas (frontend, backend y datos cuando están disponibles) y mantienen el enlace de categoría y la acción principal en una sola fila. El borde sutil a color identifica la categoría comercial y el contenido usa una altura compacta y consistente.
+
 Puertos locales actuales: Personal frontend/API `4203`/`8001`; Auditoría `4201`/`8002`; Formularios `4202`/`8003`; OSMA PWA/API `5175`/`8005`. El resto de los MVP se ejecuta de forma independiente según sus README. La guía y planificación centralizadas están en [md/README.md](../md/README.md), y la copia íntegra del manual en [md/manual.md](../md/manual.md).
 
 ## Crear el frontend desde cero

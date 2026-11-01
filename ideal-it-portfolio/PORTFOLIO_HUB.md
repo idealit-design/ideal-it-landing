@@ -27,6 +27,8 @@
 
 La landing Angular 18 se despliega como una SPA estática en Vercel. Demos Hub es la página de inicio (`/`) y las rutas SPA admiten navegación directa y refresco.
 
+Las tarjetas del Hub presentan primero la categoría, el nombre de la solución y un resumen conciso. Muestran como máximo tres tecnologías representativas, priorizando variedad entre frontend, backend y datos, y agrupan navegación y acción principal en una fila. Un borde de acento sutil en los cuatro lados conserva la identidad de cada categoría sin recargar la grilla.
+
 Las previews interactivas solo son de presentación: emplean datos ficticios efímeros en el navegador, no persisten, no abren cámara ni conectan con APIs locales. Los subsistemas locales conservan frontend/API/DB separados; no se publican junto con la SPA.
 
 La matriz de avance, el plan de migración, las referencias originales y los resúmenes técnicos se mantienen en el [índice documental central](../md/README.md). El manual íntegro está disponible en [md/manual.md](../md/manual.md).

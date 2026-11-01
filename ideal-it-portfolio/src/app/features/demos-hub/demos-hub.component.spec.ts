@@ -38,7 +38,7 @@ describe('DemosHubComponent', () => {
     expect(content).toContain('POS & cierre de caja');
     expect(content).toContain('Portal municipal de demostración');
     expect(content).toContain('Sitio de servicios digitales');
-    expect(content).toContain('Bootstrap');
+    expect(content).toContain('FastAPI');
     expect(content).toContain('Angular');
     expect(content).toContain('El Rincón Gourmet');
     expect(content).toContain('Pluma y Tinta');
@@ -116,10 +116,30 @@ describe('DemosHubComponent', () => {
     const cards = Array.from(element.querySelectorAll<HTMLElement>('app-demo-card'));
     cards.forEach((card) => {
       expect(card.querySelector('.grid.h-12.w-12')).toBeNull();
-      expect(card.querySelectorAll('[aria-label="Tecnologías"] > span').length).toBeLessThanOrEqual(2);
+      expect(card.querySelectorAll('[aria-label="Tecnologías"] > span').length).toBeLessThanOrEqual(3);
       const actionButton = card.querySelector('button');
       expect(actionButton?.parentElement?.querySelector('a')).not.toBeNull();
     });
+
+    const visitorCard = cards.find((card) => card.textContent?.includes('Control de Visitantes'));
+    const visitorTechnologies = Array.from(
+      visitorCard?.querySelectorAll('[aria-label="Tecnologías"] > span') ?? [],
+    ).map((technology) => technology.textContent?.trim());
+    expect(visitorTechnologies).toEqual(['PHP 8', 'SQLite', 'Tailwind CSS']);
+
+    const personalCard = cards.find((card) =>
+      card.textContent?.includes('Gestión de Personal & Control Biométrico'),
+    );
+    const personalTechnologies = Array.from(
+      personalCard?.querySelectorAll('[aria-label="Tecnologías"] > span') ?? [],
+    ).map((technology) => technology.textContent?.trim());
+    expect(personalTechnologies).toEqual(['Angular', 'FastAPI', 'SQLite']);
+
+    const agroCard = cards.find((card) => card.textContent?.includes('AgroTech & Telemetría'));
+    const agroTechnologies = Array.from(
+      agroCard?.querySelectorAll('[aria-label="Tecnologías"] > span') ?? [],
+    ).map((technology) => technology.textContent?.trim());
+    expect(agroTechnologies).toEqual(['Vue 3', 'Gin', 'PostgreSQL']);
   });
 
   it('links all eighteen home cards to their corresponding category landing', () => {

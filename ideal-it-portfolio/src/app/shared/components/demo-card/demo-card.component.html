@@ -1,5 +1,5 @@
 <article
-  class="group relative flex min-h-[390px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] border-l-2 bg-panel/80 p-6 shadow-[0_16px_50px_-30px_rgba(0,0,0,0.8)] transition duration-300 hover:-translate-y-1 hover:bg-[#131e30] sm:p-7"
+  class="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-panel/80 p-6 shadow-[0_16px_50px_-30px_rgba(0,0,0,0.8)] transition duration-300 hover:-translate-y-1 hover:bg-[#131e30] sm:p-7"
   [ngClass]="accentClasses"
 >
   <div
@@ -8,7 +8,7 @@
   ></div>
 
   <div class="relative">
-    <p class="mb-2 min-h-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+    <p class="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
       {{ demo.category }}
     </p>
     <h2 class="line-clamp-2 min-h-[3.5rem] text-xl font-semibold leading-snug tracking-tight text-white sm:text-[22px]">
@@ -17,11 +17,11 @@
     <p class="demo-card-summary mt-3 text-sm leading-6 text-slate-400">{{ demo.summary }}</p>
   </div>
 
-  <div class="relative mt-auto pt-7">
-    <div class="flex h-7 flex-nowrap gap-2 overflow-hidden" aria-label="Tecnologías">
-      @for (technology of demo.technologies.slice(0, 2); track technology) {
+  <div class="relative mt-5">
+    <div class="flex min-h-7 flex-wrap gap-2" aria-label="Tecnologías">
+      @for (technology of displayTechnologies; track technology) {
         <span
-          class="max-w-[calc(50%-0.25rem)] truncate whitespace-nowrap rounded-md border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-slate-400"
+          class="max-w-full truncate whitespace-nowrap rounded-md border border-white/[0.07] bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-slate-400"
         >
           {{ technology }}
         </span>
