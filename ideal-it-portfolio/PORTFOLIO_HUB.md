@@ -8,11 +8,11 @@
 | `app-portal-ciudadano` | `0.1.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `app-valentin-cripto` | `0.1.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-agrotech-iot` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-auditoria` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-formularios` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-auditoria` | `0.1.2` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-formularios` | `0.1.2` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-logistica-fleet` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/`, `mvp-logistica-fleet/` | 2 |
-| `mvp-osma-inspecciones` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-personal` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-osma-inspecciones` | `0.2.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-personal` | `0.2.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-valentin-cripto` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-visitor-pass` | `0.1.1` | Disponible | `docs/` | 2 |
 | `service-devops-monitor` | `0.1.0` | Disponible | `backend/`, `config/`, `frontend/` | 1 |

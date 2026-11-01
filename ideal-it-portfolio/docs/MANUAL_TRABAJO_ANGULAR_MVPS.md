@@ -5,7 +5,7 @@
 | Campo | Definición |
 |---|---|
 | Alcance | Nuevos MVPs Angular y adaptación de módulos existentes |
-| Referencia de implementación | MVP Formularios v0.1.1 |
+| Referencia de implementación | MVP Formularios v0.1.2 |
 | Landing | `ideal-it-portfolio/` — Angular standalone, Tailwind CSS y Vercel |
 | Ejemplo de subsistema local | `mvp-formularios/` — Angular standalone, Bootstrap, FastAPI y SQLite |
 | Índice canónico del portfolio | `PORTFOLIO_HUB.md` en la raíz del monorepo |
@@ -236,10 +236,10 @@ El cliente de la preview **no** debe:
 1. Crear `VERSION` en la raíz del MVP con **una sola línea**, versión semántica sin prefijo `v`, salto de línea final permitido. Para la línea de Formularios documentada aquí, el contenido es:
 
    ```text
-   0.1.1
+   0.1.2
    ```
 
-2. `0.1.1` describe la versión actual de MVP Formularios y es referencia del estado existente; **no obliga a congelar esa versión en nuevos productos**. Cada módulo nuevo empieza en la versión acordada para su entrega y cambia de forma independiente siguiendo SemVer:
+2. `0.1.2` describe la versión actual de MVP Formularios y es referencia del estado existente; **no obliga a congelar esa versión en nuevos productos**. Cada módulo nuevo empieza en la versión acordada para su entrega y cambia de forma independiente siguiendo SemVer:
    - `PATCH`: corrección compatible.
    - `MINOR`: funcionalidad nueva compatible.
    - `MAJOR`: cambio incompatible de contrato o comportamiento.

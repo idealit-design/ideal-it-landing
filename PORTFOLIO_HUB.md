@@ -8,11 +8,11 @@
 | `app-portal-ciudadano` | `0.1.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `app-valentin-cripto` | `0.1.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-agrotech-iot` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-auditoria` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-formularios` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-auditoria` | `0.1.2` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-formularios` | `0.1.2` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-logistica-fleet` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/`, `mvp-logistica-fleet/` | 2 |
-| `mvp-osma-inspecciones` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
-| `mvp-personal` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-osma-inspecciones` | `0.2.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
+| `mvp-personal` | `0.2.0` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-valentin-cripto` | `0.1.1` | Disponible | `backend/`, `docs/`, `frontend/` | 2 |
 | `mvp-visitor-pass` | `0.1.1` | Disponible | `docs/` | 2 |
 | `service-devops-monitor` | `0.1.0` | Disponible | `backend/`, `config/`, `frontend/` | 1 |
@@ -29,7 +29,7 @@ Subsistema local de gestión de personal, licencias y asistencia. Su simulador b
 
 - **Tecnologías:** Angular standalone + Tailwind CSS, FastAPI, SQLAlchemy y SQLite.
 - **Estado:** Local Standalone / Isolated MVP.
-- **Versión:** `0.1.1`.
+- **Versión:** `0.2.0`.
 - **Acceso desde Demos Hub:** `/mvp/personal` en la landing local `http://localhost:4200`. Es una preview ficticia en memoria, sin llamadas a FastAPI; el producto standalone se ejecuta en `http://localhost:4203` y su API en `http://127.0.0.1:8001`.
 - **Documentación del subsistema:** [Arquitectura MVP Personal](mvp-personal/docs/ARCHITECTURE.md).
 - **Guía de ejecución:** [README MVP Personal](mvp-personal/README.md).
@@ -40,7 +40,7 @@ Subsistema local e independiente para auditoría de prestadores y prácticas. Lo
 
 - **Tecnologías:** Angular standalone, FastAPI, SQLAlchemy y SQLite.
 - **Estado:** Local Standalone / Isolated MVP.
-- **Versión:** `0.1.1`.
+- **Versión:** `0.1.2`.
 - **Acceso desde Demos Hub:** `/mvp/auditoria` en la landing local `http://localhost:4200`. Es una preview sintética en memoria; el producto standalone se ejecuta en `http://localhost:4201` y su API en `http://127.0.0.1:8002`.
 - **Documentación del subsistema:** [Arquitectura MVP Auditoría](mvp-auditoria/docs/ARCHITECTURE.md).
 - **Guía de ejecución:** [README MVP Auditoría](mvp-auditoria/README.md).
@@ -51,17 +51,17 @@ Subsistema local e independiente para turismo y eventos municipales. Gestiona or
 
 - **Tecnologías:** Angular standalone + Bootstrap, FastAPI, SQLAlchemy y SQLite.
 - **Estado:** Local Standalone / Isolated MVP.
-- **Versión:** `0.1.1`.
+- **Versión:** `0.1.2`.
 - **Documentación del subsistema:** [Arquitectura MVP Formularios](mvp-formularios/docs/ARCHITECTURE.md).
 - **Guía de ejecución:** [README MVP Formularios](mvp-formularios/README.md).
 
 ## MVP OSMA Inspecciones
 
-PWA local para inspecciones de campo, con sincronización idempotente y cola offline cifrada en IndexedDB. Usa datos ficticios y una SQLite propia; no se conecta a registros OSMA reales.
+PWA local para inspecciones de campo, con sincronización idempotente y cola/cachés privadas cifradas con AES-GCM en IndexedDB. Migra la cola previa de `localStorage`; usa datos ficticios y una SQLite propia, sin conectarse a registros OSMA reales.
 
 - **Tecnologías:** React PWA, FastAPI, SQLAlchemy y SQLite.
 - **Estado:** MVP local; sin autenticación/autorización y sin despliegue productivo.
-- **Versión:** `0.1.1`.
+- **Versión:** `0.2.0`.
 - **Acceso local:** PWA `http://127.0.0.1:5175`; API `http://127.0.0.1:8005`.
 - **Documentación:** [arquitectura](mvp-osma-inspecciones/docs/ARCHITECTURE.md) y [README](mvp-osma-inspecciones/README.md).
 
@@ -205,7 +205,7 @@ Command Center standalone con cards de identidades y documentos, validadores, co
 ## Mapa de documentación
 
 - [Índice documental central](md/README.md) — catálogo, planificación, referencias históricas y resúmenes por categoría.
-- [Planificación y avance](md/portfolio-planificacion.md) — estado de los MVP locales, las ocho demos públicas, cinco fichas históricas/propuestas, prioridades y estrategia de integración/despliegue.
+- [Planificación y avance](md/portfolio-planificacion.md) — estado de ocho MVP locales, tres previews sintéticas, cinco referencias/propuestas, cinco landings comerciales y estrategia de integración/despliegue.
 - [Manual íntegro de trabajo](md/manual.md) — copia completa del estándar Angular, previews seguras, aislamiento, versionado y validación.
 - [Gestión de personas y auditoría](md/01-personas-auditoria.md) — resúmenes de Personal y Auditoría.
 - [Trámites e inspecciones](md/02-tramites-inspecciones.md) — resúmenes de Formularios y OSMA.
@@ -213,4 +213,4 @@ Command Center standalone con cards de identidades y documentos, validadores, co
 - [Integraciones y control de accesos](md/04-integraciones-accesos.md) — resúmenes de Cripto y Visitor Pass.
 - [Referencias originales](md/referencias-historicas.md) — evidencia localizada, incertidumbres y límites de publicación; los archivos fuente permanecen en `portfolio/`.
 
-El catálogo público de la landing incluye ocho MVP locales y fichas interactivas de referencia/propuesta. Portal Ciudadano, Tienda Virtual, Web POS Comercial, ALANTIA Frigorífico y los servicios utilitarios son subsistemas locales adicionales sin despliegue público. Una preview del navegador no equivale a despliegue público ni a conexión con la API local. No se publica ni reutiliza el archivo de trabajo de clientes restringidos.
+El catálogo del Hub incluye 18 tarjetas: ocho MVP locales, cinco referencias/propuestas y cinco landings comerciales. Solo Personal, Auditoría y Formularios tienen previews sintéticas Angular; las otras fichas de MVP o referencia permiten solicitar una demo, y las landings se sirven como assets estáticos generados con `npm run build:hub` por proyecto. Portal Ciudadano, Tienda Virtual, Web POS Comercial, ALANTIA Frigorífico y los servicios utilitarios son subsistemas locales adicionales sin despliegue público. Una preview del navegador no equivale a despliegue público ni a conexión con una API local. No se publica ni reutiliza el archivo de trabajo de clientes restringidos.
