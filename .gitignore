@@ -7,4 +7,5 @@ dist/
 build/
 .tmp.driveupload/
 /docs/VM_CONTEXT.local.md
-/workspace_light.tar.gz
+/.vscode/settings.json
+/workspace_light*.tar.gz
