@@ -28,7 +28,11 @@ El estándar para crear y adaptar MVPs Angular, incluyendo la política de aisla
 
 Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Cada uno conserva su backend y almacenamiento aislados. El catálogo público muestra únicamente referencias a los directorios `mvp-*`; no expone las rutas locales ni los archivos de los respaldos históricos.
 
-El Demos Hub reúne 18 proyectos en tres categorías, con tres previews interactivas y cinco landings comerciales navegables. Las fichas sin preview pública muestran vistas conceptuales y permiten seleccionar el sistema para solicitar una demo; el envío permanece pendiente hasta configurar un canal de contacto. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
+El Demos Hub reúne 18 proyectos en tres categorías, con tres previews interactivas y cinco landings comerciales navegables. Las fichas sin preview pública muestran vistas conceptuales y permiten seleccionar el sistema para solicitar una demo; el envío permanece pendiente hasta configurar un canal de contacto. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a APIs locales o privadas, no se conectan a la VM, no persisten y no contienen documentos sensibles. Actualmente, ninguna experiencia del Hub está conectada a un entorno de demo activo en la VM. Las cinco landings comerciales se integran como bundles estáticos independientes.
+
+### Estado de despliegue y migración
+
+Vercel sirve la SPA y los bundles estáticos de las cinco landings. En la VM siguen activos el hub Nginx en `127.0.0.1:8080` y la demo ALANTIA Frigorífico en `127.0.0.1:8012` (límite 128 MiB, SQLite exclusiva). Esta demo no está conectada a Vercel; las demás propuestas `127.0.0.1:80XX` aún no están desplegadas. Los previews permanecen separados de los backends. La planificación está en [plan central](../md/planning/portfolio-planificacion.md); el túnel SSH solo permite acceso privado al operador.
 
 Las tarjetas priorizan categoría, título y descripción, muestran hasta tres tecnologías representativas (frontend, backend y datos cuando están disponibles) y mantienen el enlace de categoría y la acción principal en una sola fila. El borde sutil a color identifica la categoría comercial y el contenido usa una altura compacta y consistente.
 

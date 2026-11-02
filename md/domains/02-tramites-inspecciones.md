@@ -9,7 +9,7 @@
 - **Diferencia crítica:** el producto local consume su API; la preview es un flujo sintético separado, sin cámara, persistencia, API ni QR escaneable.
 - **Siguiente paso:** ejecutar pruebas con base temporal; definir autenticación, autorización, retención y protección de datos antes de una institución real.
 
-Fuentes: [README](../mvp-formularios/README.md), [arquitectura](../mvp-formularios/docs/ARCHITECTURE.md).
+Fuentes: [README](../../mvp-formularios/README.md), [arquitectura](../../mvp-formularios/docs/ARCHITECTURE.md).
 
 ## MVP Inspecciones de Campo `0.2.0`
 
@@ -21,4 +21,13 @@ Fuentes: [README](../mvp-formularios/README.md), [arquitectura](../mvp-formulari
 - **Límites:** el cifrado en el dispositivo no sustituye autenticación, autorización, TLS ni protección frente a XSS; proteger el dispositivo y definir retención antes de uso real.
 - **Siguiente paso:** probar persistencia offline, reintentos, payload duplicado/conflictivo y recuperación de red.
 
-Fuentes: [README](../mvp-osma-inspecciones/README.md), [arquitectura](../mvp-osma-inspecciones/docs/ARCHITECTURE.md).
+Fuentes: [README](../../mvp-osma-inspecciones/README.md), [arquitectura](../../mvp-osma-inspecciones/docs/ARCHITECTURE.md).
+
+## Estrategia de despliegue y migración
+
+| Subsistema | Prioridad | Propuesta VM y persistencia | Prerrequisitos |
+|---|---|---|---|
+| Formularios | 1 — demo interactiva | Puerto `127.0.0.1:8017`, límite de 128 MiB; SQLite exclusiva en volumen propio. | Servir UI/API bajo origen controlado; habilitar cámara solo desde `localhost`/HTTPS y mantener registros ficticios. No exponer sin autenticación. |
+| OSMA Inspecciones | 1 — demo interactiva | Puerto `127.0.0.1:8019`, límite de 128 MiB; SQLite exclusiva; IndexedDB cifrada permanece en el dispositivo del navegador. | Requerir HTTPS para clientes remotos, mantener la sincronización idempotente y añadir autenticación/autorización antes de cualquier red pública. El cifrado del navegador no sustituye TLS. |
+
+Los previews del portfolio no están conectados a estos servicios. Despliegue y acceso VM son pendientes; el túnel local no equivale a publicación pública.

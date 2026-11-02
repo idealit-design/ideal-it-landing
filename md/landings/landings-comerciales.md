@@ -6,11 +6,11 @@ Cinco experiencias de marketing autocontenidas para nichos distintos. Cada subdi
 
 | Proyecto | Concepto | Interacciones principales | Guía |
 |---|---|---|---|
-| El Rincón Gourmet | Restaurante de cocina de estación | Menú por categoría y búsqueda, carrusel de reseñas, mapa y reserva demostrativa | [README](../landings/el-rincon-gourmet/README.md) |
-| Pluma y Tinta | Autora independiente | Catálogo de libros, modal de fragmentos, agenda y newsletter local | [README](../landings/pluma-y-tinta/README.md) |
-| Manos Maestras | Carpintería y cerámica artesanal | Galería masonry con lightbox, estado ilustrativo de stock y consulta personalizada | [README](../landings/manos-maestras/README.md) |
-| EcoHuerta Urbana | Suscripción agroecológica | Plan semanal/mensual, calculadora estimativa y FAQ acordeón | [README](../landings/ecohuerta-urbana/README.md) |
-| FixIt Express | Reparación tecnológica exprés | Cotizador de tres pasos, reseñas rotativas y solicitud con franja horaria | [README](../landings/fixit-express/README.md) |
+| El Rincón Gourmet | Restaurante de cocina de estación | Menú por categoría y búsqueda, carrusel de reseñas, mapa y reserva demostrativa | [README](../../landings/el-rincon-gourmet/README.md) |
+| Pluma y Tinta | Autora independiente | Catálogo de libros, modal de fragmentos, agenda y newsletter local | [README](../../landings/pluma-y-tinta/README.md) |
+| Manos Maestras | Carpintería y cerámica artesanal | Galería masonry con lightbox, estado ilustrativo de stock y consulta personalizada | [README](../../landings/manos-maestras/README.md) |
+| EcoHuerta Urbana | Suscripción agroecológica | Plan semanal/mensual, calculadora estimativa y FAQ acordeón | [README](../../landings/ecohuerta-urbana/README.md) |
+| FixIt Express | Reparación tecnológica exprés | Cotizador de tres pasos, reseñas rotativas y solicitud con franja horaria | [README](../../landings/fixit-express/README.md) |
 
 ## Desarrollo independiente
 
@@ -43,4 +43,4 @@ npm run build --prefix ideal-it-portfolio
 
 Los cinco primeros comandos copian cada build a `ideal-it-portfolio/public/landings/<slug>/`, conservando en paralelo el build autónomo `landings/<slug>/dist/` cuando se usa `npm run build`. El paso de integración es explícito: ejecutar solo el build Angular no instala ni compila los subsistemas. Los `previewUrl` de las tarjetas se activan al publicar el Hub con estos assets.
 
-La guía canónica está en [PORTFOLIO_HUB.md](../PORTFOLIO_HUB.md). Las acciones de reservar, comprar, suscribirse, contactar, solicitar reparaciones y calcular ahorros no generan pedidos ni transmiten datos. Reseñas, disponibilidad, estadísticas, precios y estimaciones son ficticios.
+La guía canónica está en [PORTFOLIO_HUB.md](../../PORTFOLIO_HUB.md). Las acciones de reservar, comprar, suscribirse, contactar, solicitar reparaciones y calcular ahorros no generan pedidos ni transmiten datos. Reseñas, disponibilidad, estadísticas, precios y estimaciones son ficticios.

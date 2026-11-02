@@ -178,3 +178,7 @@ Consulte fallos y reinicios con `sudo journalctl -u mvp-valentin-cripto -f` y `s
 - Proteja el acceso al dashboard/API con controles de infraestructura si no deben ser públicos y configure rotación/retención del log en producción.
 
 Consulte [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para contratos de API, componentes y límites del diseño.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 2 — webhook/Cloud.** La simulación se puede probar localmente, pero recibir TradingView requiere endpoint HTTPS accesible desde Internet. La VM no aloja este servicio y su loopback no es accesible para el proveedor; el puerto interno `8025` es solo una reserva de diseño, sin publicación al host. Antes de integrar: proxy HTTPS autenticado, `WEBHOOK_SECRET` inyectado desde gestor de secretos (solo el nombre en `.env.example`), límite de tamaño/tasa, idempotencia persistente, protección del dashboard, retención de auditoría y prueba en sandbox. Mantener órdenes simuladas; no usar claves de exchange ni fondos reales.

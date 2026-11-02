@@ -51,3 +51,7 @@ Consulte [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el modelo de datos, c
 ## Privacidad y límites de la demo
 
 Los conectores de validación son mocks locales y no consultan RENAPER, entidades de matrícula, aseguradoras ni servicios remotos. Utilice datos y documentos sintéticos; esta demo no es un sistema oficial de auditoría médica.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM.** Propuesta: endpoint `127.0.0.1:8016`, límite `128m`, SQLite propia en volumen persistente y documentos en directorio de almacenamiento exclusivo. No está desplegado; la preview del portfolio sigue siendo sintética y no invoca esta API. Prerrequisitos: CORS/origen del cliente, cuotas para archivos, política de borrado y datos ficticios. No exponer sin autenticación/autorización; nunca cargar documentos clínicos reales.

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+dist/
+build/
+.tmp.driveupload/
+/docs/VM_CONTEXT.local.md
+/workspace_light.tar.gz

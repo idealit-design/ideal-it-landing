@@ -11,7 +11,7 @@ Resumen de referencia; las guías por MVP siguen siendo la autoridad de operaci�
 - **Límites:** sin datos personales reales ni considerar sus cálculos como registros oficiales.
 - **Siguiente paso:** probar frontend/API con DB temporal; definir autenticación/roles y estrategia de migración antes de datos reales.
 
-Fuentes: [README](../mvp-personal/README.md), [arquitectura](../mvp-personal/docs/ARCHITECTURE.md).
+Fuentes: [README](../../mvp-personal/README.md), [arquitectura](../../mvp-personal/docs/ARCHITECTURE.md).
 
 ## MVP Auditoría `0.1.2`
 
@@ -23,8 +23,17 @@ Fuentes: [README](../mvp-personal/README.md), [arquitectura](../mvp-personal/doc
 - **Configuración:** `AUDITORIA_MVP_DATABASE_PATH` solo acepta una ruta dentro del módulo o del directorio temporal de pruebas.
 - **Siguiente paso:** probar controles de archivos y autorización; revisar almacenamiento temporal y borrado/retención.
 
-Fuentes: [README](../mvp-auditoria/README.md), [arquitectura](../mvp-auditoria/docs/ARCHITECTURE.md).
+Fuentes: [README](../../mvp-auditoria/README.md), [arquitectura](../../mvp-auditoria/docs/ARCHITECTURE.md).
 
 ## Decisión compartida
 
 El hub no conecta estos MVP a fuentes, usuarios o servicios de un sistema de cliente. No hay un panel global de superadmin/auditoría implementado como capacidad común; la futura administración debe aplicar permisos localmente y no acceder directamente a bases ajenas.
+
+## Estrategia de despliegue y migración
+
+| Subsistema | Prioridad | Propuesta VM y persistencia | Prerrequisitos |
+|---|---|---|---|
+| Personal | 1 — demo interactiva | Puerto `127.0.0.1:8021`, contenedor con límite de 128 MiB; SQLite propia en volumen del módulo. | Adaptar API/UI a despliegue en contenedor, health check, configuración de origen de API y datos ficticios. La preview Angular actual no consume esta API. |
+| Auditoría | 1 — demo interactiva | Puerto `127.0.0.1:8016`, límite de 128 MiB; SQLite y archivos en almacenamiento persistente exclusivo. | Mantener documentos sintéticos; definir límite de tamaño, backup/borrado y CORS. Sin autenticación no exponer a redes públicas. |
+
+Las rutas de acceso a la VM son propuestas. Las APIs y bases no están desplegadas; no usar información personal, clínica ni credenciales oficiales.

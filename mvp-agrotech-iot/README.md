@@ -66,3 +66,7 @@ VITE_API_URL=http://localhost:8080
 - Descarga de auditoría y rendimiento en CSV o PDF.
 
 Consulte [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el ERD y los contratos REST. La muestra es local: no integra proveedores de drones ni servicios externos de mapas.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM, condicionada por memoria.** Propuesta: endpoint `127.0.0.1:8015`; límite inicial `128m` para API y `192m` para PostgreSQL dedicado en red Docker privada, sin publicar el puerto de DB. No está desplegado. Esta pareja puede consumir más de 300 MiB además del hub y el sistema: aprobar solo tras medir memoria libre y ejecutar una demo a la vez. Usar volumen y credenciales PostgreSQL exclusivos, `DATABASE_URL` por entorno, migraciones y datos sintéticos. Sensores/drones siguen simulados.

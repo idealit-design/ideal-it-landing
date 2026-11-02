@@ -1,5 +1,18 @@
 # Portfolio Hub — Ideal-IT
 
+## Estado de las demos y migración
+
+El portfolio Angular se publica como SPA estática en Vercel. Sus cinco landings comerciales están compiladas en `ideal-it-portfolio/public/landings/`; Personal, Auditoría y Formularios ofrecen previews sintéticas en memoria que no invocan sus APIs ni la VM. Pruebas reportadas: 26/26.
+
+En la VM están desplegados `idealit-hub` (Nginx saludable en `127.0.0.1:8080`) y `app-alantia-frigorifico` (saludable en `127.0.0.1:8012`, limitado a 128 MiB y con SQLite en volumen exclusivo). La demo ALANTIA no está conectada al Hub de Vercel; los demás puertos y presupuestos son propuestas para despliegues futuros de acceso privado.
+
+| Prioridad | Subsistemas |
+|---|---|
+| 1 — VM, demo interactiva local | `app-alantia-frigorifico` (desplegado); `app-portal-ciudadano`, `app-valentin-cripto`, `mvp-agrotech-iot` (condicionado por PostgreSQL/memoria), `mvp-auditoria`, `mvp-formularios`, `mvp-logistica-fleet`, `mvp-osma-inspecciones`, `mvp-personal`, `mvp-visitor-pass`, `service-devops-monitor`, `service-synthetic-factory`, `web-pos-comercial`, `web-tienda-virtual` (pendientes). |
+| 2 — Cloud, webhook, MCP o CI | `mvp-valentin-cripto` (webhook externo; mantener simulación local mientras tanto), `service-docs-hub-automator` (CI, no servicio web), `service-mcp-gateway` (MCP local/aislado), `web-landing-municipal` (hosting estático; no requiere API). |
+
+La matriz completa, puertos sugeridos, topes de RAM y requisitos está en [el plan de migración](md/planning/portfolio-planificacion.md). Una demo alojada en loopback solo es visible localmente o para quien use un túnel autorizado; no es una demo pública ni accesible desde Vercel.
+
 ## Matriz de soluciones
 
 | Subsistema | Versión | README | Directorios principales | Markdown |
@@ -181,7 +194,7 @@ Cinco demos React/Vite con Tailwind CSS 4, componentes, configuración, dependen
 | EcoHuerta Urbana | Bolsones, planes y calculadora de ahorro | [landings/ecohuerta-urbana/README.md](landings/ecohuerta-urbana/README.md) |
 | FixIt Express | Reparación, cotizador y turnos | [landings/fixit-express/README.md](landings/fixit-express/README.md) |
 
-Cada aplicación se inicia desde su directorio con `npm install` y `npm run dev`. Para que sus accesos del Demos Hub apunten a una preview estática, ejecutar el script `npm run build:hub` de cada landing antes de compilar el portfolio; este paso copia los archivos a `ideal-it-portfolio/public/landings/<slug>/`. El [índice de landings comerciales](md/landings-comerciales.md) documenta la ejecución independiente y la integración.
+Cada aplicación se inicia desde su directorio con `npm install` y `npm run dev`. Para que sus accesos del Demos Hub apunten a una preview estática, ejecutar el script `npm run build:hub` de cada landing antes de compilar el portfolio; este paso copia los archivos a `ideal-it-portfolio/public/landings/<slug>/`. El [índice de landings comerciales](md/landings/landings-comerciales.md) documenta la ejecución independiente y la integración.
 
 ## Service Synthetic Factory
 
@@ -204,13 +217,14 @@ Command Center standalone con cards de identidades y documentos, validadores, co
 
 ## Mapa de documentación
 
+- [Índice de operaciones e infraestructura](docs/README.md) — estado general, contexto VM y Docker.
 - [Índice documental central](md/README.md) — catálogo, planificación, referencias históricas y resúmenes por categoría.
-- [Planificación y avance](md/portfolio-planificacion.md) — estado de ocho MVP locales, tres previews sintéticas, cinco referencias/propuestas, cinco landings comerciales y estrategia de integración/despliegue.
+- [Planificación y avance](md/planning/portfolio-planificacion.md) — inventario de 18 subsistemas, prioridades, despliegues comprobados y estrategia de integración.
 - [Manual íntegro de trabajo](md/manual.md) — copia completa del estándar Angular, previews seguras, aislamiento, versionado y validación.
-- [Gestión de personas y auditoría](md/01-personas-auditoria.md) — resúmenes de Personal y Auditoría.
-- [Trámites e inspecciones](md/02-tramites-inspecciones.md) — resúmenes de Formularios y OSMA.
-- [Operaciones, logística e IoT](md/03-operaciones-logistica-iot.md) — resúmenes de Logística y AgroTech.
-- [Integraciones y control de accesos](md/04-integraciones-accesos.md) — resúmenes de Cripto y Visitor Pass.
-- [Referencias originales](md/referencias-historicas.md) — evidencia localizada, incertidumbres y límites de publicación; los archivos fuente permanecen en `portfolio/`.
+- [Gestión de personas y auditoría](md/domains/01-personas-auditoria.md) — resúmenes de Personal y Auditoría.
+- [Trámites e inspecciones](md/domains/02-tramites-inspecciones.md) — resúmenes de Formularios y OSMA.
+- [Operaciones, logística e IoT](md/domains/03-operaciones-logistica-iot.md) — resúmenes de Logística, AgroTech y ALANTIA Frigorífico.
+- [Integraciones y control de accesos](md/domains/04-integraciones-accesos.md) — resúmenes de Cripto y Visitor Pass.
+- [Referencias originales](md/references/referencias-historicas.md) — evidencia localizada, incertidumbres y límites de publicación; los archivos fuente permanecen en `portfolio/`.
 
-El catálogo del Hub incluye 18 tarjetas: ocho MVP locales, cinco referencias/propuestas y cinco landings comerciales. Solo Personal, Auditoría y Formularios tienen previews sintéticas Angular; las otras fichas de MVP o referencia permiten solicitar una demo, y las landings se sirven como assets estáticos generados con `npm run build:hub` por proyecto. Portal Ciudadano, Tienda Virtual, Web POS Comercial, ALANTIA Frigorífico y los servicios utilitarios son subsistemas locales adicionales sin despliegue público. Una preview del navegador no equivale a despliegue público ni a conexión con una API local. No se publica ni reutiliza el archivo de trabajo de clientes restringidos.
+El catálogo del Hub incluye 18 tarjetas: ocho MVP locales, cinco referencias/propuestas y cinco landings comerciales. Solo Personal, Auditoría y Formularios tienen previews sintéticas Angular; las otras fichas de MVP o referencia permiten solicitar una demo, y las landings se sirven como assets estáticos generados con `npm run build:hub` por proyecto. Portal Ciudadano, Tienda Virtual, Web POS Comercial y los servicios utilitarios siguen siendo subsistemas locales sin despliegue público; ALANTIA Frigorífico está disponible únicamente en loopback de la VM, sin conexión con Vercel. Una preview del navegador no equivale a despliegue público ni a conexión con una API local. No se publica ni reutiliza el archivo de trabajo de clientes restringidos.

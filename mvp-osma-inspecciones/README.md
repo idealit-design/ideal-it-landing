@@ -78,3 +78,7 @@ Configurá `OSMA_MVP_CORS_ORIGINS` con los orígenes reales del frontend, separa
 La base SQLite y la cola offline del navegador son locales a este MVP; no se conectan con las bases ni APIs del sistema de referencia ni con servicios externos. Los formularios y las cachés de afiliados/inspectores se cifran con AES-GCM mediante Web Crypto API y se guardan en IndexedDB; los datos en `localStorage` de versiones anteriores se migran cifrados. El cliente descifra los formularios justo antes de enviarlos a FastAPI, por lo que en despliegues reales la API debe usar HTTPS. El cifrado local no protege frente a XSS ni reemplaza una clave protegida por contraseña. Usá datos ficticios durante la demostración y protegé el dispositivo de campo. La solución no sustituye un sistema oficial ni una política de retención de datos.
 
 Consultá [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el modelo relacional, contratos REST y estrategia offline.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM.** Propuesta: endpoint `127.0.0.1:8019`, límite `128m` y SQLite exclusiva en volumen persistente; la cola cifrada IndexedDB permanece en el navegador. No está desplegado y no tiene autenticación/autorización. Prerrequisitos: configurar el origen de API, HTTPS para clientes no locales, datos ficticios y controles de acceso antes de permitir cualquier uso fuera del túnel de desarrollo.

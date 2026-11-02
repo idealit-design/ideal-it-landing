@@ -1,5 +1,18 @@
 # Portfolio Hub — Ideal-IT
 
+## Estado de las demos y migración
+
+La SPA Angular se publica estáticamente en Vercel y contiene cinco landings comerciales compiladas en `public/landings/`. Las previews de Personal, Auditoría y Formularios son sintéticas y no consumen APIs ni la VM. Las 26 pruebas reportadas del portfolio están aprobadas.
+
+La VM ejecuta `idealit-hub` (Nginx saludable en `127.0.0.1:8080`) y `app-alantia-frigorifico` (saludable en `127.0.0.1:8012`, límite de 128 MiB y SQLite exclusiva). La demo ALANTIA no está conectada a Vercel. La matriz de 18 subsistemas del repositorio no es lo mismo que el conteo de tarjetas del Hub; los demás destinos `127.0.0.1:80XX` siguen siendo propuestas para demos privadas.
+
+| Prioridad | Subsistemas |
+|---|---|
+| 1 — demo interactiva local en VM | `app-alantia-frigorifico` (desplegado); `app-portal-ciudadano`, `app-valentin-cripto`, `mvp-agrotech-iot` (condicionado por RAM/PostgreSQL), `mvp-auditoria`, `mvp-formularios`, `mvp-logistica-fleet`, `mvp-osma-inspecciones`, `mvp-personal`, `mvp-visitor-pass`, `service-devops-monitor`, `service-synthetic-factory`, `web-pos-comercial`, `web-tienda-virtual` (pendientes). |
+| 2 — Cloud/MCP/webhook/CI | `mvp-valentin-cripto`, `service-docs-hub-automator`, `service-mcp-gateway`, `web-landing-municipal`. |
+
+Ver [plan de migración](../md/planning/portfolio-planificacion.md) y [estado VM](../docs/operations/VM_CONTEXT.md).
+
 ## Matriz de soluciones
 
 | Subsistema | Versión | README | Directorios principales | Markdown |

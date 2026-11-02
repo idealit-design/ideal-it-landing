@@ -45,3 +45,7 @@ Invoke-RestMethod -Method Get "http://localhost:8000/api.php?action=active"
 Es una demo local sin autenticación, roles, QR, notificaciones ni integraciones de control físico. No debe exponerse a Internet ni utilizarse como registro oficial. Usa datos ficticios: el DNI y demás datos personales se almacenan localmente sin cifrado. Protege el equipo y los permisos del directorio de datos.
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el modelo relacional, endpoints y límites del diseño.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM.** Propuesta: endpoint `127.0.0.1:8022`, límite `96m` y `visitors_mvp.db` exclusiva en volumen persistente. No está desplegado. Prerrequisitos: datos sintéticos y permisos mínimos del almacenamiento. El estado actual no tiene autenticación y almacena datos sin cifrar: no exponer a redes ni conectar control físico.
