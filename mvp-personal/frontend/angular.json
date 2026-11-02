@@ -37,6 +37,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": { "buildTarget": "mvp-personal:build:production" },
             "development": { "buildTarget": "mvp-personal:build:development" }

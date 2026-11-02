@@ -47,7 +47,7 @@ export class AsistenciaComponent {
     this.error = '';
     this.searched = true;
     this.http.get<{ historial: AttendanceMark[] }>(
-      `http://127.0.0.1:8001/api/asistencia/${encodeURIComponent(this.dni.trim())}`,
+      `/api/asistencia/${encodeURIComponent(this.dni.trim())}`,
     ).subscribe({
       next: (response) => this.marks = response.historial,
       error: (error: unknown) => { this.marks = []; this.error = 'No se pudo consultar el historial del DNI.'; console.error(error); },

@@ -10,6 +10,8 @@ def test_personal_biometric_history_and_workday_reports(monkeypatch, tmp_path):
     monkeypatch.setenv("PERSONAL_MVP_DATABASE_PATH", str(database_path))
 
     with TestClient(app) as client:
+        assert client.get("/health").json()["version"] == app.version
+
         area = client.post(
             "/api/personal/areas",
             json={"nombre_area": "Administración", "piso": "1", "departamento": "RRHH"},

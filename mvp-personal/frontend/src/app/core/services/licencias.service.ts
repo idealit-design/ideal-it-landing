@@ -15,7 +15,7 @@ export interface License {
 @Injectable({ providedIn: 'root' })
 export class LicenciasService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://127.0.0.1:8001/api/licencias';
+  private readonly apiUrl = '/api/licencias';
 
   list(dni = ''): Observable<License[]> {
     let params = new HttpParams();
