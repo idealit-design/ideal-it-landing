@@ -1,0 +1,12 @@
+backend/data/db/*.db
+backend/data/db/*.db-shm
+backend/data/db/*.db-wal
+backend/.pytest_cache/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.py[cod]
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.tsbuildinfo
+.venv/
