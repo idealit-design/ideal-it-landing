@@ -1,0 +1,12 @@
+backend/data/db/*.db
+backend/data/db/*.db-*
+backend/data/generated/*
+!backend/data/generated/.gitkeep
+!backend/data/db/.gitkeep
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+.pytest_cache/
+frontend/node_modules/
+frontend/dist/
+frontend/.env

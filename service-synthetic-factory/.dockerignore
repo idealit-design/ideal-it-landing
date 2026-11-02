@@ -1,0 +1,14 @@
+.git
+**/.git
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+backend/.venv
+backend/tests
+docs
+frontend/node_modules
+frontend/dist
+backend/data/db/*.db*
+backend/data/generated/*
+!backend/data/db/.gitkeep
+!backend/data/generated/.gitkeep
