@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #20231f;
+  background: #f7f5ef;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #45634d;
+  outline-offset: 3px;
+}
+
+.product-art {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  isolation: isolate;
+}
+
+.art-hogar {
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(255, 255, 255, 0.6), transparent 36%),
+    linear-gradient(145deg, #d6d5c4, #b9b8a4 55%, #a5a58f);
+}
+
+.art-tecnologia {
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(255, 255, 255, 0.53), transparent 35%),
+    linear-gradient(145deg, #ced8d2, #a9bbb0 58%, #8da296);
+}
+
+.art-accesorios {
+  background:
+    radial-gradient(ellipse at 70% 25%, rgba(255, 255, 255, 0.52), transparent 35%),
+    linear-gradient(145deg, #e1cfc0, #c9ab96 58%, #b98f77);
+}
+
+.art-glow {
+  position: absolute;
+  top: 13%;
+  left: 18%;
+  width: 64%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  filter: blur(1px);
+}
+
+.art-object {
+  z-index: 1;
+  width: 39%;
+  height: 45%;
+  border: 1px solid rgba(59, 60, 49, 0.14);
+  border-radius: 30% 30% 25% 25%;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.75), rgba(226, 218, 198, 0.97) 50%, rgba(193, 184, 162, 0.95));
+  box-shadow:
+    inset -13px -10px 24px rgba(80, 72, 55, 0.13),
+    inset 8px 8px 20px rgba(255, 255, 255, 0.52),
+    0 18px 30px rgba(50, 50, 42, 0.13);
+  transform: translateY(3%) rotate(-5deg);
+}
+
+.art-tecnologia .art-object {
+  width: 34%;
+  height: 49%;
+  border: 6px solid rgba(42, 49, 47, 0.84);
+  border-radius: 42% 42% 38% 38%;
+  background: linear-gradient(125deg, #f8f6ea, #b9cbc0 65%, #789386);
+  box-shadow: inset 0 0 0 5px rgba(245, 244, 235, 0.68), 0 18px 30px rgba(38, 48, 41, 0.2);
+}
+
+.art-accesorios .art-object {
+  width: 45%;
+  height: 42%;
+  border-radius: 15% 15% 23% 23%;
+  background: linear-gradient(125deg, #e9cbb4, #c88d68 58%, #a97255);
+  transform: translateY(8%) rotate(5deg);
+}
+
+.art-shadow {
+  position: absolute;
+  bottom: 17%;
+  z-index: -1;
+  width: 57%;
+  height: 9%;
+  border-radius: 50%;
+  background: rgba(51, 47, 38, 0.22);
+  filter: blur(10px);
+}
+
+.art-spark {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.art-spark-one {
+  top: 27%;
+  right: 24%;
+  font-size: 1.6rem;
+}
+
+.art-spark-two {
+  bottom: 25%;
+  left: 25%;
+  font-size: 2.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
