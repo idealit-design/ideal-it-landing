@@ -17,10 +17,3 @@ export interface Demo {
   previewPath?: string;
   previewUrl?: string;
 }
-
-export interface DemoApiSample {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}

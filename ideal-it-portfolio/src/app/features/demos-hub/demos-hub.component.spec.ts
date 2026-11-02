@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { Demo } from '../../core/models/demo.model';
 import { routes } from '../../app.routes';
@@ -12,7 +11,7 @@ describe('DemosHubComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DemosHubComponent],
-      providers: [provideRouter([]), provideHttpClient()],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DemosHubComponent);
@@ -28,6 +27,7 @@ describe('DemosHubComponent', () => {
     expect(content).toContain('Gestión de Personal & Control Biométrico');
     expect(content).toContain('Auditoría & Bóveda Documental (HealthCore)');
     expect(content).toContain('Formularios & Turismo Municipal');
+    expect(content).toContain('ninguna conectada a la VM');
     expect(content).toContain('Inspecciones de Campo');
     expect(content).toContain('Automatización de Señales');
     expect(content).toContain('Logística & Smart Fleet');
@@ -107,6 +107,17 @@ describe('DemosHubComponent', () => {
 
     expect(requestButtons.length).toBe(10);
     expect(previewButtons.length).toBe(8);
+    expect(element.querySelectorAll('app-demo-card').length).toBe(18);
+    expect(
+      Array.from(element.querySelectorAll('app-demo-card')).filter((card) =>
+        card.textContent?.includes('Preview / simulación con datos de ejemplo'),
+      ).length,
+    ).toBe(3);
+    expect(
+      Array.from(element.querySelectorAll('app-demo-card')).filter((card) =>
+        card.textContent?.includes('Landing comercial estática'),
+      ).length,
+    ).toBe(5);
     expect(element.textContent).not.toContain('Landing online');
     expect(element.textContent).not.toContain('Demo interactiva');
     expect(element.textContent).not.toContain('MVP local');

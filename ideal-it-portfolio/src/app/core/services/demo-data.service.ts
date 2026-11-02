@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import { Demo, DemoApiSample } from '../models/demo.model';
+import { Demo } from '../models/demo.model';
 import { DemoCategory } from '../models/demo-category.model';
 
 const DEMO_DATA: Demo[] = [
@@ -287,10 +286,6 @@ const DEMO_DATA: Demo[] = [
 
 @Injectable({ providedIn: 'root' })
 export class DemoDataService {
-  private readonly http = inject(HttpClient);
-
-  readonly apiUrl = 'https://jsonplaceholder.typicode.com';
-
   getDemos(): Observable<Demo[]> {
     return of(DEMO_DATA);
   }
@@ -298,9 +293,5 @@ export class DemoDataService {
   getDemosForCategory(category: DemoCategory): Observable<Demo[]> {
     const categoryDemoIds = new Set(category.demoIds);
     return this.getDemos().pipe(map((demos) => demos.filter((demo) => categoryDemoIds.has(demo.id))));
-  }
-
-  getSampleResponse(): Observable<DemoApiSample> {
-    return this.http.get<DemoApiSample>(`${this.apiUrl}/posts/1`);
   }
 }

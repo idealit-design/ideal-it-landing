@@ -15,13 +15,13 @@ describe('FormulariosPreviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('renders the citizen portal and clearly marks this as a temporary preview', () => {
+  it('renders the citizen portal and identifies the synthetic preview as disconnected from the VM', () => {
     const content = (fixture.nativeElement as HTMLElement).textContent ?? '';
 
-    expect(content).toContain('Preview interactiva');
+    expect(content).toContain('Preview / simulación con datos de ejemplo');
     expect(content).toContain('Encontrá tu próximo plan');
     expect(content).toContain('Noche de los Museos');
-    expect(content).toContain('se reinicia al actualizar');
+    expect(content).toContain('sin conexión a la VM');
   });
 
   it('approves a pending request, emits a simulated QR, and prevents duplicate attendance', () => {
