@@ -1,5 +1,18 @@
 # Portfolio Hub — Ideal-IT
 
+## Estado de las demos y migración
+
+La SPA Angular 21 se publica estáticamente en Vercel y contiene cinco landings comerciales compiladas en `public/landings/`. La home muestra ocho experiencias públicas; `/servicios-adicionales` separa las fichas privadas de VM y las propuestas en preparación. Las previews de Personal, Auditoría y Formularios son sintéticas y no consumen APIs ni la VM.
+
+La VM ejecuta `idealit-hub` (`127.0.0.1:8080`), `app-alantia-frigorifico` (`127.0.0.1:8012`), POS (`127.0.0.1:8027`) y Tienda Virtual (`127.0.0.1:8028`). Estos servicios son privados y no están conectados a Vercel. La matriz de 18 subsistemas del repositorio no es lo mismo que el conteo de tarjetas públicas del Hub.
+
+| Prioridad | Subsistemas |
+|---|---|
+| 1 — demo interactiva local en VM | `app-alantia-frigorifico` (desplegado); `app-portal-ciudadano`, `app-valentin-cripto`, `mvp-agrotech-iot` (condicionado por RAM/PostgreSQL), `mvp-auditoria`, `mvp-formularios`, `mvp-logistica-fleet`, `mvp-osma-inspecciones`, `mvp-personal`, `mvp-visitor-pass`, `service-devops-monitor`, `service-synthetic-factory`, `web-pos-comercial`, `web-tienda-virtual` (pendientes). |
+| 2 — Cloud/MCP/webhook/CI | `mvp-valentin-cripto`, `service-docs-hub-automator`, `service-mcp-gateway`, `web-landing-municipal`. |
+
+Ver [plan de migración](../md/planning/portfolio-planificacion.md) y [estado VM](../docs/operations/VM_CONTEXT.md).
+
 ## Matriz de soluciones
 
 | Subsistema | Versión | README | Directorios principales | Markdown |
@@ -25,7 +38,7 @@
 
 ## Landing y navegación
 
-La landing Angular 18 se despliega como una SPA estática en Vercel. Demos Hub es la página de inicio (`/`) y las rutas SPA admiten navegación directa y refresco.
+La landing Angular 21 se despliega como una SPA estática en Vercel. Demos Hub es la página de inicio (`/`); las rutas de categorías, demos y servicios adicionales admiten navegación directa y refresco.
 
 Las tarjetas del Hub presentan primero la categoría, el nombre de la solución y un resumen conciso. Muestran como máximo tres tecnologías representativas, priorizando variedad entre frontend, backend y datos, y agrupan navegación y acción principal en una fila. Un borde de acento sutil en los cuatro lados conserva la identidad de cada categoría sin recargar la grilla.
 

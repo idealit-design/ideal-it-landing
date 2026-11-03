@@ -53,7 +53,7 @@
               <span class="h-2 w-2 rounded-full bg-accent"></span>
               <span class="text-xs font-medium text-slate-300">IDEAL-IT / ECOSISTEMA</span>
             </div>
-            <span class="text-[10px] tracking-[0.12em] text-slate-600">18 PROYECTOS</span>
+            <span class="text-[10px] tracking-[0.12em] text-slate-600">8 EXPERIENCIAS</span>
           </div>
           <div class="py-7">
             <p class="text-xs uppercase tracking-[0.16em] text-slate-500">De la estrategia a la experiencia</p>
@@ -62,10 +62,10 @@
           </div>
           <div class="space-y-3">
             <div class="flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/[0.05] p-3.5">
-              <span class="grid h-9 w-9 place-items-center rounded-lg bg-accent/10 text-sm text-accent">18</span>
+              <span class="grid h-9 w-9 place-items-center rounded-lg bg-accent/10 text-sm text-accent">08</span>
               <div class="min-w-0 flex-1">
-                <p class="text-sm font-medium text-white">18 proyectos digitales</p>
-                <p class="mt-0.5 text-xs text-slate-500">Un ecosistema en evolución</p>
+              <p class="text-sm font-medium text-white">8 experiencias para probar</p>
+              <p class="mt-0.5 text-xs text-slate-500">Demos y landings públicas</p>
               </div>
               <span class="text-xs text-accent">Portfolio</span>
             </div>
@@ -80,18 +80,18 @@
             <div class="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3.5">
               <span class="grid h-9 w-9 place-items-center rounded-lg bg-white/[0.05] text-sm text-slate-300">03</span>
               <div class="min-w-0 flex-1">
-                <p class="text-sm font-medium text-white">3 MVPs interactivos</p>
-                <p class="mt-0.5 text-xs text-slate-500">Flujos funcionales para explorar</p>
+                <p class="text-sm font-medium text-white">3 previews interactivas</p>
+                <p class="mt-0.5 text-xs text-slate-500">Interacciones con datos de ejemplo</p>
               </div>
-                <span class="text-xs text-slate-400">En vivo</span>
+                <span class="text-xs text-amber-200">Sintéticas</span>
             </div>
               <div class="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3.5">
                 <span class="grid h-9 w-9 place-items-center rounded-lg bg-white/[0.05] text-sm text-slate-300">05</span>
                 <div class="min-w-0 flex-1">
                   <p class="text-sm font-medium text-white">5 landings comerciales</p>
-                  <p class="mt-0.5 text-xs text-slate-500">Experiencias de marca en vivo</p>
+                  <p class="mt-0.5 text-xs text-slate-500">Experiencias de marca estáticas</p>
                 </div>
-                <span class="text-xs text-slate-400">En vivo</span>
+                <span class="text-xs text-emerald-200">Estáticas</span>
               </div>
           </div>
           <div class="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4 text-[10px] uppercase tracking-[0.13em] text-slate-600">
@@ -107,11 +107,11 @@
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Portfolio · soluciones y experiencias</p>
           <h2 id="trabajos-heading" class="mt-3 text-3xl font-semibold tracking-[-0.035em] text-white sm:text-4xl">
-            Nuestros trabajos
+            Experiencias para explorar
           </h2>
         </div>
         <p class="max-w-md text-sm leading-6 text-slate-500">
-          Explorá demos interactivas, aplicaciones y landings diseñadas para convertir problemas reales en experiencias claras.
+          Abrí cada experiencia sin salir del portfolio: mini demos interactivas y sitios comerciales navegables.
         </p>
       </div>
 
@@ -127,107 +127,36 @@
       </nav>
 
       @if (demos$ | async; as demos) {
-        <div class="mb-6 rounded-2xl border border-white/[0.08] bg-panel/70 p-4 sm:p-5">
-          <div class="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr_auto] lg:items-end">
-            <label class="block text-xs font-medium text-slate-300">
-              Buscar por título o tecnología
-              <input
-                type="search"
-                name="demo-search"
-                aria-label="Buscar proyectos por título o tecnología"
-                placeholder="Ej. Angular, PostgreSQL..."
-                [(ngModel)]="searchTerm"
-                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white placeholder:text-slate-600 focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
-              />
-            </label>
-            <label class="block text-xs font-medium text-slate-300">
-              Tipo de servicio
-              <select
-                name="service-type"
-                aria-label="Filtrar por tipo de servicio"
-                [(ngModel)]="selectedServiceType"
-                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
-              >
-                <option value="">Todos los servicios</option>
-                @for (serviceType of serviceTypes; track serviceType.value) {
-                  <option [value]="serviceType.value">{{ serviceType.label }}</option>
-                }
-              </select>
-            </label>
-            <label class="block text-xs font-medium text-slate-300">
-              Disponibilidad
-              <select
-                name="demo-state"
-                aria-label="Filtrar por estado"
-                [(ngModel)]="selectedState"
-                class="mt-2 min-h-11 w-full rounded-lg border border-white/10 bg-ink px-3 text-sm text-white focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20"
-              >
-                @for (state of states; track state.value) {
-                  <option [value]="state.value">{{ state.label }}</option>
-                }
-              </select>
-            </label>
-            <button
-              type="button"
-              class="min-h-11 rounded-lg border border-white/10 px-4 text-xs font-semibold text-slate-300 transition hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              (click)="clearFilters()"
-            >
-              Limpiar filtros
-            </button>
-          </div>
-
-          <fieldset class="mt-4 flex flex-wrap gap-x-5 gap-y-3 border-t border-white/[0.07] pt-4">
-            <legend class="sr-only">Características especiales</legend>
-            <label class="inline-flex items-center gap-2 text-xs text-slate-400">
-              <input
-                type="checkbox"
-                name="has-demo"
-                [(ngModel)]="filters.hasDemo"
-                class="accent-accent"
-              />
-              Tiene demo o landing
-            </label>
-            <label class="inline-flex items-center gap-2 text-xs text-slate-400">
-              <input
-                type="checkbox"
-                name="has-backend"
-                [(ngModel)]="filters.hasBackend"
-                class="accent-accent"
-              />
-              Integración backend
-            </label>
-          </fieldset>
-        </div>
-
-        @if (filterDemos(demos); as visibleDemos) {
-          <p class="mb-4 text-xs text-slate-500" aria-live="polite">
-            {{ visibleDemos.length }} de {{ demos.length }} proyectos
-          </p>
-          @if (visibleDemos.length > 0) {
-            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              @for (demo of visibleDemos; track demo.id) {
-                <app-demo-card
-                  [demo]="demo"
-                  [categoryHref]="categoryPath(demo.id)"
-                  (selected)="selectDemo($event)"
-                />
-              }
-            </div>
-          } @else {
-            <div class="rounded-xl border border-white/[0.08] bg-panel/50 px-5 py-10 text-center">
-              <p class="text-sm font-semibold text-white">No encontramos proyectos con esos filtros.</p>
-              <p class="mt-2 text-xs text-slate-400">Probá con otro término o limpiá la selección.</p>
-              <button
-                type="button"
-                class="mt-4 rounded-lg border border-white/10 px-4 py-2 text-xs font-semibold text-accent transition hover:border-accent/40"
-                (click)="clearFilters()"
-              >
-                Limpiar filtros
-              </button>
-            </div>
+        <p class="mb-5 text-xs text-slate-500" aria-live="polite">
+          {{ demos.length }} experiencias disponibles públicamente · sin acceso a servicios privados de la VM
+        </p>
+        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          @for (demo of demos; track demo.id) {
+            <app-demo-card
+              [demo]="demo"
+              [categoryHref]="categoryPath(demo.id)"
+              (selected)="selectDemo($event)"
+            />
           }
-        }
+        </div>
       }
+
+      <aside class="mt-10 flex flex-col gap-4 rounded-2xl border border-white/[0.08] bg-panel/60 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">¿Buscás otra solución?</p>
+          <h3 class="mt-2 text-lg font-semibold text-white">Servicios adicionales y herramientas propias</h3>
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-slate-400">
+            Algunas demos viven en una VM privada; otras todavía están en preparación. No son enlaces públicos rotos.
+          </p>
+        </div>
+        <a
+          class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-lg border border-white/15 px-4 text-sm font-semibold text-slate-200 transition hover:border-slate-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          routerLink="/servicios-adicionales"
+        >
+          Ver servicios adicionales
+          <span aria-hidden="true">→</span>
+        </a>
+      </aside>
     </section>
 
     <section id="nosotros" aria-labelledby="enfoque-heading" class="scroll-mt-8 border-t border-white/[0.07] py-16 sm:py-20">

@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import { Demo, DemoApiSample } from '../models/demo.model';
+import { Demo } from '../models/demo.model';
 import { DemoCategory } from '../models/demo-category.model';
 
 const DEMO_DATA: Demo[] = [
@@ -19,6 +18,7 @@ const DEMO_DATA: Demo[] = [
     isPreview: true,
     hasBackend: true,
     previewPath: '/mvp/personal',
+    monitorId: 'mvp-personal',
     sourcePaths: ['mvp-personal/'],
   },
   {
@@ -35,6 +35,7 @@ const DEMO_DATA: Demo[] = [
     isPreview: true,
     hasBackend: true,
     previewPath: '/mvp/auditoria',
+    monitorId: 'mvp-auditoria',
     sourcePaths: ['mvp-auditoria/'],
   },
   {
@@ -51,6 +52,7 @@ const DEMO_DATA: Demo[] = [
     isPreview: true,
     hasBackend: true,
     previewPath: '/mvp/formularios',
+    monitorId: 'mvp-formularios',
     sourcePaths: ['mvp-formularios/'],
   },
   {
@@ -66,6 +68,9 @@ const DEMO_DATA: Demo[] = [
     hasDemo: false,
     isPreview: false,
     hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Demo disponible solo en la VM, sin enlace público desde Vercel.',
+    monitorId: 'mvp-osma-inspecciones',
     sourcePaths: ['mvp-osma-inspecciones/'],
   },
   {
@@ -73,15 +78,18 @@ const DEMO_DATA: Demo[] = [
     title: 'Automatización de Señales',
     summary: 'Webhooks de TradingView, ledger simulado y telemetría de estrategia.',
     description:
-      'Servicio FastAPI con autenticación de webhooks y órdenes simuladas en memoria. No se conecta a Binance, no ejecuta operaciones reales y requiere controles de acceso antes de publicar su telemetría.',
+      'Aplicación FastAPI con SQLite exclusiva: autentica webhooks, guarda señales y simula órdenes. No se conecta a Binance ni ejecuta operaciones reales. El dashboard vive en la VM; esta ficha no expone el puerto local.',
     category: 'Integraciones & automatización',
-    technologies: ['Python', 'FastAPI', 'HTML', 'Tailwind CSS'],
+    technologies: ['Python', 'FastAPI', 'HTML', 'SQLite'],
     status: 'mvp',
     serviceType: 'development',
     hasDemo: false,
     isPreview: false,
     hasBackend: true,
-    sourcePaths: ['mvp-valentin-cripto/'],
+    availability: 'vm-private',
+    availabilityNote: 'Demo local en la VM; requiere acceso privado.',
+    monitorId: 'app-valentin-cripto',
+    sourcePaths: ['app-valentin-cripto/'],
   },
   {
     id: 'logistica-fleet',
@@ -96,6 +104,9 @@ const DEMO_DATA: Demo[] = [
     hasDemo: false,
     isPreview: false,
     hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Demo local en la VM; requiere acceso privado.',
+    monitorId: 'mvp-logistica-fleet',
     sourcePaths: ['mvp-logistica-fleet/'],
   },
   {
@@ -111,6 +122,9 @@ const DEMO_DATA: Demo[] = [
     hasDemo: false,
     isPreview: false,
     hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Demo local en la VM con PostgreSQL; no está publicada en Vercel.',
+    monitorId: 'mvp-agrotech-iot',
     sourcePaths: ['mvp-agrotech-iot/'],
   },
   {
@@ -126,52 +140,64 @@ const DEMO_DATA: Demo[] = [
     hasDemo: false,
     isPreview: false,
     hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Demo local en la VM; requiere acceso privado.',
+    monitorId: 'mvp-visitor-pass',
     sourcePaths: ['mvp-visitor-pass/'],
   },
   {
-    id: 'educacion-cientifica',
-    title: 'App educativa infantil',
-    summary: 'Referencia de contenidos audiovisuales y actividades para nivel inicial.',
+    id: 'portal-ciudadano',
+    title: 'Portal Ciudadano',
+    summary: 'Portal de trámites y servicios para la comunidad.',
     description:
-      'El respaldo contiene un proyecto Flutter y otro Expo/React Native; el alcance de videos, cuestionarios y la tercera sección debe confirmarse antes de reconstruir una demo. Esta ficha es una referencia histórica, no una app desplegada.',
-    category: 'Educación & mobile',
-    technologies: ['Flutter', 'Expo', 'React Native', 'Contenido audiovisual'],
-    status: 'planned',
+      'Aplicación ciudadana independiente con servicios y trámites demostrativos. La instancia de la VM permanece en red privada; no se ofrece un enlace público desde el portfolio.',
+    category: 'Ciudadanía & GovTech',
+    technologies: ['Angular', 'FastAPI', 'SQLite'],
+    status: 'mvp',
     serviceType: 'application',
-    hasDemo: false,
+    hasDemo: true,
     isPreview: false,
-    hasBackend: false,
-    sourcePaths: [],
+    hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Servicio privado en la VM, sin enlace público desde Vercel.',
+    monitorId: 'app-portal-ciudadano',
+    sourcePaths: ['app-portal-ciudadano/'],
   },
   {
     id: 'frigorifico-trazabilidad',
     title: 'Trazabilidad frigorífica',
-    summary: 'Catálogo, ingreso de medias res, desposte y stock; implementación histórica por validar.',
+    summary: 'Catálogo, ingresos de medias res, desposte y consulta de stock.',
     description:
-      'La referencia histórica incluye una API documentada para catálogo, proveedores, saldos, ingreso de medias res, desposte y conteos de stock, además de una interfaz Angular. La ficha no certifica que el backend o el despliegue sigan operativos: hay que validar código, pruebas y alcance antes de presentar una demo.',
+      'MVP independiente con catálogo y proveedores, trazabilidad de ingresos, desposte, saldos y ajustes auditados. Está desplegado en la VM con datos de demostración; no tiene enlace público desde Vercel.',
     category: 'Industria & trazabilidad',
-    technologies: ['Angular', 'AWS API Gateway', 'AWS Cognito', 'API de inventario'],
-    status: 'planned',
+    technologies: ['React', 'TypeScript', 'FastAPI', 'SQLAlchemy', 'SQLite'],
+    status: 'mvp',
     serviceType: 'development',
-    hasDemo: false,
+    hasDemo: true,
     isPreview: false,
-    hasBackend: false,
-    sourcePaths: [],
+    hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Servicio privado en la VM, sin enlace público desde Vercel.',
+    monitorId: 'app-alantia-frigorifico',
+    sourcePaths: ['app-alantia-frigorifico/'],
   },
   {
     id: 'pos-comercio',
     title: 'POS & cierre de caja',
-    summary: 'Propuesta de catálogo, movimientos de caja y conciliación con planillas.',
+    summary: 'Venta rápida, turno de caja y cierre con pagos simulados.',
     description:
-      'El respaldo contiene una UI React/Vite, backend FastAPI/SQLModel y configuración PostgreSQL. La conciliación Excel/DB procede del contexto histórico y requiere validación funcional antes de publicar un recorrido de demo.',
+      'MVP local independiente con catálogo, carrito, registro de ventas y cierre de turno. Tarjeta y QR son simulados; no procesa pagos ni concilia planillas históricas.',
     category: 'Comercio & administración',
-    technologies: ['React', 'Vite', 'FastAPI', 'SQLModel', 'PostgreSQL'],
-    status: 'planned',
+    technologies: ['React', 'FastAPI', 'SQLModel', 'SQLite'],
+    status: 'mvp',
     serviceType: 'utility',
-    hasDemo: false,
+    hasDemo: true,
     isPreview: false,
-    hasBackend: false,
-    sourcePaths: [],
+    hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Servicio privado en la VM, sin enlace público desde Vercel.',
+    monitorId: 'web-pos-comercial',
+    sourcePaths: ['web-pos-comercial/'],
   },
   {
     id: 'municipium-landing',
@@ -186,22 +212,27 @@ const DEMO_DATA: Demo[] = [
     hasDemo: false,
     isPreview: false,
     hasBackend: false,
+    availability: 'planned',
+    availabilityNote: 'Proyecto local sin despliegue integrado ni preview pública.',
     sourcePaths: ['web-landing-municipal/'],
   },
   {
-    id: 'idealseo-web',
-    title: 'Sitio de servicios digitales',
-    summary: 'Sitio institucional multipágina para presentar servicios y contacto.',
+    id: 'tienda-virtual',
+    title: 'Tienda Virtual',
+    summary: 'Catálogo, carrito y experiencia de compra demostrativa.',
     description:
-      'El manifiesto actual del respaldo identifica React, Vite y Tailwind CSS. La referencia a Bootstrap no coincide con ese manifiesto y debe confirmarse antes de describirla como parte del stack.',
-    category: 'Web & servicios',
-    technologies: ['React', 'Vite', 'Tailwind CSS'],
-    status: 'planned',
+      'Aplicación de comercio electrónico local con catálogo y checkout de prueba. La instancia está en la VM y no se publica desde Vercel; no procesa pagos reales.',
+    category: 'Comercio & e-commerce',
+    technologies: ['React', 'FastAPI', 'SQLite'],
+    status: 'mvp',
     serviceType: 'commercial-page',
-    hasDemo: false,
+    hasDemo: true,
     isPreview: false,
-    hasBackend: false,
-    sourcePaths: [],
+    hasBackend: true,
+    availability: 'vm-private',
+    availabilityNote: 'Servicio privado en la VM, sin enlace público desde Vercel.',
+    monitorId: 'web-tienda-virtual',
+    sourcePaths: ['web-tienda-virtual/'],
   },
   {
     id: 'rincon-gourmet',
@@ -287,20 +318,24 @@ const DEMO_DATA: Demo[] = [
 
 @Injectable({ providedIn: 'root' })
 export class DemoDataService {
-  private readonly http = inject(HttpClient);
-
-  readonly apiUrl = 'https://jsonplaceholder.typicode.com';
-
   getDemos(): Observable<Demo[]> {
     return of(DEMO_DATA);
+  }
+
+  getPublicExperiences(): Observable<Demo[]> {
+    return this.getDemos().pipe(
+      map((demos) => demos.filter((demo) => demo.previewPath || demo.previewUrl)),
+    );
+  }
+
+  getAdditionalServices(): Observable<Demo[]> {
+    return this.getDemos().pipe(
+      map((demos) => demos.filter((demo) => !demo.previewPath && !demo.previewUrl)),
+    );
   }
 
   getDemosForCategory(category: DemoCategory): Observable<Demo[]> {
     const categoryDemoIds = new Set(category.demoIds);
     return this.getDemos().pipe(map((demos) => demos.filter((demo) => categoryDemoIds.has(demo.id))));
-  }
-
-  getSampleResponse(): Observable<DemoApiSample> {
-    return this.http.get<DemoApiSample>(`${this.apiUrl}/posts/1`);
   }
 }

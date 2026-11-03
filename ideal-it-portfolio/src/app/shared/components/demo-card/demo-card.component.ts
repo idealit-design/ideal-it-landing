@@ -4,10 +4,9 @@ import { RouterLink } from '@angular/router';
 import { Demo } from '../../../core/models/demo.model';
 
 @Component({
-  selector: 'app-demo-card',
-  standalone: true,
-  imports: [NgClass, RouterLink],
-  templateUrl: './demo-card.component.html',
+    selector: 'app-demo-card',
+    imports: [NgClass, RouterLink],
+    templateUrl: './demo-card.component.html'
 })
 export class DemoCardComponent {
   @Input({ required: true }) demo!: Demo;
@@ -55,7 +54,11 @@ export class DemoCardComponent {
   }
 
   get actionLabel(): string {
-    return this.hasPublicPreview ? 'Explorar demo' : 'Solicitar demo';
+    return this.hasPublicPreview ? 'Explorar demo' : 'Ver ficha';
+  }
+
+  get availabilityLabel(): string {
+    return this.demo.availability === 'vm-private' ? 'Demo privada en la VM' : 'En preparación';
   }
 
   selectDemo(): void {

@@ -6,12 +6,17 @@
     </header>
 
     <section class="py-10 sm:py-14">
-      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">MVP independiente · Auditoría</p>
-      <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Auditoría médica & documental</h1>
-      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-        Revisión de documentos ficticios, consultas de padrón simuladas y catálogo de nomenclador de demostración.
-        No se consulta RENAPER ni una matrícula real.
-      </p>
+      <div class="flex flex-wrap items-start justify-between gap-5">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Preview / simulación con datos de ejemplo · Auditoría</p>
+          <h1 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Auditoría médica & documental</h1>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+            Revisión de documentos ficticios, consultas de padrón simuladas y catálogo de nomenclador de demostración.
+            Esta preview usa datos en memoria; no se conecta a APIs privadas, a la VM ni a registros reales.
+          </p>
+        </div>
+        <span class="rounded-full border border-amber-300/20 bg-amber-300/[0.07] px-3 py-1.5 text-xs text-amber-200">Sin conexión a la VM</span>
+      </div>
     </section>
 
     @if (errorMessage) {

@@ -1,10 +1,10 @@
 # Ideal-IT Portfolio
 
-Portfolio interactivo de demos construido con Angular 18, componentes standalone y Tailwind CSS 3.
+Portfolio interactivo de demos construido con Angular 21, componentes standalone y Tailwind CSS 3.
 
 ## Requisitos
 
-- Node.js 20.11.1 o superior (Angular 18)
+- Node.js `^20.19.0`, `^22.12.0` o `>=24.0.0` (Angular 21)
 - npm
 - Python 3.10 o superior para las APIs FastAPI
 
@@ -28,7 +28,11 @@ El estándar para crear y adaptar MVPs Angular, incluyendo la política de aisla
 
 Los MVPs no comparten módulos, servicios, modelos de dominio ni tablas. Cada uno conserva su backend y almacenamiento aislados. El catálogo público muestra únicamente referencias a los directorios `mvp-*`; no expone las rutas locales ni los archivos de los respaldos históricos.
 
-El Demos Hub reúne 18 proyectos en tres categorías, con tres previews interactivas y cinco landings comerciales navegables. Las fichas sin preview pública muestran vistas conceptuales y permiten seleccionar el sistema para solicitar una demo; el envío permanece pendiente hasta configurar un canal de contacto. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a FastAPI, no persisten y no contienen documentos sensibles.
+El catálogo reúne 18 fichas en tres categorías. La home principal muestra solo las ocho experiencias abribles desde Vercel: tres previews interactivas y cinco landings comerciales. Las otras diez fichas están en `/servicios-adicionales` y se distinguen como demos privadas de la VM o propuestas en preparación; no se enlazan a puertos locales ni muestran una acción ficticia para solicitar acceso. Las previews de `/mvp/formularios`, `/mvp/personal` y `/mvp/auditoria` usan datos sintéticos en memoria; no llaman a APIs locales o privadas, no se conectan a la VM, no persisten y no contienen documentos sensibles. Las cinco landings comerciales se integran como bundles estáticos independientes.
+
+### Estado de despliegue y migración
+
+Vercel sirve la SPA y los bundles estáticos de las cinco landings. En la VM se verificaron como activos el hub Nginx (`127.0.0.1:8080`), ALANTIA Frigorífico (`127.0.0.1:8012`), POS (`127.0.0.1:8027`) y Tienda Virtual (`127.0.0.1:8028`). Estos servicios usan loopback y no son accesibles desde los visitantes de Vercel; el acceso remoto requiere un túnel SSH autorizado. La página secundaria no publica ni enlaza esos puertos. La planificación está en [plan central](../md/planning/portfolio-planificacion.md).
 
 Las tarjetas priorizan categoría, título y descripción, muestran hasta tres tecnologías representativas (frontend, backend y datos cuando están disponibles) y mantienen el enlace de categoría y la acción principal en una sola fila. El borde sutil a color identifica la categoría comercial y el contenido usa una altura compacta y consistente.
 
@@ -37,7 +41,7 @@ Puertos locales actuales: Personal frontend/API `4203`/`8001`; Auditoría `4201`
 ## Crear el frontend desde cero
 
 ```powershell
-npx --yes @angular/cli@18 new ideal-it-portfolio --standalone --routing --style css
+npx --yes @angular/cli@21 new ideal-it-portfolio --standalone --routing --style css
 cd ideal-it-portfolio
 npm install --save-dev tailwindcss@^3 postcss autoprefixer
 npx tailwindcss init
@@ -70,11 +74,11 @@ Frontend:
 npm start
 ```
 
-Abre `http://localhost:4200`. Las categorías se visitan en `/desarrollos`, `/aplicaciones` y `/paginas-comerciales` (las rutas anteriores `/categorias/...` redirigen a estas). Las rutas de los módulos/preview son `/mvp/personal`, `/mvp/auditoria` y `/mvp/formularios`.
+Abre `http://localhost:4200`. La home contiene las ocho experiencias públicas; la ruta `/servicios-adicionales` reúne fichas privadas o en preparación. Las categorías se visitan en `/desarrollos`, `/aplicaciones` y `/paginas-comerciales` (las rutas anteriores `/categorias/...` redirigen a estas). Las rutas de los módulos/preview son `/mvp/personal`, `/mvp/auditoria` y `/mvp/formularios`.
 
 ## Despliegue de la landing en Vercel
 
-Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas de categorías y MVP a `index.html`; las rutas Angular responden al navegar y al refrescar.
+Importa el repositorio en Vercel y configura **Root Directory** como `ideal-it-portfolio`. El archivo `vercel.json` establece `npm run build`, publica `dist/ideal-it-portfolio/browser` y reescribe las rutas Angular de categorías, servicios adicionales y MVP a `index.html`; las rutas responden al navegar y al refrescar.
 
 Vercel publica esta aplicación Angular estática. `vercel.json` reescribe las rutas de la SPA a `index.html`, incluido el acceso directo o refresco de `/mvp/formularios`. La preview de Formularios es código Angular de presentación con datos temporales, no una conexión al backend. El MVP standalone de Turismo/Eventos, Personal y Auditoría permanecen independientes: sus APIs FastAPI y bases SQLite no se despliegan con la landing ni se exponen como servicios públicos.
 

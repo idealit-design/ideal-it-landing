@@ -13,10 +13,9 @@ import { DemoCardComponent } from '../../shared/components/demo-card/demo-card.c
 import { DemoDetailsModalComponent } from '../../shared/components/demo-details-modal/demo-details-modal.component';
 
 @Component({
-  selector: 'app-category-landing',
-  standalone: true,
-  imports: [AsyncPipe, DemoCardComponent, DemoDetailsModalComponent, RouterLink],
-  templateUrl: './category-landing.component.html',
+    selector: 'app-category-landing',
+    imports: [AsyncPipe, DemoCardComponent, DemoDetailsModalComponent, RouterLink],
+    templateUrl: './category-landing.component.html'
 })
 export class CategoryLandingComponent {
   private readonly route = inject(ActivatedRoute);

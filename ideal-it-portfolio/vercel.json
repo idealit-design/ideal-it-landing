@@ -21,6 +21,10 @@
       "destination": "/index.html"
     },
     {
+      "source": "/servicios-adicionales",
+      "destination": "/index.html"
+    },
+    {
       "source": "/mvp/:path*",
       "destination": "/index.html"
     },

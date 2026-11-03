@@ -10,10 +10,9 @@ import {
 } from './auditoria-mvp.service';
 
 @Component({
-  selector: 'app-auditoria-mvp',
-  standalone: true,
-  imports: [FormsModule, NgClass, RouterLink],
-  templateUrl: './auditoria-mvp.component.html',
+    selector: 'app-auditoria-mvp',
+    imports: [FormsModule, NgClass, RouterLink],
+    templateUrl: './auditoria-mvp.component.html'
 })
 export class AuditoriaMvpComponent implements OnInit {
   private readonly auditoriaService = inject(AuditoriaMvpService);

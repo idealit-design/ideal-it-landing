@@ -11,10 +11,9 @@ import {
 } from './personal-mvp.service';
 
 @Component({
-  selector: 'app-personal-mvp',
-  standalone: true,
-  imports: [FormsModule, RouterLink],
-  templateUrl: './personal-mvp.component.html',
+    selector: 'app-personal-mvp',
+    imports: [FormsModule, RouterLink],
+    templateUrl: './personal-mvp.component.html'
 })
 export class PersonalMvpComponent implements OnInit {
   private readonly personalService = inject(PersonalMvpService);

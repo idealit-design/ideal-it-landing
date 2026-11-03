@@ -48,7 +48,7 @@ export const DEMO_CATEGORIES: DemoCategory[] = [
       'logistica-fleet',
       'agrotech-iot',
       'visitor-pass',
-      'educacion-cientifica',
+      'portal-ciudadano',
       'municipium-landing',
     ],
   },
@@ -63,7 +63,7 @@ export const DEMO_CATEGORIES: DemoCategory[] = [
     seoDescription:
       'Descubrí páginas comerciales y landings de Ideal-IT para restaurantes, escritores, artesanos, huertas y servicios especializados.',
     demoIds: [
-      'idealseo-web',
+      'tienda-virtual',
       'rincon-gourmet',
       'pluma-y-tinta',
       'manos-maestras',

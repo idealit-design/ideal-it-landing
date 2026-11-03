@@ -10,6 +10,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'servicios-adicionales',
+    loadComponent: () =>
+      import('./features/additional-services/additional-services.component').then(
+        (component) => component.AdditionalServicesComponent,
+      ),
+  },
+  {
     path: 'desarrollos',
     data: { categoryId: 'desarrollos' },
     loadComponent: () =>

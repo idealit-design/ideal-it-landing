@@ -4,19 +4,20 @@ import { RouterLink } from '@angular/router';
 import { Demo } from '../../../core/models/demo.model';
 
 @Component({
-  selector: 'app-demo-details-modal',
-  standalone: true,
-  imports: [NgClass, RouterLink],
-  templateUrl: './demo-details-modal.component.html',
+    selector: 'app-demo-details-modal',
+    imports: [NgClass, RouterLink],
+    templateUrl: './demo-details-modal.component.html'
 })
 export class DemoDetailsModalComponent {
   @Input({ required: true }) demo!: Demo;
   @Output() closed = new EventEmitter<void>();
 
-  requestReady = false;
-
   get hasPublicPreview(): boolean {
     return Boolean(this.demo.previewPath || this.demo.previewUrl);
+  }
+
+  get availabilityLabel(): string {
+    return this.demo.availability === 'vm-private' ? 'Demo privada en la VM' : 'En preparación';
   }
 
   get accentClasses(): string {
