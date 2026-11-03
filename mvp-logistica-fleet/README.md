@@ -46,3 +46,7 @@ npm start
 - Generación de reporte diario y registro de respaldo remoto SSH/SFTP simulado.
 
 Consulte [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el ERD, endpoints y reglas operativas.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM.** Propuesta: UI/API en `127.0.0.1:8018`, contenedor con `mem_limit: 128m` y SQLite exclusiva en volumen persistente gestionado por Prisma. No está desplegado. Prerrequisitos: ruta estable para `DATABASE_URL`, aplicar migraciones durante una etapa controlada y datos ficticios. El simulador SSH/SFTP debe seguir sin conexiones salientes.

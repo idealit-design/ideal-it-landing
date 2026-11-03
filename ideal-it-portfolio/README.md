@@ -32,7 +32,7 @@ El catálogo reúne 18 fichas en tres categorías. La home principal muestra sol
 
 ### Estado de despliegue y migración
 
-Vercel sirve la SPA y los bundles estáticos de las cinco landings. En la VM se verificaron como activos el hub Nginx (`127.0.0.1:8080`), ALANTIA Frigorífico (`127.0.0.1:8012`), POS (`127.0.0.1:8027`) y Tienda Virtual (`127.0.0.1:8028`). Estos servicios usan loopback y no son accesibles desde los visitantes de Vercel; el acceso remoto requiere un túnel SSH autorizado. La página secundaria no publica ni enlaza esos puertos. La planificación está en [plan central](../md/planning/portfolio-planificacion.md).
+Vercel sirve la SPA y los bundles estáticos de las cinco landings. En la VM se verificaron el hub Nginx (`127.0.0.1:8080`) y ALANTIA Frigorífico (`127.0.0.1:8012`, límite de 128 MiB y SQLite exclusiva). ALANTIA no está conectada a Vercel; las demos privadas permanecen aisladas y no se enlazan desde la landing pública. La planificación está en [plan central](../md/planning/portfolio-planificacion.md); el túnel SSH solo permite acceso privado al operador.
 
 Las tarjetas priorizan categoría, título y descripción, muestran hasta tres tecnologías representativas (frontend, backend y datos cuando están disponibles) y mantienen el enlace de categoría y la acción principal en una sola fila. El borde sutil a color identifica la categoría comercial y el contenido usa una altura compacta y consistente.
 

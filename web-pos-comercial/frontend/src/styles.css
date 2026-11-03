@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Aptos", "Segoe UI", sans-serif;
+  color: #242a25;
+  background: #f5f4f0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --ink: #242a25;
+  --muted: #898d87;
+  --line: #e8e7e1;
+  --green: #2f674d;
+  --paper: #fff;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 360px; min-height: 100vh; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .48; }
+.pos-shell { min-height: 100vh; }
+
+.topbar {
+  height: 76px; padding: 0 5.2%; display: flex; align-items: center; justify-content: space-between;
+  background: #fff; border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; }
+.brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: #285d43; color: white; font: 800 21px "Aptos", "Segoe UI", sans-serif; }
+.brand strong { display: block; font: 800 19px "Aptos", "Segoe UI", sans-serif; letter-spacing: -.8px; line-height: 1.05; }
+.brand small { display: block; margin-top: 4px; color: #878b83; font-size: 8px; font-weight: 700; letter-spacing: 1.5px; }
+.topbar-right { display: flex; align-items: center; gap: 22px; }
+.demo-tag { padding: 7px 10px; border-radius: 5px; background: #faf3e6; color: #9c7131; font-size: 9px; font-weight: 700; letter-spacing: .8px; }
+.register-state { display: flex; align-items: center; gap: 8px; color: #787d76; font-size: 12px; }
+.register-state i,.today-dot { width: 7px; height: 7px; border-radius: 50%; background: #b6b9b2; }
+.register-state.is-open i,.today-dot { background: #46a375; }
+.button { min-height: 42px; border: 0; border-radius: 7px; padding: 0 17px; font-size: 12px; font-weight: 700; transition: background .15s, transform .15s; }
+.button:active:not(:disabled) { transform: translateY(1px); }
+.button-dark { color: #fff; background: #285d43; }
+.button-dark:hover:not(:disabled) { background: #204b36; }
+.button-outline { border: 1px solid #dcded8; color: #414740; background: #fff; }
+.button-outline:hover:not(:disabled) { background: #f7f8f5; }
+
+.workspace { width: min(1320px, 91%); margin: 0 auto; padding: 38px 0 55px; display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 36px; align-items: start; }
+.page-heading { min-height: 112px; display: flex; align-items: flex-start; justify-content: space-between; }
+.eyebrow { margin: 0 0 9px; color: #858981; font-size: 9px; font-weight: 700; letter-spacing: 1.35px; }
+.eyebrow span { padding: 0 5px; color: #54a078; }
+h1,h2,p { margin-top: 0; }
+.page-heading h1 { margin: 0; font: 800 31px "Aptos", "Segoe UI", sans-serif; letter-spacing: -1.1px; }
+.subheading { margin: 7px 0 0; color: #858981; font-size: 12px; }
+.today-chip { display: flex; align-items: center; gap: 8px; margin-top: 23px; color: #747970; font-size: 11px; }
+.catalog-toolbar { display: flex; align-items: center; justify-content: space-between; margin: 28px 0 15px; }
+.catalog-toolbar div { display: flex; align-items: baseline; gap: 10px; }
+.catalog-toolbar h2 { margin: 0; font: 700 16px "Aptos", "Segoe UI", sans-serif; }
+.catalog-toolbar div span,.catalog-hint { color: #90948d; font-size: 10px; }
+.catalog-hint { padding-right: 2px; }
+.product-search { width: min(320px, 52%); height: 39px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid #e4e5df; border-radius: 7px; background: #fff; color: #858981; }
+.product-search:focus-within { border-color: #4b8a67; box-shadow: 0 0 0 3px #4b8a6718; }
+.product-search > span { font-size: 19px; line-height: 1; }
+.product-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 10px; }
+.product-search input::placeholder { color: #999d96; }
+.product-search kbd { padding: 3px 5px; border: 1px solid #e8e9e4; border-radius: 4px; color: #969991; font-size: 8px; }
+.product-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
+.product-card { min-height: 194px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; padding: 15px; border: 1px solid #ecebe6; border-radius: 10px; background: #fff; color: var(--ink); text-align: left; transition: transform .16s,box-shadow .16s; }
+.product-card:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 24px #26352b12; }
+.product-category { z-index: 1; padding: 5px 8px; border-radius: 4px; background: #f2f5ef; color: #63725f; font-size: 9px; }
+.product-art { position: absolute; right: 12px; top: 29px; width: 62px; height: 62px; display: grid; place-items: center; border-radius: 50%; background: #f2eee3; color: #bb9c62; font: 700 17px "Aptos", "Segoe UI", sans-serif; }
+.tone-1 .product-art { color: #688477; background: #e9f1eb; }
+.tone-2 .product-art { color: #b78465; background: #f4e9e1; }
+.tone-3 .product-art { color: #74839b; background: #e9edf4; }
+.tone-4 .product-art { color: #917c9c; background: #f1eaf2; }
+.product-card > strong { max-width: 135px; margin-top: auto; font-size: 12px; line-height: 1.45; }
+.product-bottom { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.product-bottom b { font-size: 13px; }
+.product-bottom i { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: #eef4ef; color: #32734f; font-size: 17px; font-style: normal; }
+.catalog-disclaimer { margin: 19px 0; color: #999c96; font-size: 10px; }
+.loading-state { padding: 54px 15px; border: 1px dashed #d9dbd4; border-radius: 9px; color: #858981; text-align: center; font-size: 12px; }
+
+.cart-panel { position: sticky; top: 18px; min-height: 510px; display: flex; flex-direction: column; padding: 21px; border: 1px solid #e8e7e1; border-radius: 12px; background: #fff; box-shadow: 0 8px 30px #222b2410; }
+.cart-heading { display: flex; justify-content: space-between; align-items: center; padding-bottom: 17px; border-bottom: 1px solid #eeede9; }
+.cart-heading .eyebrow { margin-bottom: 6px; font-size: 8px; }
+.cart-heading h2 { margin: 0; font: 700 17px "Aptos", "Segoe UI", sans-serif; }
+.cart-heading h2 span { display: inline-grid; min-width: 20px; height: 20px; place-items: center; margin-left: 4px; border-radius: 6px; background: #edf3ee; color: #37684e; font: 700 10px "Aptos", "Segoe UI", sans-serif; vertical-align: 2px; }
+.text-button { padding: 4px; border: 0; background: none; color: #878a83; font-size: 10px; }
+.text-button:hover { color: #b34d40; }
+.cart-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 235px; padding: 20px; text-align: center; }
+.cart-empty-mark { width: 49px; height: 49px; display: grid; place-items: center; margin-bottom: 15px; border-radius: 15px; background: #f5f6f2; color: #7c967f; font-size: 26px; font-weight: 300; }
+.cart-empty strong { font: 700 13px "Aptos", "Segoe UI", sans-serif; }
+.cart-empty p { max-width: 200px; margin: 7px 0 0; color: #90948c; font-size: 10px; line-height: 1.6; }
+.cart-lines { max-height: 325px; overflow-y: auto; }
+.cart-line { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 7px 8px; padding: 15px 0; border-bottom: 1px solid #f0efec; }
+.cart-line-copy { display: flex; flex-direction: column; gap: 5px; }
+.cart-line-copy strong { font-size: 11px; font-weight: 600; }
+.cart-line-copy span { color: #969991; font-size: 9px; }
+.quantity-control { display: flex; align-items: center; gap: 9px; }
+.quantity-control button { width: 25px; height: 25px; border: 1px solid #e8e9e4; border-radius: 6px; background: #fff; color: #555b53; }
+.quantity-control span { min-width: 10px; text-align: center; font-size: 11px; }
+.line-total { grid-column: 2; justify-self: end; font-size: 11px; }
+.cart-summary { margin-top: auto; padding-top: 14px; }
+.summary-row { display: flex; justify-content: space-between; margin: 11px 0; color: #858980; font-size: 11px; }
+.total-row { margin-top: 14px; padding-top: 14px; border-top: 1px solid #eeede9; color: var(--ink); font-size: 13px; }
+.total-row strong:last-child { font: 800 20px "Aptos", "Segoe UI", sans-serif; letter-spacing: -.5px; }
+.button-pay { width: 100%; height: 48px; display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 0 15px; background: #285d43; color: #fff; text-align: left; }
+.button-pay:hover:not(:disabled) { background: #204b36; }
+.button-pay span { font-size: 18px; font-weight: 400; }
+.secure-note { margin: 12px 0 0; color: #959990; text-align: center; font-size: 9px; }
+.secure-note span { padding-right: 3px; color: #56a276; font-size: 7px; }
+
+.alert { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 0 0 15px; padding: 12px 14px; border-radius: 7px; font-size: 11px; line-height: 1.5; }
+.alert-error { border: 1px solid #f1d5ce; background: #fff6f3; color: #a44736; }
+.alert-success { border: 1px solid #d7e9dc; background: #f2faf4; color: #34704d; }
+.alert button { border: 0; background: none; color: inherit; font-size: 18px; }
+.empty-register { display: flex; align-items: center; gap: 13px; margin: 4px 0 22px; padding: 14px; border: 1px solid #e8e8df; border-radius: 9px; background: #fffdf8; }
+.empty-register > div { flex: 1; }
+.empty-icon { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: #f4eee1; color: #a3844d; font: 700 12px "Aptos", "Segoe UI", sans-serif; }
+.empty-register strong { font-size: 11px; }
+.empty-register p { margin: 4px 0 0; color: #8d9189; font-size: 10px; }
+
+.modal-backdrop { position: fixed; z-index: 5; inset: 0; display: grid; place-items: center; padding: 20px; background: #18221db5; backdrop-filter: blur(3px); }
+.modal-card { position: relative; width: min(100%, 470px); max-height: calc(100vh - 40px); overflow-y: auto; padding: 29px; border-radius: 13px; background: #fff; box-shadow: 0 24px 80px #101a1440; }
+.modal-close { position: absolute; top: 17px; right: 18px; width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f4f5f1; color: #71776e; font-size: 19px; }
+.modal-card > h2 { margin: 0 0 18px; font: 800 23px "Aptos", "Segoe UI", sans-serif; letter-spacing: -.6px; }
+.modal-description { margin: -7px 0 21px; color: #858981; font-size: 11px; line-height: 1.6; }
+.field-label { display: block; margin: 16px 0 8px; color: #585e56; font-size: 10px; font-weight: 700; }
+.money-input { height: 45px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #dfe1da; border-radius: 7px; background: #fff; color: #7a8077; }
+.money-input:focus-within { border-color: #4b8a67; box-shadow: 0 0 0 3px #4b8a6718; }
+.money-input input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 14px; font-weight: 600; }
+.money-input-compact { width: 137px; height: 37px; gap: 5px; padding: 0 9px; border-color: #e9e9e3; }
+.money-input-compact input { font-size: 12px; }
+.field-help { margin: 8px 0 0; color: #969a92; font-size: 9px; line-height: 1.5; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 23px; padding-top: 17px; border-top: 1px solid #eeede9; }
+.inline-error { margin-top: 12px; color: #a44736; font-size: 10px; }
+.checkout-total { display: flex; align-items: center; justify-content: space-between; margin: 0 0 18px; padding: 14px; border-radius: 8px; background: #f3f6f1; color: #657260; font-size: 11px; }
+.checkout-total strong { color: #2e5e43; font: 800 20px "Aptos", "Segoe UI", sans-serif; }
+.payment-fields { display: grid; gap: 9px; }
+.payment-field { display: flex; justify-content: space-between; align-items: center; padding: 9px 10px; border: 1px solid #eeede9; border-radius: 7px; }
+.payment-field > span { display: flex; flex-direction: column; gap: 3px; }
+.payment-field strong { font-size: 11px; }
+.payment-field small { color: #92968e; font-size: 9px; }
+.payment-result { display: flex; justify-content: space-between; margin-top: 15px; padding: 12px 0; border-top: 1px solid #eeede9; color: #767b73; font-size: 11px; }
+.payment-result strong { color: #2c6948; font: 700 14px "Aptos", "Segoe UI", sans-serif; }
+.payment-result .text-danger { color: #b34d40; }
+.report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.report-item { min-height: 57px; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 9px 11px; border: 1px solid #eeede9; border-radius: 7px; }
+.report-item span { color: #898d85; font-size: 9px; }
+.report-item strong { font-size: 12px; }
+.report-item-strong { border-color: #dce9df; background: #f7faf6; }
+.report-item-strong strong { color: #2e6748; font-size: 14px; }
+.expected-cash { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 13px 12px; border-radius: 7px; background: #f1f5f0; color: #586655; font-size: 10px; }
+.expected-cash strong { color: #2d5e43; font: 800 15px "Aptos", "Segoe UI", sans-serif; }
+.ticket-paper { max-width: 340px; margin: 0 auto; padding: 22px 18px; border: 1px dashed #d9dbd4; color: #343a35; font-family: "Consolas", "Courier New", monospace; font-size: 11px; }
+.ticket-header { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-bottom: 15px; border-bottom: 1px dashed #d9dbd4; }
+.ticket-header strong { font: 800 23px "Aptos", "Segoe UI", sans-serif; letter-spacing: -1px; }
+.ticket-header span { color: #858981; font-size: 8px; letter-spacing: 1px; }
+.ticket-meta { display: grid; gap: 5px; padding: 12px 0; color: #777d75; font-size: 9px; }
+.ticket-lines,.ticket-payments { display: grid; gap: 9px; padding: 11px 0; border-top: 1px dashed #d9dbd4; }
+.ticket-line { display: flex; justify-content: space-between; gap: 12px; }
+.ticket-line > span { overflow-wrap: anywhere; }
+.ticket-line strong { white-space: nowrap; font-weight: 600; }
+.ticket-total { display: flex; justify-content: space-between; margin: 0 -18px; padding: 13px 18px; border-top: 1px dashed #d9dbd4; border-bottom: 1px dashed #d9dbd4; font-weight: 700; }
+.ticket-total strong { font-size: 16px; }
+.ticket-payments { border-top: 0; padding-bottom: 8px; }
+.ticket-change { padding-top: 9px; border-top: 1px dashed #d9dbd4; }
+.ticket-paper footer { margin-top: 17px; color: #777d75; text-align: center; font-size: 9px; }
+
+@media (max-width: 980px) {
+  .workspace { width: 94%; grid-template-columns: minmax(0,1fr) 330px; gap: 20px; }
+  .product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .topbar { padding: 0 3%; }
+}
+@media (max-width: 720px) {
+  body { min-width: 360px; }
+  .topbar { height: 66px; }
+  .topbar-right { gap: 10px; }
+  .demo-tag,.today-chip { display: none; }
+  .register-state { font-size: 10px; }
+  .topbar .button { min-height: 37px; padding: 0 11px; font-size: 10px; }
+  .workspace { width: 92%; padding-top: 25px; grid-template-columns: 1fr; gap: 15px; }
+  .page-heading { min-height: 96px; }
+  .page-heading h1 { font-size: 27px; }
+  .catalog-toolbar { margin-top: 17px; }
+  .product-search { width: min(280px, 60%); }
+  .product-grid { gap: 10px; }
+  .product-card { min-height: 170px; padding: 12px; }
+  .product-art { width: 49px; height: 49px; font-size: 14px; }
+  .cart-panel { position: static; min-height: 340px; padding: 17px; }
+  .cart-empty { min-height: 170px; }
+}
+@media (max-width: 420px) {
+  .brand { gap: 7px; }
+  .brand-mark { width: 33px; height: 33px; }
+  .brand strong { font-size: 16px; }
+  .register-state { max-width: 85px; line-height: 1.3; }
+  .catalog-hint { display: none; }
+  .product-search { width: 57%; padding: 0 7px; }
+  .product-search kbd { display: none; }
+  .product-card { min-height: 155px; }
+  .modal-card { padding: 23px 18px; }
+  .money-input-compact { width: 123px; }
+}
+
+@media print {
+  @page { size: 80mm auto; margin: 6mm; }
+  body * { visibility: hidden !important; }
+  .modal-backdrop,.modal-backdrop * { visibility: visible !important; }
+  .modal-backdrop { position: absolute; inset: 0; display: block; padding: 0; background: #fff; backdrop-filter: none; }
+  .modal-card { width: 100%; max-height: none; overflow: visible; padding: 0; border-radius: 0; box-shadow: none; }
+  .modal-close,.ticket-actions { display: none !important; }
+  .ticket-paper { width: 100%; max-width: none; border: 0; padding: 0; }
+}

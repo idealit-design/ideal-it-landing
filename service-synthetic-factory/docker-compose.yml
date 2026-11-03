@@ -1,0 +1,50 @@
+services:
+  factory:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: service-synthetic-factory
+    restart: unless-stopped
+    init: true
+    mem_limit: 128m
+    memswap_limit: 128m
+    ports:
+      - "127.0.0.1:8024:8080"
+    environment:
+      FACTORY_DATABASE_PATH: /app/backend/data/db/factory_mvp.db
+      FACTORY_ASSETS_DIR: /app/backend/data/generated
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - synthetic_factory_data:/app/backend/data
+    networks:
+      - idealit-hub-publish
+      - idealit-internal
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8009/health', timeout=2).read();
+          urllib.request.urlopen('http://127.0.0.1:8080/', timeout=2).read()
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  synthetic_factory_data:
+    name: service-synthetic-factory-data
+
+networks:
+  idealit-hub-publish:
+    external: true
+  idealit-internal:
+    external: true

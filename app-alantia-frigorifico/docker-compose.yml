@@ -1,0 +1,47 @@
+services:
+  frigorifico:
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8012:8000"
+    environment:
+      FRIGORIFICO_DATABASE_PATH: /app/backend/data/db/frigorifico_app.db
+    volumes:
+      - frigorifico_sqlite:/app/backend/data/db
+    mem_limit: 128m
+    pids_limit: 64
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - idealit-internal
+      - frigorifico-loopback
+
+volumes:
+  frigorifico_sqlite:
+    name: app-alantia-frigorifico-sqlite
+
+networks:
+  idealit-internal:
+    external: true
+    name: idealit-internal
+  frigorifico-loopback:
+    name: app-alantia-frigorifico-loopback
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: "false"

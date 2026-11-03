@@ -20,7 +20,7 @@ export interface BiometricMark {
 @Injectable({ providedIn: 'root' })
 export class BiometricService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://127.0.0.1:8001/api/biometric/simular';
+  private readonly apiUrl = '/api/biometric/simular';
 
   simulate(mark: {
     dni?: string;

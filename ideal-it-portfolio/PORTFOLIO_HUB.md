@@ -4,7 +4,7 @@
 
 La SPA Angular 21 se publica estáticamente en Vercel y contiene cinco landings comerciales compiladas en `public/landings/`. La home muestra ocho experiencias públicas; `/servicios-adicionales` separa las fichas privadas de VM y las propuestas en preparación. Las previews de Personal, Auditoría y Formularios son sintéticas y no consumen APIs ni la VM.
 
-La VM ejecuta `idealit-hub` (`127.0.0.1:8080`), `app-alantia-frigorifico` (`127.0.0.1:8012`), POS (`127.0.0.1:8027`) y Tienda Virtual (`127.0.0.1:8028`). Estos servicios son privados y no están conectados a Vercel. La matriz de 18 subsistemas del repositorio no es lo mismo que el conteo de tarjetas públicas del Hub.
+La VM ejecuta `idealit-hub` (Nginx saludable en `127.0.0.1:8080`) y `app-alantia-frigorifico` (saludable en `127.0.0.1:8012`, límite de 128 MiB y SQLite exclusiva). La demo ALANTIA no está conectada a Vercel. Las demás demos permanecen aisladas de la landing pública. La matriz de 18 subsistemas del repositorio no es lo mismo que el conteo de tarjetas públicas del Hub.
 
 | Prioridad | Subsistemas |
 |---|---|

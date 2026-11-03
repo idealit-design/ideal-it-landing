@@ -22,7 +22,7 @@ export interface Person {
 @Injectable({ providedIn: 'root' })
 export class PersonalService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://127.0.0.1:8001/api/personal';
+  private readonly baseUrl = '/api/personal';
 
   list(dni = ''): Observable<Person[]> {
     let params = new HttpParams();

@@ -1,0 +1,41 @@
+services:
+  mvp-personal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mvp-personal
+    restart: unless-stopped
+    mem_limit: 128m
+    memswap_limit: 128m
+    ports:
+      - "127.0.0.1:8021:8000"
+    environment:
+      PERSONAL_MVP_DATABASE_PATH: /app/backend/data/db/personal_mvp.db
+      PERSONAL_MVP_CORS_ORIGINS: http://localhost:8021,http://127.0.0.1:8021
+    volumes:
+      - personal_mvp_sqlite:/app/backend/data/db
+    networks:
+      - hub-publish
+      - idealit-internal
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health', timeout=2).read()"
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+networks:
+  hub-publish:
+    external: true
+    name: idealit-hub-publish
+  idealit-internal:
+    external: true
+    name: idealit-internal
+
+volumes:
+  personal_mvp_sqlite:
+    name: mvp_personal_sqlite_data

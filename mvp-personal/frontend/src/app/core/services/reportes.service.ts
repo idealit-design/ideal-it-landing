@@ -25,7 +25,7 @@ export interface AttendanceReport {
 @Injectable({ providedIn: 'root' })
 export class ReportesService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://127.0.0.1:8001/api/reportes';
+  private readonly apiUrl = '/api/reportes';
 
   daily(fecha: string): Observable<AttendanceReport> {
     return this.http.get<AttendanceReport>(`${this.apiUrl}/diario`, {

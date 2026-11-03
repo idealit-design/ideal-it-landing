@@ -54,3 +54,7 @@ Las fechas y cupos se muestran como parte de la oferta gratuita. La eliminación
 La base de datos se crea exclusivamente en este módulo y no se conecta a servicios externos. Utilice datos ficticios: la aplicación no implementa autenticación ni es un sistema oficial de registro municipal. El código QR es un identificador de acceso aleatorio, no una prueba criptográfica de identidad.
 
 Consulte [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para el modelo relacional, contratos de API y aislamiento.
+
+## Estrategia de Despliegue y Migración
+
+**Prioridad 1 — demo interactiva en VM.** Propuesta: UI/API tras endpoint `127.0.0.1:8017`, límite `128m` y SQLite exclusiva en volumen del módulo. No está desplegado; la preview actual no se conecta a este backend. Prerrequisitos: configurar origen de API y CORS; cámara solo bajo `localhost` o HTTPS; datos ficticios. No exponer sin autenticación ni presentar el QR como identidad criptográfica.

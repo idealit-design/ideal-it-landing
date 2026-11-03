@@ -1,0 +1,83 @@
+[
+  {
+    "id": "personal",
+    "name": "Personal",
+    "description": "Personal, asistencia y licencias",
+    "directory": "mvp-personal",
+    "api_port": 8001,
+    "health_path": "/health",
+    "demo_url": "http://127.0.0.1:4203",
+    "demo_label": "Abrir demo"
+  },
+  {
+    "id": "auditoria",
+    "name": "Auditoría",
+    "description": "Auditoría y documentación de prestadores",
+    "directory": "mvp-auditoria",
+    "api_port": 8002,
+    "health_path": "/health",
+    "demo_url": "http://127.0.0.1:4201",
+    "demo_label": "Abrir demo"
+  },
+  {
+    "id": "formularios",
+    "name": "Formularios",
+    "description": "Eventos, inscripciones y accesos QR",
+    "directory": "mvp-formularios",
+    "api_port": 8003,
+    "health_path": "/health",
+    "demo_url": "http://127.0.0.1:4202",
+    "demo_label": "Abrir demo"
+  },
+  {
+    "id": "valentin-cripto",
+    "name": "Valentín Cripto",
+    "description": "Bot de trading en modo simulado",
+    "directory": "mvp-valentin-cripto",
+    "api_port": 8004,
+    "health_path": "/health",
+    "demo_url": "http://127.0.0.1:8004",
+    "demo_label": "Abrir dashboard"
+  },
+  {
+    "id": "inspecciones",
+    "name": "OSMA Inspecciones",
+    "description": "Inspecciones de campo y sincronización offline",
+    "directory": "mvp-osma-inspecciones",
+    "api_port": 8005,
+    "health_path": "/health",
+    "frontend_port": 5175,
+    "demo_url": "http://127.0.0.1:5175",
+    "demo_label": "Abrir PWA"
+  },
+  {
+    "id": "logistica-fleet",
+    "name": "Logística Fleet",
+    "description": "Flota, conductores y última milla",
+    "directory": "mvp-logistica-fleet",
+    "api_port": 4100,
+    "health_path": "/health",
+    "demo_url": "http://127.0.0.1:4100",
+    "demo_label": "Abrir dashboard"
+  },
+  {
+    "id": "agrotech-iot",
+    "name": "AgroTech IoT",
+    "description": "Lotes, telemetría y drones",
+    "directory": "mvp-agrotech-iot",
+    "api_port": 8080,
+    "health_path": "/health",
+    "frontend_port": 5173,
+    "demo_url": "http://127.0.0.1:5173",
+    "demo_label": "Abrir dashboard"
+  },
+  {
+    "id": "visitor-pass",
+    "name": "Visitor Pass",
+    "description": "Registro local de visitantes",
+    "directory": "mvp-visitor-pass",
+    "frontend_port": 8000,
+    "demo_url": "http://127.0.0.1:8000",
+    "demo_label": "Abrir demo"
+  }
+]
