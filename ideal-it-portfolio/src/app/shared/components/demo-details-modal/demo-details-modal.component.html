@@ -34,6 +34,16 @@
     <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-400">{{ demo.description }}</p>
 
     @if (!hasPublicPreview) {
+      <section class="mt-6 rounded-xl border border-slate-600/30 bg-slate-800/30 p-4" aria-label="Disponibilidad">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-slate-300">{{ availabilityLabel }}</p>
+        <p class="mt-2 text-sm leading-6 text-slate-400">
+          {{ demo.availabilityNote || 'Esta ficha no tiene una experiencia pública disponible.' }}
+          No se abre ninguna conexión a la VM desde el portfolio.
+        </p>
+      </section>
+    }
+
+    @if (demo.availability === 'planned') {
       <section class="mt-7" aria-labelledby="conceptual-preview-heading">
         <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
           <div>
@@ -96,13 +106,6 @@
       }
     </div>
 
-    @if (requestReady) {
-      <p class="mt-5 rounded-lg border border-accent/20 bg-accent/[0.05] p-4 text-sm leading-6 text-slate-300" role="status">
-        <span class="font-semibold text-white">{{ demo.title }}</span> quedó seleccionado para solicitar una demo.
-        El canal de envío todavía no está configurado; no se envió ninguna solicitud.
-      </p>
-    }
-
     <div class="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
       <div class="flex flex-wrap gap-2">
         @if (demo.previewUrl; as previewUrl) {
@@ -122,14 +125,6 @@
           >
             Abrir demo interactiva
           </a>
-        } @else if (demo.status !== 'coming-soon') {
-          <button
-            type="button"
-            class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-[#8bf0df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            (click)="requestReady = true"
-          >
-            Solicitar demo
-          </button>
         }
       </div>
       <button

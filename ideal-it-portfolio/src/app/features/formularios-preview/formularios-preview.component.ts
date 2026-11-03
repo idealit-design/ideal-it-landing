@@ -29,10 +29,9 @@ interface PreviewEvent {
 }
 
 @Component({
-  selector: 'app-formularios-preview',
-  standalone: true,
-  imports: [DatePipe, FormsModule, NgClass, RouterLink],
-  templateUrl: './formularios-preview.component.html',
+    selector: 'app-formularios-preview',
+    imports: [DatePipe, FormsModule, NgClass, RouterLink],
+    templateUrl: './formularios-preview.component.html'
 })
 export class FormulariosPreviewComponent {
   readonly categories: OrganizerCategory[] = [
